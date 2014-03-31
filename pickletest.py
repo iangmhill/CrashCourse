@@ -18,7 +18,9 @@ class User(object):
 user1 = User('ihill','crashcourse','Ian Hill','2017','E:C',0,0,0,0)
 user2 = User('mkeene','crashcourse','Maire Keene','2017','UD',0,0,0,0)
 user3 = User('mborges','crashcourse','Mafalda Borges','2017','UD',0,0,0,0)
-users = [user1,user2,user3]
+user4 = User ('hpelletier','crashcourse','Haley Pelletier','2017','UD',0,0,0,0)
+user5= User ('sgrimshaw1','crashcourse','Susie Grimshaw', '2017','UD',0,0,0,0)
+users = [user1,user2,user3, user4, user5]
 
 with open('test.occ', 'wb') as output:
     print('Writing File')
