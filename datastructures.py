@@ -1,7 +1,9 @@
+import datetime
 class User(object):
     def __init__(self, username,password,name,grad_year,major,transfer_ENGR,transfer_AHSE,transfer_MTH,transfer_SCI):
         self.username = username
         self.password = password
+        self.last_updated = datetime.datetime.now()
         self.name = name
         self.grad_year = grad_year
         self.major = major
@@ -40,9 +42,11 @@ class Requirements(object):
     def iscompleted(self,student_courses):
         pass
 class Time(object):
-    def __init__(self,
+    def __init__(self):
+        pass
+    
 class Schedule (object):
     def __init__(self):
         self.courses = []
         
-ModSim=Course(1111, 'ModSim', JTownsend, {'ENGR':0, 'AHSE':0, 'MTH':2, 'SCI':2} , 4, 'Fall', 'Morning1', 'Modeling things yay MatLab', 'none', True)     
+#ModSim=Course(1111, 'ModSim', JTownsend, {'ENGR':0, 'AHSE':0, 'MTH':2, 'SCI':2} , 4, 'Fall', 'Morning1', 'Modeling things yay MatLab', 'none', True)     
