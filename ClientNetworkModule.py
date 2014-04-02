@@ -8,7 +8,7 @@ import cPickle as pickle
 from datastructures import User
 
 
-class Network(object):
+class NetworkManager(object):
     def __init__(self):
         self.client = TftpClient('127.0.0.1',5281)
         
@@ -20,15 +20,24 @@ class Network(object):
         except urllib2.URLError as err:
             print "Disconnected from the Internet"
             return False
-        
-    def update(self,username,password):
+            
+    def create_user(self,username):
         if self.check_internet():
             try:
                 self.client.download( username + '.usr', 'temp.usr')
-                print("Downloaded user information")
-            except:
-                print("User does not exist on server")
+                print("User already exists")
                 return -1
+            except:
+                print("User does not exist on server \nCreating file")
+                os.rename('user.usr',username + '.usr')
+                self.client.upload(username + '.usr', username + '.usr')
+                os.rename(username + '.usr','user.usr')
+                print("Done")
+            
+        
+    def update(self,username,password):
+        if self.check_internet():
+            
             
             if os.path.isfile('temp.usr') and os.path.isfile('user.usr'):
                 with open('temp.usr','rb') as temp:
@@ -69,5 +78,5 @@ class Network(object):
                     print("Update complete")
                     return True
 if __name__ == '__main__':
-    network = Network()
-    network.update('ihill','crashcourse')
+    network = NetworkManager()
+    network.create_user('mkeene')
