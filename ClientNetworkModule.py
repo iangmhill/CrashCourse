@@ -9,41 +9,65 @@ from datastructures import User
 
 
 class Network(object):
-    def __init__():
-        client = TftpClient('127.0.0.1',5281)
+    def __init__(self):
+        self.client = TftpClient('127.0.0.1',5281)
         
-    def check_internet():
-    try:
-        response=urllib2.urlopen('http://www.google.com',None,timeout=1)
-        print "you are connected"
-        return True
-    except urllib2.URLError as err:
-        print "you are disconnected"
-        return False
+    def check_internet(self):
+        try:
+            response=urllib2.urlopen('http://www.google.com',None,timeout=1)
+            print "Connected to the Internet"
+            return True
+        except urllib2.URLError as err:
+            print "Disconnected from the Internet"
+            return False
         
-    def update(username,password):
-        if check_internet():
+    def update(self,username,password):
+        if self.check_internet():
             try:
-                client.download( username + '.usr', 'login.usr')
+                self.client.download( username + '.usr', 'temp.usr')
+                print("Downloaded user information")
             except:
-                print("User does not exist")
+                print("User does not exist on server")
                 return -1
+            
+            if os.path.isfile('temp.usr') and os.path.isfile('user.usr'):
+                with open('temp.usr','rb') as temp:
+                    online_user = pickle.load(temp)
+                with open('user.usr','rb') as local:
+                    local_user = pickle.load(local)
             else:
-                with open('login.usr', 'rb') as userfile:
-                    print('Loading User')
-                    User = pickle.load(userfile)
-                    if password != User.password:
-                        print("Incorrect password")
-                        os.remove('login.usr')
-                        return -2
-                    else:
-                        os.rename('login.usr','user.usr')
-                        try:
-                            client.download('courses.csv', 'courses.csv')
-                            client.download('profs.csv','profs.csv')
-                        except:
-                            print("Network error when downloading new content")
-                            return -3
-                        else:
-                            return True
-                            
+                print("User does not exist on client")
+                return -2
+            print("Checking if user file is up-to-date")
+            if local_user.username != online_user.username or online_user.last_updated > local_user.last_updated:
+                """ server version of user is newer than local version """
+                os.remove('user.usr')
+                os.rename('temp.usr','user.usr')
+            elif local_user.username == online_user.username and local_user.last_updated >= online_user.last_updated:
+                """ local version of user is newer than server version """
+                os.remove('temp.usr')
+            
+            with open('user.usr','rb') as userfile:
+                    user = pickle.load(userfile)
+                    userfile.close()
+            if password != user.password:
+                print("Incorrect password")
+                return -3
+            else:
+                print("Correct password")
+                try:
+                    self.client.download('courses.csv', 'courses_client.csv')
+                    print("Downloaded course information")
+                    self.client.download('profs.csv','profs_client.csv')
+                    print("Downloaded professor information")
+                    self.client.upload('user.usr', username + '.usr')
+                    print("Uploaded user information")
+                except:
+                    print("Network error when downloading new content")
+                    return -4
+                else:
+                    print("Update complete")
+                    return True
+if __name__ == '__main__':
+    network = Network()
+    network.update('ihill','crashcourse')

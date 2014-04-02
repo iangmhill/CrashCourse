@@ -12,6 +12,9 @@ class User(object):
         self.MTH = transfer_MTH
         self.SCI = transfer_SCI
         self.courses = []
+        
+    def __str__(self):
+        return self.name
   	
     def getCredits(self):
        return self.ENGR + self.AHSE + self.MTH + self.SCI
