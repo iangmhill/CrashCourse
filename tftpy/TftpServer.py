@@ -76,8 +76,9 @@ class TftpServer(TftpSession):
 
         log.info("Starting receive loop...")
         while True:
+            print("A")
             if self.shutdown_immediately:
-                log.warn("Shutting down now. Session count: %d" % len(self.sessions))
+        	log.warn("Shutting down now. Session count: %d" % len(self.sessions))
                 self.sock.close()
                 for key in self.sessions:
                     self.sessions[key].end()
@@ -89,6 +90,7 @@ class TftpServer(TftpSession):
                     log.warn("In graceful shutdown mode and all sessions complete.")
                     self.sock.close()
                     break
+            print("B")
 
             # Build the inputlist array of sockets to select() on.
             inputlist = []
@@ -104,6 +106,7 @@ class TftpServer(TftpSession):
                                                                   SOCK_TIMEOUT)
 
             deletion_list = []
+            print("C")
 
             # Handle the available data, if any. Maybe we timed-out.
             for readysock in readyinput:
@@ -166,6 +169,7 @@ class TftpServer(TftpSession):
                     else:
                         log.error("Can't find the owner for this packet. "
                                   "Discarding.")
+            print("D")
 
             log.debug("Looping on all sessions to check for timeouts")
             now = time.time()
@@ -205,7 +209,7 @@ class TftpServer(TftpSession):
                 else:
                     log.warn("Strange, session %s is not on the deletion list"
                         % key)
-
+           	print(".")
         log.debug("server returning from while loop")
         self.shutdown_gracefully = self.shutdown_immediately = False
 

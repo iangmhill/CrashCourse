@@ -2,6 +2,7 @@ import os
 import sys
 sys.path.insert(0, '/home/ihill/Documents/CrashCourse/tftpy')
 from TftpClient import TftpClient
+from TftpShared import TftpException
 sys.path.insert(0, '/home/ihill/Documents/CrashCourse')
 import urllib2
 import cPickle as pickle
@@ -14,10 +15,10 @@ class NetworkManager(object):
         
     def check_internet(self):
         try:
-            response=urllib2.urlopen('http://www.google.com',None,timeout=1)
+            urllib2.urlopen('http://www.google.com',None,timeout=5)
             print "Connected to the Internet"
             return True
-        except urllib2.URLError as err:
+        except urllib2.URLError:
             print "Disconnected from the Internet"
             return False
             
@@ -27,7 +28,7 @@ class NetworkManager(object):
                 self.client.download( username + '.usr', 'temp.usr')
                 print("User already exists")
                 return -1
-            except:
+            except TftpException:
                 print("User does not exist on server \nCreating file")
                 os.rename('user.usr',username + '.usr')
                 self.client.upload(username + '.usr', username + '.usr')
@@ -37,7 +38,12 @@ class NetworkManager(object):
         
     def update(self,username,password):
         if self.check_internet():
-            
+            try:
+                self.client.download(username + '.usr','temp.usr')
+                print("Downloaded user information")
+            except:
+                print("User does not exist on server")
+                return -1
             
             if os.path.isfile('temp.usr') and os.path.isfile('user.usr'):
                 with open('temp.usr','rb') as temp:
@@ -69,7 +75,9 @@ class NetworkManager(object):
                     print("Downloaded course information")
                     self.client.download('profs.csv','profs_client.csv')
                     print("Downloaded professor information")
-                    self.client.upload('user.usr', username + '.usr')
+                    os.rename('user.usr',username + '.usr')
+                    self.client.upload(username+'.usr', username + '.usr')
+                    os.rename(username + '.usr','user.usr')
                     print("Uploaded user information")
                 except:
                     print("Network error when downloading new content")
@@ -79,4 +87,5 @@ class NetworkManager(object):
                     return True
 if __name__ == '__main__':
     network = NetworkManager()
+    network.update('ihill','crashcourse')
     network.create_user('mkeene')
