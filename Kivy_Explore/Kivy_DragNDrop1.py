@@ -1,5 +1,5 @@
 from kivy.app import App
-from kivy.garden.magnet import Magnet
+from magnet import Magnet
 from kivy.uix.image import Image
 from kivy.properties import ObjectProperty
 from kivy.lang import Builder
