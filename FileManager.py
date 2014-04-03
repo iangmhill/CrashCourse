@@ -3,11 +3,18 @@ import cPickle
 from datastructures import Course
 
 class FileManager(object):
+    """Crash course object to handle the loading and saving of course, professor, and user data"""
     def __init__(self):
         self.catalog = self.load_courses()
         if self.catalog != False: print(self.catalog[0].time[0])
         
     def load_courses(self):
+        """
+        load_courses opens the courses.csv files and loads each course in the 
+        file one by one and initializes a new course object for each line of
+        data. The course objects are appended to the variable catalog which
+        is a list of all course objects. This catalog is returned.
+        """
         catalog = []
         with open('courses.csv') as courses:
             lines = courses.readlines()
