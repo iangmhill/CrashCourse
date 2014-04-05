@@ -68,6 +68,12 @@ class FileManager(object):
                     faculty.append(input_prof)
         return faculty
 
+    def load_stats(self):
+        with open('stats.sts', 'rb') as statsfile:
+            last_updated = pickle.load(statsfile)
+            distribution = pickle.load(statsfile)
+        return last_updated,distribution
+
     def load_user(self,username,password):
         with open('user.usr', 'rb') as userfile:
             try:
@@ -90,6 +96,10 @@ class FileManager(object):
 
 
 
-filemanager = FileManager()
-user = filemanager.load_user('ihill','crashcourse')
-print(user.name + ' ' + user.grad_year)
+# filemanager = FileManager()
+# user = filemanager.load_user('ihill','crashcourse')
+# print(user.name + ' ' + user.grad_year)
+# last_updated,distribution = filemanager.load_stats()
+# print(last_updated)
+# for k in distribution:
+#     print(str(k) + str(distribution[k]))

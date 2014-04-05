@@ -71,10 +71,12 @@ class NetworkManager(object):
             else:
                 print("Correct password")
                 try:
-                    self.client.download('courses.csv', 'courses_client.csv')
+                    self.client.download('courses.csv', 'courses.csv')
                     print("Downloaded course information")
-                    self.client.download('profs.csv','profs_client.csv')
+                    self.client.download('profs.csv','profs.csv')
                     print("Downloaded professor information")
+                    self.client.download('stats.sts','stats.sts')
+                    print("Downloaded user statistics")
                     os.rename('user.usr',username + '.usr')
                     self.client.upload(username+'.usr', username + '.usr')
                     os.rename(username + '.usr','user.usr')
