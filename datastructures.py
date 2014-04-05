@@ -39,15 +39,27 @@ class Course(object):
         self.pre_req = pre_req
         self.PNR = PNR
 
+    def __str__(self):
+        return self.name
+
 class Requirements(object):
     def __init__(self,courses):
         self.courses = courses
     def iscompleted(self,student_courses):
         pass
+
 class Time(object):
-    def __init__(self):
-        pass
-    
+    def __init__(self,day,hours,minutes,duration):
+        self.day = day
+        self.hours = hours
+        self.minutes = minutes
+        self.duration = duration
+
+class Semester(object):
+    def __init__(self,year,season):
+        self.year = year
+        self.season = season
+
 class Schedule (object):
     def __init__(self):
         self.courses = []

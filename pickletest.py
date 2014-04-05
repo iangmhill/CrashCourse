@@ -29,6 +29,6 @@ with open('test.occ', 'rb') as input:
 for user in new_users:
     print(user.last_updated)
     
-with open('ihill.usr', 'wb') as output:
+with open('user.usr', 'wb') as output:
     print('Writing File')
     pickle.dump(user1, output, -1)
