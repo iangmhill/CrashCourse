@@ -6,7 +6,7 @@ sys.path.insert(0, os.getcwd())
 from TftpServerCustom import TftpServer
 os.chdir('..')
 sys.path.insert(0, os.getcwd())
-from datastructures import Semester
+from datastructures import Semester, User
 import threading
 from datetime import date, datetime
 import cPickle as pickle
@@ -48,11 +48,13 @@ class Controller(object):
                     print(file)
                 
     def ServerThread(self):
+        print(self.get_ipaddress())
         server = TftpServer(os.getcwd(),None,self.get_ipaddress(),5300,5)
         while self.running:
             for n in range(12):
                 if self.running:
                     server.listen()
+                    self.merge()
                 else:
                     break
             self.generate_statistics()
@@ -65,6 +67,7 @@ class Controller(object):
         for cwdfile in os.listdir(os.getcwd()):
             if cwdfile[-4:] == ".usr":
                 with open(cwdfile, 'rb') as userfile:
+                    print(userfile)
                     user = pickle.load(userfile)
                     for sem_dist in self.distribution:
                         for sem_cour in user.courses:
@@ -78,6 +81,13 @@ class Controller(object):
             pickle.dump(datetime.now(),statsfile,-1)
             pickle.dump(self.distribution, statsfile, -1)
         return True
+
+    def merge(self):
+        for cwdfile in os.listdir(os.getcwd()):
+            if cwdfile[-5:] == "1.usr":
+                os.remove(cwdfile[:-5] + '.usr')
+                os.rename(cwdfile, cwdfile[:-5] + '.usr')
+                
     
     def run(self):
             t1 = threading.Thread(target=self.CommandThread)

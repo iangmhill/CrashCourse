@@ -24,7 +24,8 @@ class TftpServer(TftpSession):
         listenip="",
         listenport=DEF_TFTP_PORT,
         timeout=SOCK_TIMEOUT):
-
+        
+        self.timeout = timeout
         self.listenip = listenip
         self.listenport = listenport
         self.sock = None
@@ -57,7 +58,7 @@ class TftpServer(TftpSession):
                     log.warning("The tftproot %s is not writable" % self.root)
         else:
             raise TftpException, "The tftproot does not exist."
-        #tftp_factory = TftpPacketFactory()
+        self.tftp_factory = TftpPacketFactory()
 
         # Don't use new 2.5 ternary operator yet
         # listenip = listenip if listenip else '0.0.0.0'
@@ -76,6 +77,7 @@ class TftpServer(TftpSession):
         """Start a server listening on the supplied interface and port. This
         defaults to INADDR_ANY (all interfaces) and UDP port 69. You can also
         supply a different socket timeout value, if desired."""
+        tftp_factory = self.tftp_factory
         if self.shutdown_immediately:
             log.warn("Shutting down now. Session count: %d" % len(self.sessions))
             self.sock.close()
@@ -128,7 +130,7 @@ class TftpServer(TftpSession):
                                  "session key = %s", key)
                     self.sessions[key] = TftpContextServer(raddress,
                                                            rport,
-                                                           timeout,
+                                                           self.timeout,
                                                            self.root,
                                                            self.dyn_file_func)
                     try:
