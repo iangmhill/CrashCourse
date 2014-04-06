@@ -1,6 +1,6 @@
 import datetime
 class User(object):
-    def __init__(self, username,password,name,grad_year,major,transfer_ENGR,transfer_AHSE,transfer_MTH,transfer_SCI):
+    def __init__(self, username,password,name,grad_year,major,transfer_ENGR,transfer_AHSE,transfer_MTH,transfer_SCI,courses):
         self.username = username
         self.password = password
         self.last_updated = datetime.datetime.now()
@@ -11,7 +11,7 @@ class User(object):
         self.AHSE = transfer_AHSE
         self.MTH = transfer_MTH
         self.SCI = transfer_SCI
-        self.courses = []
+        self.courses = courses #as dictionary
         
     def __str__(self):
         return self.name
@@ -39,15 +39,31 @@ class Course(object):
         self.pre_req = pre_req
         self.PNR = PNR
 
+    def __str__(self):
+        return self.name
+
 class Requirements(object):
     def __init__(self,courses):
         self.courses = courses
     def iscompleted(self,student_courses):
         pass
+
 class Time(object):
-    def __init__(self):
-        pass
-    
+    def __init__(self,day,hours,minutes,duration):
+        self.day = day
+        self.hours = hours
+        self.minutes = minutes
+        self.duration = duration
+
+class Semester(object):
+    def __init__(self,year,season):
+        self.year = year      #as integer e.g. 2017
+        self.season = season  #as char e.g. 'f' or 's'
+    def __str__(self):
+        return "[" + str(self.year) + "," + self.season + "]"
+    def __eq__(self,other):
+        return self.year == other.year and self.season == other.season
+
 class Schedule (object):
     def __init__(self):
         self.courses = []

@@ -78,7 +78,7 @@ class TftpServer(TftpSession):
         while True:
             print("A")
             if self.shutdown_immediately:
-        	log.warn("Shutting down now. Session count: %d" % len(self.sessions))
+                log.warn("Shutting down now. Session count: %d" % len(self.sessions))
                 self.sock.close()
                 for key in self.sessions:
                     self.sessions[key].end()
@@ -209,7 +209,6 @@ class TftpServer(TftpSession):
                 else:
                     log.warn("Strange, session %s is not on the deletion list"
                         % key)
-           	print(".")
         log.debug("server returning from while loop")
         self.shutdown_gracefully = self.shutdown_immediately = False
 
