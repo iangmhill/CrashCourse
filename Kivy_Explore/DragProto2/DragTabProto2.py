@@ -195,37 +195,37 @@ GridLayout:
         orientation: 'tb-rl'
         
         DragableButton:
-            text: 'Drag me 3'
+            text: 'DesNat'
             bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
             droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
             drag_opacity: .5 
         DragableButton:
-            text: 'HowStack?'
+            text: 'ModSim '
             bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
             droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
             drag_opacity: .5
         DragableButton:
-            text: 'HowStack?'
+            text: 'ModCon'
             bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
             droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
             drag_opacity: .5
         DragableButton:
-            text: 'HowStack?'
+            text: 'Rwm'
             bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
             droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
             drag_opacity: .5
         DragableButton:
-            text: 'HowStack?'
+            text: 'Linearity 1'
             bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
             droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
             drag_opacity: .5
         DragableButton:
-            text: 'HowStack?'
+            text: 'Linearity 2'
             bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
             droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
             drag_opacity: .5
         DragableButton:
-            text: 'HowStack?'
+            text: 'POE'
             bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
             droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
             drag_opacity: .5

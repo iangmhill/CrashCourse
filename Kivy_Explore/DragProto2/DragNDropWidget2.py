@@ -153,7 +153,7 @@ class DragNDropWidget(Widget):
             self.opacity = 1.0
             dropped_ok = False
             for obj in self.droppable_zone_objects:
-                if obj.collide_point(*self.pos):
+                if obj.collide_point(*[self.pos[0]+self.width/2, self.pos[1]+self.height/2]):
                     dropped_ok = True
             if dropped_ok:
                 self.drop_func()
@@ -171,7 +171,8 @@ class DragNDropWidget(Widget):
             
     def drop_func(self):
         for obj in self.droppable_zone_objects:
-            if obj.collide_point(*self.pos):
+            if obj.collide_point(*[self.pos[0]+self.width/2, self.pos[1]+self.height/2]):
+                print self.pos[0]
                 self.deparent()
                 obj.add_widget(self)
                 x = obj.center[0] - self.width/2
