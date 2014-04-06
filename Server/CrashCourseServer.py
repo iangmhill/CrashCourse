@@ -54,11 +54,16 @@ class Controller(object):
         while self.running:
             for n in range(12):
                 if self.running:
-                    server.listen()   
+                    server.listen()
                 else:
                     break
-            self.merge()
-            self.generate_statistics()
+            try:
+                self.merge()
+                self.generate_statistics()
+            except:
+                pass
+
+            
                 
         print("Beginning shutdown")
         server.stop() 
@@ -68,7 +73,6 @@ class Controller(object):
         for cwdfile in os.listdir(os.getcwd()):
             if cwdfile[-4:] == ".usr":
                 with open(cwdfile, 'rb') as userfile:
-                    print(userfile)
                     user = pickle.load(userfile)
                     for sem_dist in self.distribution:
                         for sem_cour in user.courses:
