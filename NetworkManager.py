@@ -11,7 +11,7 @@ from datastructures import User
 
 class NetworkManager(object):
     def __init__(self):
-        self.client = TftpClient('127.0.0.1',5281)
+        self.client = TftpClient('10.26.67.19',5100)
         
     def check_internet(self):
         try:
@@ -90,4 +90,3 @@ class NetworkManager(object):
 if __name__ == '__main__':
     network = NetworkManager()
     network.update('ihill','crashcourse')
-    network.create_user('mkeene')
