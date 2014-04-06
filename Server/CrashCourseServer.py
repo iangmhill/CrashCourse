@@ -1,12 +1,18 @@
 import sys
 import os
-sys.path.insert(0, '/home/ihill/Documents/CrashCourse/tftpy')
+os.chdir('..')
+os.chdir('tftpy')
+sys.path.insert(0, os.getcwd())
 from TftpServerCustom import TftpServer
-sys.path.insert(0, '/home/ihill/Documents/CrashCourse')
+os.chdir('..')
+sys.path.insert(0, os.getcwd())
 from datastructures import Semester
 import threading
 from datetime import date, datetime
 import cPickle as pickle
+from socket import socket, SOCK_DGRAM, AF_INET
+os.chdir('Server')
+sys.path.insert(0, os.getcwd())
 
 class Controller(object):
     def __init__(self):
@@ -24,6 +30,11 @@ class Controller(object):
             else:
                 self.semesters.append(Semester(self.semesters[-1].year + 1,'s'))
         self.distribution = {}
+    
+    def get_ipaddress(self):
+        s = socket(AF_INET,SOCK_DGRAM)
+        s.connect(('google.com',0))
+        return s.getsockname()[0]
         
     def CommandThread(self):
         while self.running:
@@ -37,10 +48,13 @@ class Controller(object):
                     print(file)
                 
     def ServerThread(self):
-        server = TftpServer('/home/ihill/Documents/CrashCourse/Server',None,'127.0.0.1',5300,5)
+        server = TftpServer(os.getcwd(),None,self.get_ipaddress(),5300,5)
         while self.running:
             for n in range(12):
-                server.listen()
+                if self.running:
+                    server.listen()
+                else:
+                    break
             self.generate_statistics()
                 
         print("Beginning shutdown")
