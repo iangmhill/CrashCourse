@@ -13,7 +13,7 @@ from datastructures import User
 
 class NetworkManager(object):
     def __init__(self):
-        self.client = TftpClient('192.168.49.47',5100)
+        self.client = TftpClient('10.27.8.27',5300)
         
     def check_internet(self):
         try:
@@ -79,16 +79,17 @@ class NetworkManager(object):
                     print("Downloaded professor information")
                     self.client.download('stats.sts','stats.sts')
                     print("Downloaded user statistics")
-                    os.rename('user.usr',username + '.usr')
-                    self.client.upload(username+'.usr', username + '.usr')
-                    os.rename(username + '.usr','user.usr')
-                    print("Uploaded user information")
+                    os.rename('user.usr',username + '1.usr')
+                    self.client.upload(username+'1.usr', username + '1.usr')
+                    os.rename(username + '1.usr','user.usr')
+                    print("User content uploaded")
                 except:
                     print("Network error when downloading new content")
                     return -4
                 else:
-                    print("Update complete")
+                    print("Update complete.")
                     return True
+            
 if __name__ == '__main__':
     network = NetworkManager()
     network.update('ihill','crashcourse')
