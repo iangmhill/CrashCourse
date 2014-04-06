@@ -14,8 +14,8 @@ class DragNDropWidget(Widget):
     droppable_zone_objects = ListProperty([])
     bound_zone_objects = ListProperty([])
     drag_opacity = NumericProperty(1.0)
-    drop_func = ObjectProperty(None)
-    drop_args = ListProperty([])
+    #drop_func = ObjectProperty(None)
+    #drop_args = ListProperty([])
     remove_on_drag = BooleanProperty(True)
 
     def __init__(self, **kw):
@@ -156,10 +156,10 @@ class DragNDropWidget(Widget):
                 if obj.collide_point(*self.pos):
                     dropped_ok = True
             if dropped_ok:
-                self.drop_func(*self.drop_args)
-                anim = Animation(opacity=0, duration=0.7, t="in_quad")
-                anim.bind(on_complete=self.deparent)
-                anim.start(self)
+                self.drop_func()
+                #anim = Animation(opacity=0, duration=0.7, t="in_quad")
+                #anim.bind(on_complete=self.deparent)
+                #anim.start(self)
             else:
                 anim = Animation(pos=self._old_drag_pos, duration=0.7, t="in_quad")
                 if self.remove_on_drag:
@@ -168,7 +168,17 @@ class DragNDropWidget(Widget):
                     anim.bind(on_complete = self.deparent)
                 anim.start(self)
             self._dragged = False
-
+            
+    def drop_func(self):
+        for obj in self.droppable_zone_objects:
+            if obj.collide_point(*self.pos):
+                self.deparent()
+                obj.add_widget(self)
+                x = obj.center[0] - self.width/2
+                y = obj.center[1] - self.height/2
+                self.pos=(x,y)
+                print "add success"
+                
     def deparent(self, widget="dumb", anim="dumb2"):
         self.get_root_window().remove_widget(self)
 

@@ -1,26 +1,23 @@
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.stacklayout import StackLayout
-import DragableButton  # import to get auto register
+from DragableButton2 import DragableButton  # import to get auto register
+from kivy.uix.widget import Widget
+from kivy.properties import StringProperty
 
 kv = '''
 GridLayout:
     cols: 3
     GridLayout:
-        cols:2
+        cols: 2
         rows:2
-        canvas:
-            Color:
-                rgba: 0,1,1,.5
-            Rectangle:
-                pos: self.pos
-                size: self.size
         GridLayout:
+            id: PassNoRecord
             cols: 2
             rows: 3
             canvas:
                 Color:
-                    rgba: 1,1,0,0
+                    rgba: 1,1,0,.5
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -37,53 +34,56 @@ GridLayout:
             Label:
                 text:'Frosh'
         GridLayout:
+            id: Soph1
             cols: 2
             rows: 3
             canvas:
                 Color:
-                    rgba: 1,1,0,.1
+                    rgba: 1,1,0,.6
                 Rectangle:
                     pos: self.pos
                     size: self.size
             Label:
-                text:'Soph'
+                text:'Frosh'
             Label:
-                text:'Soph'
+                text:'Frosh'
             Label:
-                text:'Soph'
+                text:'Frosh'
             Label:
-                text:'Soph'
+                text:'Frosh'
             Label:
-                text:'Soph'
-            Label:
-                text:'Soph'
-        GridLayout:
-            cols: 2
-            rows: 3
-            canvas:
-                Color:
-                    rgba: 1,1,0,.2
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
-            Label:
-                text:'Frosh2'
-            Label:
-                text:'Frosh2'
-            Label:
-                text:'Frosh2'
-            Label:
-                text:'Frosh2'
-            Label:
-                text:'Frosh2'
+                text:'Frosh'
             Label:
                 text:'Frosh'
         GridLayout:
+            id: awwGrades
             cols: 2
             rows: 3
             canvas:
                 Color:
-                    rgba: 1,1,0,.3
+                    rgba: 1,1,0,.7
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text:'Frosh'
+            Label:
+                text:'Frosh'
+            Label:
+                text:'Frosh'
+            Label:
+                text:'Frosh'
+            Label:
+                text:'Frosh'
+            Label:
+                text:'Frosh'
+        GridLayout:
+            id: SuiteDraw
+            cols: 2
+            rows: 3
+            canvas:
+                Color:
+                    rgba: 1,1,0,.8
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -104,12 +104,7 @@ GridLayout:
         id: Semesters
         cols:2
         rows:2
-        canvas:
-            Color:
-                rgba: 0,1,1,.4
-            Rectangle:
-                pos: self.pos
-                size: self.size
+       
         GridLayout:
             cols: 2
             rows: 3
@@ -201,20 +196,45 @@ GridLayout:
         
         DragableButton:
             text: 'Drag me 3'
-            bound_zone_objects: [Courses, Semesters]
-            droppable_zone_objects: [Semesters]
+            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            drag_opacity: .5 
+        DragableButton:
+            text: 'HowStack?'
+            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
             drag_opacity: .5
-            drop_func: app.greet
-    
+        DragableButton:
+            text: 'HowStack?'
+            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            drag_opacity: .5
+        DragableButton:
+            text: 'HowStack?'
+            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            drag_opacity: .5
+        DragableButton:
+            text: 'HowStack?'
+            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            drag_opacity: .5
+        DragableButton:
+            text: 'HowStack?'
+            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            drag_opacity: .5
+        DragableButton:
+            text: 'HowStack?'
+            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            drag_opacity: .5
 '''
 
 
 class MyPaintApp(App):
     def build(self):
         return Builder.load_string(kv)
-
-    def greet(self):
-        print "Dragging done!!!"
 
 if __name__ == '__main__':
     MyPaintApp().run()

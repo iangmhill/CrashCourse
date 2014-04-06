@@ -93,7 +93,7 @@ class DnDMagnet(App):
             self.root.ids.grid_layout.add_widget(draggable)
  
         return self.root
- 
+        
  
 if __name__ == '__main__':
     DnDMagnet().run()

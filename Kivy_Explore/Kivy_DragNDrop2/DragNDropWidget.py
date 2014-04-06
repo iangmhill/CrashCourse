@@ -79,8 +79,8 @@ class DragNDropWidget(Widget):
 
     def on_touch_move(self, touch):
         if self._dragged and self._dragable:
-            x = touch.x
-            y = touch.y
+            x = touch.x - self.width/2
+            y = touch.y - self.height/2
 
             try:
                 if touch.x < self.min_x:
@@ -157,7 +157,7 @@ class DragNDropWidget(Widget):
                     dropped_ok = True
             if dropped_ok:
                 self.drop_func(*self.drop_args)
-                anim = Animation(opacity=0, duration=0.7, t="in_quad")
+                anim = Animation(opacity=0.5, duration=0.7, t="in_quad")
                 anim.bind(on_complete=self.deparent)
                 anim.start(self)
             else:
