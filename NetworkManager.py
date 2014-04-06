@@ -1,9 +1,11 @@
 import os
 import sys
-sys.path.insert(0, '/home/ihill/Documents/CrashCourse/tftpy')
+os.chdir('tftpy')
+sys.path.insert(0, os.getcwd())
 from TftpClient import TftpClient
 from TftpShared import TftpException
-sys.path.insert(0, '/home/ihill/Documents/CrashCourse')
+os.chdir('..')
+sys.path.insert(0, os.getcwd())
 import urllib2
 import cPickle as pickle
 from datastructures import User
@@ -11,15 +13,15 @@ from datastructures import User
 
 class NetworkManager(object):
     def __init__(self):
-        self.client = TftpClient('10.26.67.19',5100)
+        self.client = TftpClient('192.168.49.47',5100)
         
     def check_internet(self):
         try:
             urllib2.urlopen('http://www.google.com',None,timeout=5)
-            print "Connected to the Internet"
+            print("Connected to the Internet")
             return True
         except urllib2.URLError:
-            print "Disconnected from the Internet"
+            print("Disconnected from the Internet")
             return False
             
     def create_user(self,username):
