@@ -1,5 +1,6 @@
 import sys
 import os
+import shutil
 os.chdir('..')
 os.chdir('tftpy')
 sys.path.insert(0, os.getcwd())
@@ -49,14 +50,14 @@ class Controller(object):
                 
     def ServerThread(self):
         print(self.get_ipaddress())
-        server = TftpServer(os.getcwd(),None,self.get_ipaddress(),5300,5)
+        server = TftpServer(os.getcwd(),None,self.get_ipaddress(),5301,5)
         while self.running:
             for n in range(12):
                 if self.running:
-                    server.listen()
-                    self.merge()
+                    server.listen()   
                 else:
                     break
+            self.merge()
             self.generate_statistics()
                 
         print("Beginning shutdown")
@@ -86,7 +87,8 @@ class Controller(object):
         for cwdfile in os.listdir(os.getcwd()):
             if cwdfile[-5:] == "1.usr":
                 os.remove(cwdfile[:-5] + '.usr')
-                os.rename(cwdfile, cwdfile[:-5] + '.usr')
+                shutil.copyfile(cwdfile, cwdfile[:-5] + '.usr')
+                os.remove(cwdfile)
                 
     
     def run(self):
