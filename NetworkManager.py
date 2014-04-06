@@ -13,7 +13,11 @@ from datastructures import User
 
 class NetworkManager(object):
     def __init__(self):
+<<<<<<< HEAD
         self.client = TftpClient('10.0.2.15',5300)
+=======
+        self.client = TftpClient('10.7.64.61',5301)
+>>>>>>> 133c6e8f0ef9fe2e38b1beab3a002faf7626c8a3
         
     def check_internet(self):
         try:
