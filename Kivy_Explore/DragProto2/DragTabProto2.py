@@ -17,7 +17,7 @@ GridLayout:
             rows: 3
             canvas:
                 Color:
-                    rgba: 1,1,0,.5
+                    rgba: 1,0,0,.5
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -39,7 +39,7 @@ GridLayout:
             rows: 3
             canvas:
                 Color:
-                    rgba: 1,1,0,.6
+                    rgba: 1,0,0,.6
                 Rectangle:
                     pos: self.pos
                     size: self.size
