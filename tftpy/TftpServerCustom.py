@@ -206,7 +206,6 @@ class TftpServer(TftpSession):
             else:
                 log.warn("Strange, session %s is not on the deletion list"
                     % key)
-       	print(".")
 
     def stop(self,force=False):
         """Stop the server gracefully. Do not take any new transfers,
