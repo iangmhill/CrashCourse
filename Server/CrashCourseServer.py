@@ -1,5 +1,6 @@
 import sys
 import os
+import shutil
 os.chdir('..')
 os.chdir('tftpy')
 sys.path.insert(0, os.getcwd())
@@ -49,15 +50,18 @@ class Controller(object):
                 
     def ServerThread(self):
         print(self.get_ipaddress())
-        server = TftpServer(os.getcwd(),None,self.get_ipaddress(),5300,5)
+        server = TftpServer(os.getcwd(),None,self.get_ipaddress(),5301,5)
         while self.running:
             for n in range(12):
                 if self.running:
                     server.listen()
-                    self.merge()
                 else:
                     break
-            self.generate_statistics()
+            try:
+                self.merge()
+                self.generate_statistics()
+            except:
+                pass
                 
         print("Beginning shutdown")
         server.stop() 
@@ -67,7 +71,6 @@ class Controller(object):
         for cwdfile in os.listdir(os.getcwd()):
             if cwdfile[-4:] == ".usr":
                 with open(cwdfile, 'rb') as userfile:
-                    print(userfile)
                     user = pickle.load(userfile)
                     for sem_dist in self.distribution:
                         for sem_cour in user.courses:
@@ -86,7 +89,8 @@ class Controller(object):
         for cwdfile in os.listdir(os.getcwd()):
             if cwdfile[-5:] == "1.usr":
                 os.remove(cwdfile[:-5] + '.usr')
-                os.rename(cwdfile, cwdfile[:-5] + '.usr')
+                shutil.copyfile(cwdfile, cwdfile[:-5] + '.usr')
+                os.remove(cwdfile)
                 
     
     def run(self):

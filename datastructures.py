@@ -1,6 +1,6 @@
 import datetime
 class User(object):
-    def __init__(self, username,password,name,grad_year,major,transfer_ENGR,transfer_AHSE,transfer_MTH,transfer_SCI,courses):
+    def __init__(self, username,password,name,grad_year,major,transfer_ENGR,transfer_AHSE,transfer_MTH,transfer_SCI,courses,notes):
         self.username = username
         self.password = password
         self.last_updated = datetime.datetime.now()
@@ -12,6 +12,7 @@ class User(object):
         self.MTH = transfer_MTH
         self.SCI = transfer_SCI
         self.courses = courses #as dictionary
+        self.notes = notes
         
     def __str__(self):
         return self.name

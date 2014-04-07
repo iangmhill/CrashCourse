@@ -13,7 +13,8 @@ from datastructures import User
 
 class NetworkManager(object):
     def __init__(self):
-        self.client = TftpClient('10.27.8.27',5300)
+
+        self.client = TftpClient('10.7.64.61',5301)
         
     def check_internet(self):
         try:
@@ -32,9 +33,9 @@ class NetworkManager(object):
                 return -1
             except TftpException:
                 print("User does not exist on server \nCreating file")
-                os.rename('user.usr',username + '.usr')
-                self.client.upload(username + '.usr', username + '.usr')
-                os.rename(username + '.usr','user.usr')
+                os.rename('user.usr',username + '1.usr')
+                self.client.upload(username + '1.usr', username + '1.usr')
+                os.rename(username + '1.usr','user.usr')
                 print("Done")
             
         
