@@ -2,7 +2,7 @@
 
 import logging
 
-LOG_LEVEL = logging.NOTSET
+LOG_LEVEL = logging.CRITICAL
 MIN_BLKSIZE = 8
 DEF_BLKSIZE = 512
 MAX_BLKSIZE = 65536
@@ -15,7 +15,7 @@ DEF_TFTP_PORT = 69
 DELAY_BLOCK = 0
 
 # Initialize the logger.
-logging.basicConfig()
+logging.basicConfig(level=LOG_LEVEL)
 # The logger used by this library. Feel free to clobber it with your own, if you like, as
 # long as it conforms to Python's logging.
 log = logging.getLogger('tftpy')

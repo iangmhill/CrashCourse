@@ -52,7 +52,7 @@ class Controller(object):
         print(self.get_ipaddress())
         server = TftpServer(os.getcwd(),None,self.get_ipaddress(),5301,5)
         while self.running:
-            for n in range(12):
+            for n in range(2):
                 if self.running:
                     server.listen()
                 else:
