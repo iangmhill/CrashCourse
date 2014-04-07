@@ -62,8 +62,6 @@ class Controller(object):
                 self.generate_statistics()
             except:
                 pass
-
-            
                 
         print("Beginning shutdown")
         server.stop() 
