@@ -1,0 +1,93 @@
+#:kivy 1.0.9
+  
+<Semester>:
+    GridLayout:
+            cols: 2
+            rows: 3
+            canvas:
+                Color:
+                    rgba: 1,1,1,.8
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text:'Frosh'
+            Label:
+                text:'Frosh'
+            Label:
+                text:'Frosh'
+            Label:
+                text:'Frosh'
+            Label:
+                text:'Frosh'
+            Label:
+                text:'Frosh'
+<Stats>:
+    size_hint: (.66,.2)
+    pos_hint: {'x':0,'y':1}
+    Label: 
+        text:'There Should be Numbers Here'
+        
+<Source>:
+    size_hint: (.33, 1)
+    pos_hint: {'x': 1, 'y':.5}
+    StackLayout:
+        orientation: 'tb-rl'
+
+<DragTab>: 
+                        
+    Stats:
+        id: BlackBox
+        
+    StackLayout:
+        id: Semesters
+        orientation: 'tb-lr'
+        Semester:
+            id: PassNoRecord
+        Semester:
+            id: Soph1
+        Semester:
+            id: awwGrades
+        Semester:
+            id: SuiteDraw  
+    Source:
+        id: Courses
+
+        DragableButton:
+            text: 'DesNat'
+            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            drag_opacity: .5    
+        DragableButton:
+            text: 'ModSim '
+            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            drag_opacity: .5
+        DragableButton:
+            text: 'ModCon'
+            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            drag_opacity: .5
+        DragableButton:
+            text: 'Rwm'
+            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            drag_opacity: .5
+        DragableButton:
+            text: 'Linearity 1'
+            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            drag_opacity: .5
+        DragableButton:
+            text: 'Linearity 2'
+            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            drag_opacity: .5
+        DragableButton:
+            text: 'POE'
+            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [Semesters, PassNoRecord, Soph1,SuiteDraw]
+            drag_opacity: .5
+        
+<DragScreen>:
+    DragTab:
