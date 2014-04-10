@@ -32,7 +32,7 @@ class TestApp(App):
 
     def build(self):
     	login=LoginScreen()
-    	Clock.schedule_interval(login.print_password(), 5.0)
+    	#Clock.schedule_interval(login.print_password(), 5.0)
         return login
 
 if __name__=='__main__':   
