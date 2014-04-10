@@ -11,7 +11,7 @@ GridLayout:
         rows:2
         canvas:
             Color:
-                rgba: 0,1,1,.5
+                rgba: 1,1,1,1
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -20,7 +20,7 @@ GridLayout:
             rows: 3
             canvas:
                 Color:
-                    rgba: 1,1,0,0
+                    rgba: 0,.5,1,.9
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -41,7 +41,7 @@ GridLayout:
             rows: 3
             canvas:
                 Color:
-                    rgba: 1,1,0,.1
+                    rgba: .3,.7,1,1
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -62,7 +62,7 @@ GridLayout:
             rows: 3
             canvas:
                 Color:
-                    rgba: 1,1,0,.2
+                    rgba: 0,0,0,.5
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -83,7 +83,7 @@ GridLayout:
             rows: 3
             canvas:
                 Color:
-                    rgba: 1,1,0,.3
+                    rgba: 0,0,0,.75
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -106,7 +106,7 @@ GridLayout:
         rows:2
         canvas:
             Color:
-                rgba: 0,1,1,.4
+                rgba: 0,0,0,1
             Rectangle:
                 pos: self.pos
                 size: self.size
