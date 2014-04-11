@@ -18,6 +18,7 @@ sys.path.insert(0, os.getcwd())
 class Controller(object):
     def __init__(self):
         self.running = True
+        self.working_file = ""
         current_year = date.today().year
         if 1 <= date.today().month <= 6:
             current_season = 's'
@@ -31,6 +32,9 @@ class Controller(object):
             else:
                 self.semesters.append(Semester(self.semesters[-1].year + 1,'s'))
         self.distribution = {}
+        self.t1 = threading.Thread(target=self.ServerThread)
+        self.t2 = threading.Thread(target=self.CommandThread)
+
     
     def get_ipaddress(self):
         s = socket(AF_INET,SOCK_DGRAM)
@@ -47,10 +51,14 @@ class Controller(object):
                 print(os.getcwd())
                 for file in os.listdir(os.getcwd()):
                     print(file)
+            elif k == "merge":
+                self.merge()
+                print("Merge Complete")
                 
     def ServerThread(self):
         print(self.get_ipaddress())
-        server = TftpServer(os.getcwd(),None,self.get_ipaddress(),5301,5)
+        server = TftpServer(os.getcwd(),None,self.get_ipaddress(),5302,5)
+        self.t2.start()
         while self.running:
             for n in range(2):
                 if self.running:
@@ -58,6 +66,12 @@ class Controller(object):
                 else:
                     break
             try:
+##                print(server.working_file == self.working_file)
+##                if server.working_file != self.working_file:
+##                    self.t2.__stop = True
+##                    print(server.working_file)
+##                    self.working_file = server.working_file
+##                    self.t2.start()
                 self.merge()
                 self.generate_statistics()
             except:
@@ -94,10 +108,7 @@ class Controller(object):
                 
     
     def run(self):
-            t1 = threading.Thread(target=self.CommandThread)
-            t2 = threading.Thread(target=self.ServerThread)
-            t1.start()
-            t2.start()
+            self.t1.start()
 
 if __name__ == '__main__':
     ops = Controller()

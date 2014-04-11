@@ -30,9 +30,10 @@ GridLayout:
     Label:
         text: 'Notes'
         TextInput:
-            size_hint: (.25,.5)
-            pos_hint: {'x':.7,'y':.3}
-            pos:(600,20)                
+            #size_hint: (.25,.5)
+            size: (200,200)
+            #pos_hint: {'x':.7,'y':.3}
+            pos:(550,20)                
             text: 'Enter Notes Here'  
     
 '''
