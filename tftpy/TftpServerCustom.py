@@ -24,7 +24,8 @@ class TftpServer(TftpSession):
         listenip="",
         listenport=DEF_TFTP_PORT,
         timeout=SOCK_TIMEOUT):
-        
+
+        self.working_file = ""
         self.timeout = timeout
         self.listenip = listenip
         self.listenport = listenport
@@ -134,7 +135,7 @@ class TftpServer(TftpSession):
                                                            self.root,
                                                            self.dyn_file_func)
                     try:
-                        self.sessions[key].start(buffer)
+                        self.working_file = self.sessions[key].start(buffer)
                     except TftpException, err:
                         deletion_list.append(key)
                         log.error("Fatal exception thrown from "

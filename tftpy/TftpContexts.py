@@ -229,6 +229,7 @@ class TftpContextServer(TftpContext):
         self.state = self.state.handle(pkt,
                                        self.host,
                                        self.port)
+        return pkt.filename
 
     def end(self):
         """Finish up the context."""
