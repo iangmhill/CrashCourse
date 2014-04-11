@@ -1,5 +1,5 @@
 #:kivy 1.0.9
-  
+
 <Semester>:
     GridLayout:
             cols: 2
@@ -22,42 +22,36 @@
                 text:'Frosh'
             Label:
                 text:'Frosh'
-<Stats>:
+<StatsWidget>:
     size_hint: (.66,.2)
     pos_hint: {'x':0,'y':1}
     Label: 
         text:'There Should be Numbers Here'
-        
-<Source>:
+<SourceWidget>:
     size_hint: (.33, 1)
     pos_hint: {'x': 1, 'y':.5}
     StackLayout:
         orientation: 'tb-rl'
-
-<DragTab>: 
-                        
-    Stats:
-        id: BlackBox
         
-    StackLayout:
-        id: Semesters
-        orientation: 'tb-lr'
-        Semester:
-            id: PassNoRecord
-        Semester:
-            id: Soph1
-        Semester:
-            id: awwGrades
-        Semester:
-            id: SuiteDraw  
-    Source:
+<DragTab>:    
+    Semester1: PassNoRecord
+    Semester2: Soph1
+    Semester3: awwGrades
+    Semester4: SuiteDraw
+#    Semester5 = ObjectProperty(None)
+#    Semester6 = ObjectProperty(None)
+#    Semester7 = ObjectProperty(None)
+#    Semester8 = ObjectProperty(None)
+    Stats: BlackBox
+    Source: Courses
+    
+    SourceWidget:
         id: Courses
-
         DragableButton:
             text: 'DesNat'
             bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
             droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
-            drag_opacity: .5    
+            drag_opacity: .5 
         DragableButton:
             text: 'ModSim '
             bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
@@ -86,8 +80,19 @@
         DragableButton:
             text: 'POE'
             bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
-            droppable_zone_objects: [Semesters, PassNoRecord, Soph1,SuiteDraw]
+            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
             drag_opacity: .5
+            
+    StatsWidget:
+        id: BlackBox
         
-<DragScreen>:
-    DragTab:
+    StackLayout:
+        orientation: 'tb-lr'
+        Semester:
+            id: PassNoRecord
+        Semester:
+            id: Soph1
+        Semester:
+            id: awwGrades
+        Semester:
+            id: SuiteDraw
