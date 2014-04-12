@@ -7,7 +7,7 @@ Created on Tue Apr  8 20:41:40 2014
 
 from kivy.app import App
 from kivy.uix.tabbedpanel import TabbedPanel
-from kivy.uix.tabbedpanel import TabbedPanelHeader
+from kivy.uix.tabbedpanel import TabbedPanelHeader, StripLayout
 from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.uix.floatlayout import FloatLayout
@@ -23,21 +23,18 @@ from kivy.uix.slider import Slider
 from kivy.uix.spinner import Spinner
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen, WipeTransition
+from kivy.clock import Clock
 
-
-class StartUpScreen(GridLayout,Screen):
-    def __init__(self,**kwargs):
+class StartUpScreen(Screen):
+    def __init__(self,**kwargs):        
         super(StartUpScreen, self).__init__(**kwargs)
-        self.cols = 3
-        self.left_buffer = Label(size_hint=(0.2,1.0))
-        self.logo = Button(size_hint=(0.6,1.0),background_normal='cat.png',background_down='cat.png',on_press=self.transition) 
-        self.right_buffer = Label(size_hint=(0.2,1.0))  
-        
-        self.add_widget(self.left_buffer)
-        self.add_widget(self.logo)  
-        self.add_widget(self.right_buffer)
-               
-    def transition(self,instance):       
+        self.orientation = 'vertical'
+        self.image = Image(source='logo1.png',allow_stretch=False,keep_ratio=True)
+        Clock.schedule_once(self.transition,5)        
+                
+        self.add_widget(self.image)
+                             
+    def transition(self,instance):            
         sm.current = 'login'
         
 class LogInScreen(GridLayout,Screen):
@@ -93,8 +90,8 @@ class NewUserScreen(GridLayout,Screen):
         
 class TabsPanel(TabbedPanel):
     def __init__(self,**kwargs):
-        super(TabsPanel, self).__init__(**kwargs)
-        self.tab1 = TabbedPanelHeader(text='Dashboard')
+        super(TabsPanel, self).__init__(**kwargs)        
+        self.tab1 = TabbedPanelHeader(text='Dashboard',strip_image='logo1.png')
         self.tab1.content = Dashboard()
         self.tab2 = TabbedPanelHeader(text='Catalog')
         self.tab2.content = Catalog()
@@ -176,7 +173,7 @@ class TabsScreen(Screen):
         super(TabsScreen, self).__init__(**kwargs)
         self.add_widget(TabsPanel(do_default_tab=False))
         
-        
+    
 sm = ScreenManager(transition = WipeTransition())
 sm.add_widget(StartUpScreen(name='startup'))
 sm.add_widget(LogInScreen(name='login'))
@@ -187,7 +184,7 @@ sm.add_widget(TabsScreen(name='tabs'))
 class CrashCourseApp(App):   
     def build(self):                
         return sm
-
+        
 
 if __name__ == '__main__':
     CrashCourseApp().run()
