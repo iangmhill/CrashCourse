@@ -91,7 +91,7 @@ class NewUserScreen(GridLayout,Screen):
 class TabsPanel(TabbedPanel):
     def __init__(self,**kwargs):
         super(TabsPanel, self).__init__(**kwargs)        
-        self.tab1 = TabbedPanelHeader(text='Dashboard',strip_image='logo1.png')
+        self.tab1 = TabbedPanelHeader(text='Dashboard')
         self.tab1.content = Dashboard()
         self.tab2 = TabbedPanelHeader(text='Catalog')
         self.tab2.content = Catalog()
@@ -99,6 +99,7 @@ class TabsPanel(TabbedPanel):
         self.tab3.content = Planner()
         self.tab4 = TabbedPanelHeader(text='Schedule')
         self.tab4.content = Schedule()
+        self.strip_image = 'strip_logo2.png'
         
         self.add_widget(self.tab1)
         self.add_widget(self.tab2)
