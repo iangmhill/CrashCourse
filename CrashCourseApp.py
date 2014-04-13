@@ -10,17 +10,11 @@ from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.tabbedpanel import TabbedPanelHeader, StripLayout
 from kivy.uix.label import Label
 from kivy.uix.image import Image
-from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.gridlayout import GridLayout
-from kivy.lang import Builder
-from kivy.uix.checkbox import CheckBox
-from kivy.uix.dropdown import DropDown
 from kivy.uix.button import Button
+from kivy.uix.scrollview import ScrollView
 from kivy.base import runTouchApp
-from kivy.uix.slider import Slider
-from kivy.uix.spinner import Spinner
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen, WipeTransition
 from kivy.clock import Clock
@@ -46,13 +40,15 @@ class LogInScreen(BoxLayout,Screen):
         self.username = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.username.add_widget(Label())
         self.username.add_widget(Label(text='Username:'))
-        self.username.add_widget(TextInput(multiline=False))
+        self.u_entry = TextInput(multiline = False)
+        self.username.add_widget(self.u_entry)
         self.username.add_widget(Label())
         
         self.password = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.password.add_widget(Label())
-        self.password.add_widget(Label(text='Password:'))        
-        self.password.add_widget(TextInput(multiline=False,password=True))
+        self.password.add_widget(Label(text='Password:'))  
+        self.p_entry = TextInput(multiline=False,password=True)
+        self.password.add_widget(self.p_entry)
         self.password.add_widget(Label())
 
         self.buttons = GridLayout(cols=4,size_hint=(1.0,0.05))
@@ -62,23 +58,32 @@ class LogInScreen(BoxLayout,Screen):
         self.buttons.add_widget(Label())
             
         self.logo = Image(source='logo1.png',size_hint=(1.0,0.35))
-        self.space1 = Label(size_hint=(1.0,0.1))
-        self.space2 = Label(size_hint=(1.0,0.05))
-        self.space3 = Label(size_hint=(1.0,0.35))
-                        
+        self.space1 = Label(size_hint=(1.0,0.175))
+        self.space2 = Label(size_hint=(1.0,0.1))
+        self.space3 = Label(size_hint=(1.0,0.05))
+        self.space4 = Label(size_hint=(1.0,0.175))
+
+        self.add_widget(self.space1)                
         self.add_widget(self.logo)
-        self.add_widget(self.space1)
+        self.add_widget(self.space2)
         self.add_widget(self.username)       
         self.add_widget(self.password)
-        self.add_widget(self.space2)
-        self.add_widget(self.buttons)
         self.add_widget(self.space3)
+        self.add_widget(self.buttons)
+        self.add_widget(self.space4)
         
     def new_user_function(self,instance):
         sm.current = 'newuser'
         
     def enter_function(self,instance):
-        sm.current = 'tabs'    
+        if self.u_entry.text != 'Username' and self.p_entry.text != 'Password':
+            self.space4.text = 'Username and password incorrect. Please try again.'
+        elif self.u_entry.text != 'Username':
+            self.space4.text = 'Username incorrect. Please try again.'
+        elif self.p_entry.text != 'Password':
+            self.space4.text = 'Password incorrect. Please try again.'        
+        else:
+            sm.current = 'tabs'
         
         
 class NewUserScreen(BoxLayout,Screen):
@@ -89,13 +94,15 @@ class NewUserScreen(BoxLayout,Screen):
         self.username = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.username.add_widget(Label())
         self.username.add_widget(Label(text='Please enter a username:'))
-        self.username.add_widget(TextInput(multiline=False))
+        self.u_entry = TextInput(multiline=False)
+        self.username.add_widget(self.u_entry)
         self.username.add_widget(Label())
         
         self.password = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.password.add_widget(Label())
         self.password.add_widget(Label(text='Please enter a password:'))        
-        self.password.add_widget(TextInput(multiline=False,password=True))
+        self.p_entry = TextInput(multiline=False,password=True)
+        self.password.add_widget(self.p_entry)
         self.password.add_widget(Label())
 
         self.buttons = GridLayout(cols=4,size_hint=(1.0,0.05))
@@ -105,15 +112,17 @@ class NewUserScreen(BoxLayout,Screen):
         self.buttons.add_widget(Label())
             
         self.logo = Image(source='logo1.png',size_hint=(1.0,0.35))
-        self.space1 = Label(size_hint=(1.0,0.1))
-        self.space2 = Label(size_hint=(1.0,0.05))
-        self.warning = Label(text='*WARNING*  Once you choose a username and password, they CAN NOT be changed!',size_hint=(1.0,0.35))
+        self.space1 = Label(size_hint=(1.0,0.175))
+        self.space2 = Label(size_hint=(1.0,0.1))
+        self.space3 = Label(size_hint=(1.0,0.05))        
+        self.warning = Label(text='*WARNING*  Once you choose a username and password, they CAN NOT be changed!',size_hint=(1.0,0.175))
                         
-        self.add_widget(self.logo)
         self.add_widget(self.space1)
+        self.add_widget(self.logo)
+        self.add_widget(self.space2)
         self.add_widget(self.username)       
         self.add_widget(self.password)
-        self.add_widget(self.space2)
+        self.add_widget(self.space3)
         self.add_widget(self.buttons)
         self.add_widget(self.warning)
         
@@ -121,6 +130,8 @@ class NewUserScreen(BoxLayout,Screen):
         sm.current = 'login'
         
     def enter_function(self,instance):
+        #add self.u_entry.text to file
+        #add self.p_entry.text to file
         sm.current = 'tabs'
         
         
@@ -149,10 +160,10 @@ class Dashboard(GridLayout):
         super(Dashboard, self).__init__(**kwargs)
 
         self.cols = 2
-        self.one = Button(text='one')
-        self.two = Button(text = 'two')
-        self.three = Button(text='three')
-        self.four = Button(text = 'four') 
+        self.one = Label(text='one')
+        self.two = Label(text = 'two')
+        self.three = Label(text='three')
+        self.four = Label(text = 'four') 
         
         self.add_widget(self.one)
         self.add_widget(self.two)
@@ -165,27 +176,41 @@ class Catalog(BoxLayout):
         super(Catalog, self).__init__(**kwargs)  
         self.orientation = 'vertical'
 
-        self.search = TextInput(text='Search for a course.',multiline = False,size_hint=(1.0,0.05))
+        self.search = BoxLayout(size_hint=(1.0,0.05))        
+        self.search.add_widget(Button(text='Search',size_hint=(0.25,1.0),on_press=self.search_function))
+        self.search_bar = (TextInput(multiline = False,size_hint=(0.75,1.0)))
+        self.search.add_widget(self.search_bar)
 
-        self.courses = GridLayout(cols=2,size_hint=(1.0,0.95))
-        self.courses.add_widget(Button(text='one'))
-        self.courses.add_widget(Button(text = 'two'))
-        self.courses.add_widget(Button(text='three'))
-        self.courses.add_widget(Button(text = 'four'))
-                
+        self.space = Label(size_hint=(1.0,0.01))
+
+        self.scrollview = ScrollView(size_hint=(1.0,0.94),size=(400,400))
+        self.courses = GridLayout(cols=4,spacing=5,size_hint_y=None)
+        self.courses.bind(minimum_height=self.courses.setter('height'))      
+        for i in range(30):
+            course = Button(text=str(i), size_hint_y=None, height=200)
+            self.courses.add_widget(course)        
+        self.scrollview.add_widget(self.courses)
+                        
         self.add_widget(self.search)
-        self.add_widget(self.courses)
-        
+        self.add_widget(self.space)
+        self.add_widget(self.scrollview)
+
+    def search_function(self,instance):
+        query = self.search_bar.text
+        for course in self.courses.children:
+            if query != course.text:
+                self.courses.remove_widget(course)
+
                
 class Planner(GridLayout):
     def __init__(self,**kwargs):
         super(Planner, self).__init__(**kwargs)
 
         self.cols = 2
-        self.one = Button(text='one')
-        self.two = Button(text = 'two')
-        self.three = Button(text='three')
-        self.four = Button(text = 'four') 
+        self.one = Label(text='one')
+        self.two = Label(text = 'two')
+        self.three = Label(text='three')
+        self.four = Label(text = 'four') 
         
         self.add_widget(self.one)
         self.add_widget(self.two)
@@ -226,7 +251,7 @@ sm.add_widget(TabsScreen(name='tabs'))
 class CrashCourseApp(App):   
     def build(self):                
         return sm   
-             
+
 
 if __name__ == '__main__':
     CrashCourseApp().run()
