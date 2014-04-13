@@ -33,9 +33,9 @@ class NetworkManager(object):
                 return -1
             except TftpException:
                 print("User does not exist on server \nCreating file")
-                os.rename('user.usr',username + '1.usr')
-                self.client.upload(username + '1.usr', username + '1.usr')
-                os.rename(username + '1.usr','user.usr')
+                os.rename('user.usr',username + '.usr')
+                self.client.upload(username + '.usr', username + '.usr')
+                os.rename(username + '.usr','user.usr')
                 print("Done")
             
         
@@ -80,16 +80,23 @@ class NetworkManager(object):
                     print("Downloaded professor information")
                     self.client.download('stats.sts','stats.sts')
                     print("Downloaded user statistics")
-                    os.rename('user.usr',username + '1.usr')
-                    self.client.upload(username+'1.usr', username + '1.usr')
-                    os.rename(username + '1.usr','user.usr')
-                    print("User content uploaded")
                 except:
                     print("Network error when downloading new content")
                     return -4
                 else:
-                    print("Update complete.")
-                    return True
+                    try:
+                        os.rename('user.usr',username + '1.usr')
+                        self.client.upload(username+'1.usr', username + '1.usr')
+                        os.rename(username + '1.usr','user.usr')
+                        print("User content uploaded")
+                    except:
+                        if os.path.isfile(username + '1.usr'):
+                            os.rename(username + '1.usr','user.usr')
+                        print("User content upload failed")
+                        return -5
+                    else:
+                        print("Update complete.")
+                        return True
             
 if __name__ == '__main__':
     network = NetworkManager()
