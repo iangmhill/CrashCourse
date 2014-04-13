@@ -37,23 +37,41 @@ class StartUpScreen(Screen):
     def transition(self,instance):            
         sm.current = 'login'
         
-class LogInScreen(GridLayout,Screen):
+class LogInScreen(BoxLayout,Screen):
     def __init__(self,**kwargs):
-        super(LogInScreen, self).__init__(**kwargs)
-        self.cols = 2
-        self.username = Label(text='Username')
-        self.u_entry = TextInput(multiline=False)
-        self.password = Label(text='Password')
-        self.p_entry = TextInput(multiline=False,password=True)
-        self.back = Button(text = 'New User',on_press = self.new_user_function)
-        self.enter = Button(text = 'Enter',on_press = self.enter_function)  
+        super(LogInScreen, self).__init__(**kwargs)  
+        self.orientation = 'vertical'    
+        self.username = GridLayout(cols=4,size_hint=(1.0,0.05))
+        self.username.add_widget(Label())
+        self.username.add_widget(Label(text='Username:'))
+        self.username.add_widget(TextInput(multiline=False))
+        self.username.add_widget(Label())
         
-        self.add_widget(self.username)
-        self.add_widget(self.u_entry)
+        self.password = GridLayout(cols=4,size_hint=(1.0,0.05))
+        self.password.add_widget(Label())
+        self.password.add_widget(Label(text='Password:'))        
+        self.password.add_widget(TextInput(multiline=False,password=True))
+        self.password.add_widget(Label())
+
+        self.buttons = GridLayout(cols=4,size_hint=(1.0,0.05))
+        self.buttons.add_widget(Label())
+        self.buttons.add_widget(Button(text = 'New User?',on_press = self.new_user_function))
+        self.buttons.add_widget(Button(text = 'Log In',on_press = self.enter_function))
+        self.buttons.add_widget(Label())
+            
+        self.logo = Image(source='logo1.png',size_hint=(1.0,0.35))
+        self.space1 = Label(size_hint=(1.0,0.1))
+        self.space2 = Label(size_hint=(1.0,0.05))
+        self.space3 = Label(size_hint=(1.0,0.35))
+
+                        
+        self.add_widget(self.logo)
+        self.add_widget(self.space1)
+        self.add_widget(self.username)       
         self.add_widget(self.password)
-        self.add_widget(self.p_entry)        
-        self.add_widget(self.back)
-        self.add_widget(self.enter)
+        self.add_widget(self.space2)
+        self.add_widget(self.buttons)
+        self.add_widget(self.space3)
         
     def new_user_function(self,instance):
         sm.current = 'newuser'
@@ -62,24 +80,42 @@ class LogInScreen(GridLayout,Screen):
         sm.current = 'tabs'    
         
         
-class NewUserScreen(GridLayout,Screen):
+class NewUserScreen(BoxLayout,Screen):
     def __init__(self,**kwargs):
         super(NewUserScreen, self).__init__(**kwargs)
         
-        self.cols = 2
-        self.username = Label(text='Please enter a username.')
-        self.u_entry = TextInput(multiline=False)
-        self.password = Label(text='Please enter a password.')
-        self.p_entry = TextInput(multiline=False,password=True)
-        self.back = Button(text = 'Back',on_press = self.back_function)
-        self.enter = Button(text = 'Enter',on_press = self.enter_function)       
+        self.orientation = 'vertical'    
+        self.username = GridLayout(cols=4,size_hint=(1.0,0.05))
+        self.username.add_widget(Label())
+        self.username.add_widget(Label(text='Please enter a username:'))
+        self.username.add_widget(TextInput(multiline=False))
+        self.username.add_widget(Label())
         
-        self.add_widget(self.username)
-        self.add_widget(self.u_entry)
+        self.password = GridLayout(cols=4,size_hint=(1.0,0.05))
+        self.password.add_widget(Label())
+        self.password.add_widget(Label(text='Please enter a password:'))        
+        self.password.add_widget(TextInput(multiline=False,password=True))
+        self.password.add_widget(Label())
+
+        self.buttons = GridLayout(cols=4,size_hint=(1.0,0.05))
+        self.buttons.add_widget(Label())
+        self.buttons.add_widget(Button(text = 'Back',on_press = self.back_function))
+        self.buttons.add_widget(Button(text = 'Create Account',on_press = self.enter_function))
+        self.buttons.add_widget(Label())
+            
+        self.logo = Image(source='logo1.png',size_hint=(1.0,0.35))
+        self.space1 = Label(size_hint=(1.0,0.1))
+        self.space2 = Label(size_hint=(1.0,0.05))
+        self.warning = Label(text='*WARNING*  Once you choose a username and password, they CAN NOT be changed!',size_hint=(1.0,0.35))
+
+                        
+        self.add_widget(self.logo)
+        self.add_widget(self.space1)
+        self.add_widget(self.username)       
         self.add_widget(self.password)
-        self.add_widget(self.p_entry)
-        self.add_widget(self.back)
-        self.add_widget(self.enter)
+        self.add_widget(self.space2)
+        self.add_widget(self.buttons)
+        self.add_widget(self.warning)
         
     def back_function(self,instance):
         sm.current = 'login'
@@ -126,9 +162,9 @@ class Catalog(BoxLayout):
     def __init__(self,**kwargs):
         super(Catalog, self).__init__(**kwargs)  
         self.orientation = 'vertical'
-        self.search = TextInput(text='Search for a course.',multiline = False,size_hint=(1.0,0.1))
+        self.search = TextInput(text='Search for a course.',multiline = False,size_hint=(1.0,0.05))
                 
-        self.courses = GridLayout(cols=2,size_hint=(1.0,0.9))
+        self.courses = GridLayout(cols=2,size_hint=(1.0,0.95))
         self.courses.add_widget(Button(text='one'))
         self.courses.add_widget(Button(text = 'two'))
         self.courses.add_widget(Button(text='three'))
