@@ -30,10 +30,15 @@ class LoginScreen(GridLayout):
 
 class TestApp(App):
 
-    def build(self):
-    	login=LoginScreen()
-    	#Clock.schedule_interval(login.print_password(), 5.0)
-        return login
+	def __init__(self):
+		self.log1 = LoginScreen()
+	def build(self):
+		return self.log1
+	def run(self):
+		print(self.log1.username.text)
+		return
+
 
 if __name__=='__main__':   
-	TestApp().run()
+	app = TestApp()
+	app.run()
