@@ -182,7 +182,7 @@ class Catalog(BoxLayout):
         self.orientation = 'vertical'
 
         self.search = BoxLayout(size_hint=(1.0,0.05))        
-        self.search.add_widget(Button(text='Search',size_hint=(0.25,1.0),on_press=self.search_function))
+        self.search.add_widget(Button(text='Search',size_hint=(0.25,1.0)))#,on_press=self.search_function))
         self.search_bar = (TextInput(multiline=False,size_hint=(0.75,1.0)))
         self.search.add_widget(self.search_bar)
 
@@ -192,7 +192,7 @@ class Catalog(BoxLayout):
         self.courses = GridLayout(cols=4,spacing=5,size_hint_y=None)
         self.courses.bind(minimum_height=self.courses.setter('height'))
         for course in catalog:
-            course_button = Button(text=course.name, size_hint_y=None, height=200)
+            course_button = Button(text=course.name,size_hint_y=None,height=200)
             self.courses.add_widget(course_button)        
         self.scrollview.add_widget(self.courses)
                         
@@ -247,9 +247,9 @@ class TabsScreen(Screen):
         
     
 sm = ScreenManager(transition = WipeTransition())
-sm.add_widget(StartUpScreen(name='startup'))
-sm.add_widget(LogInScreen(name='login'))
-sm.add_widget(NewUserScreen(name='newuser'))
+#sm.add_widget(StartUpScreen(name='startup'))
+#sm.add_widget(LogInScreen(name='login'))
+#sm.add_widget(NewUserScreen(name='newuser'))
 sm.add_widget(TabsScreen(name='tabs'))
 
 
