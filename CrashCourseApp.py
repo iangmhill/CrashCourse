@@ -18,6 +18,11 @@ from kivy.base import runTouchApp
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen, WipeTransition
 from kivy.clock import Clock
+from FileManager import FileManager
+
+
+fm = FileManager()
+catalog = fm.load_courses()
 
 class StartUpScreen(Screen):
     def __init__(self,**kwargs):        
@@ -178,17 +183,17 @@ class Catalog(BoxLayout):
 
         self.search = BoxLayout(size_hint=(1.0,0.05))        
         self.search.add_widget(Button(text='Search',size_hint=(0.25,1.0),on_press=self.search_function))
-        self.search_bar = (TextInput(multiline = False,size_hint=(0.75,1.0)))
+        self.search_bar = (TextInput(multiline=False,size_hint=(0.75,1.0)))
         self.search.add_widget(self.search_bar)
 
         self.space = Label(size_hint=(1.0,0.01))
 
         self.scrollview = ScrollView(size_hint=(1.0,0.94),size=(400,400))
         self.courses = GridLayout(cols=4,spacing=5,size_hint_y=None)
-        self.courses.bind(minimum_height=self.courses.setter('height'))      
-        for i in range(30):
-            course = Button(text=str(i), size_hint_y=None, height=200)
-            self.courses.add_widget(course)        
+        self.courses.bind(minimum_height=self.courses.setter('height'))
+        for course in catalog:
+            course_button = Button(text=course.name, size_hint_y=None, height=200)
+            self.courses.add_widget(course_button)        
         self.scrollview.add_widget(self.courses)
                         
         self.add_widget(self.search)
@@ -247,7 +252,7 @@ sm.add_widget(LogInScreen(name='login'))
 sm.add_widget(NewUserScreen(name='newuser'))
 sm.add_widget(TabsScreen(name='tabs'))
 
-    
+
 class CrashCourseApp(App):   
     def build(self):                
         return sm   
