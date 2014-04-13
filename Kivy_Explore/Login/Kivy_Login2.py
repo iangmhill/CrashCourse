@@ -12,7 +12,6 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.uix.button import Button
-from kivy.clock import Clock
 
 class LoginScreen(GridLayout):
 	def __init__(self, **kwargs):
@@ -25,20 +24,11 @@ class LoginScreen(GridLayout):
 		self.password=TextInput(password=True, multiline=False)
 		self.add_widget(self.password)
 
-	def print_password(self):
-		print(self.password)
-
 class TestApp(App):
 
-	def __init__(self):
-		self.log1 = LoginScreen()
-	def build(self):
-		return self.log1
-	def run(self):
-		print(self.log1.username.text)
-		return
-
+    def build(self):
+        return LoginScreen()
+        print self.password
 
 if __name__=='__main__':   
-	app = TestApp()
-	app.run()
+	TestApp().run()
