@@ -97,9 +97,9 @@ class FileManager(object):
 
 
 filemanager = FileManager()
-#user = filemanager.load_user('ihill','crashcourse')
-#print(user.name + ' ' + user.grad_year)
-last_updated,distribution = filemanager.load_stats()
-print(last_updated)
-for k in distribution:
-    print(str(k) + str(distribution[k]))
+catalog = filemanager.load_courses()
+print(catalog[0].name)
+# last_updated,distribution = filemanager.load_stats()
+# print(last_updated)
+# for k in distribution:
+#     print(str(k) + str(distribution[k]))
