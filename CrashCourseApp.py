@@ -29,6 +29,7 @@ class StartUpScreen(Screen):
     def __init__(self,**kwargs):        
         super(StartUpScreen, self).__init__(**kwargs)
         self.orientation = 'vertical'
+
         self.image = Image(source='logo1.png',allow_stretch=False,keep_ratio=True)
         Clock.schedule_once(self.transition,5)        
                 
@@ -39,8 +40,9 @@ class StartUpScreen(Screen):
         
 class LogInScreen(BoxLayout,Screen):
     def __init__(self,**kwargs):
-        super(LogInScreen, self).__init__(**kwargs)  
-        self.orientation = 'vertical'    
+        super(LogInScreen, self).__init__(**kwargs)
+        self.orientation = 'vertical'
+
         self.username = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.username.add_widget(Label())
         self.username.add_widget(Label(text='Username:'))
@@ -63,7 +65,6 @@ class LogInScreen(BoxLayout,Screen):
         self.space1 = Label(size_hint=(1.0,0.1))
         self.space2 = Label(size_hint=(1.0,0.05))
         self.space3 = Label(size_hint=(1.0,0.35))
-
                         
         self.add_widget(self.logo)
         self.add_widget(self.space1)
@@ -82,9 +83,9 @@ class LogInScreen(BoxLayout,Screen):
         
 class NewUserScreen(BoxLayout,Screen):
     def __init__(self,**kwargs):
-        super(NewUserScreen, self).__init__(**kwargs)
-        
+        super(NewUserScreen, self).__init__(**kwargs)        
         self.orientation = 'vertical'    
+
         self.username = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.username.add_widget(Label())
         self.username.add_widget(Label(text='Please enter a username:'))
@@ -107,7 +108,6 @@ class NewUserScreen(BoxLayout,Screen):
         self.space1 = Label(size_hint=(1.0,0.1))
         self.space2 = Label(size_hint=(1.0,0.05))
         self.warning = Label(text='*WARNING*  Once you choose a username and password, they CAN NOT be changed!',size_hint=(1.0,0.35))
-
                         
         self.add_widget(self.logo)
         self.add_widget(self.space1)
@@ -126,7 +126,9 @@ class NewUserScreen(BoxLayout,Screen):
         
 class TabsPanel(TabbedPanel):
     def __init__(self,**kwargs):
-        super(TabsPanel, self).__init__(**kwargs)        
+        super(TabsPanel, self).__init__(**kwargs)
+
+        self.strip_image = 'strip_logo2.png'
         self.tab1 = TabbedPanelHeader(text='Dashboard')
         self.tab1.content = Dashboard()
         self.tab2 = TabbedPanelHeader(text='Catalog')
@@ -134,8 +136,7 @@ class TabsPanel(TabbedPanel):
         self.tab3 = TabbedPanelHeader(text='Planner')
         self.tab3.content = Planner()
         self.tab4 = TabbedPanelHeader(text='Schedule')
-        self.tab4.content = Schedule()
-        self.strip_image = 'strip_logo2.png'
+        self.tab4.content = Schedule()        
         
         self.add_widget(self.tab1)
         self.add_widget(self.tab2)
@@ -145,7 +146,8 @@ class TabsPanel(TabbedPanel):
         
 class Dashboard(GridLayout):
     def __init__(self,**kwargs):
-        super(Dashboard, self).__init__(**kwargs)  
+        super(Dashboard, self).__init__(**kwargs)
+
         self.cols = 2
         self.one = Button(text='one')
         self.two = Button(text = 'two')
@@ -162,8 +164,9 @@ class Catalog(BoxLayout):
     def __init__(self,**kwargs):
         super(Catalog, self).__init__(**kwargs)  
         self.orientation = 'vertical'
+
         self.search = TextInput(text='Search for a course.',multiline = False,size_hint=(1.0,0.05))
-                
+
         self.courses = GridLayout(cols=2,size_hint=(1.0,0.95))
         self.courses.add_widget(Button(text='one'))
         self.courses.add_widget(Button(text = 'two'))
@@ -177,6 +180,7 @@ class Catalog(BoxLayout):
 class Planner(GridLayout):
     def __init__(self,**kwargs):
         super(Planner, self).__init__(**kwargs)
+
         self.cols = 2
         self.one = Button(text='one')
         self.two = Button(text = 'two')
@@ -191,7 +195,8 @@ class Planner(GridLayout):
         
 class Schedule(BoxLayout):
     def __init__(self,**kwargs):
-        super(Schedule, self).__init__(**kwargs)        
+        super(Schedule, self).__init__(**kwargs)
+
         self.mon = Label(text= 'Mon')
         self.tue = Label(text= 'Tue')
         self.wed = Label(text=' Wed')
@@ -207,7 +212,7 @@ class Schedule(BoxLayout):
     
 class TabsScreen(Screen):
     def __init__(self,**kwargs):
-        super(TabsScreen, self).__init__(**kwargs)
+        super(TabsScreen, self).__init__(**kwargs)        
         self.add_widget(TabsPanel(do_default_tab=False))
         
     
@@ -220,8 +225,8 @@ sm.add_widget(TabsScreen(name='tabs'))
     
 class CrashCourseApp(App):   
     def build(self):                
-        return sm
-        
+        return sm   
+             
 
 if __name__ == '__main__':
     CrashCourseApp().run()
