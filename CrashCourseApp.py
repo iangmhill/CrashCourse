@@ -13,16 +13,18 @@ from kivy.uix.image import Image
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
+from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.scrollview import ScrollView
 from kivy.base import runTouchApp
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen, WipeTransition
 from kivy.clock import Clock
 from FileManager import FileManager
+from Course_Item import Course_Item
 
 
 fm = FileManager()
-catalog = fm.load_courses()
+catalog = fm.load_courses()  
 
 class StartUpScreen(Screen):
     def __init__(self,**kwargs):        
@@ -178,33 +180,76 @@ class Dashboard(GridLayout):
         
 class Catalog(BoxLayout):
     def __init__(self,**kwargs):
-        super(Catalog, self).__init__(**kwargs)  
+        super(Catalog, self).__init__(**kwargs)       
+
         self.orientation = 'vertical'
 
-        self.search = BoxLayout(size_hint=(1.0,0.05))        
-        self.search.add_widget(Button(text='Search',size_hint=(0.25,1.0)))#,on_press=self.search_function))
-        self.search_bar = (TextInput(multiline=False,size_hint=(0.75,1.0)))
-        self.search.add_widget(self.search_bar)
+        self.search_bar = BoxLayout(size_hint=(1.0,0.05))        
+        self.search_bar.add_widget(Button(text='Search',size_hint=(0.25,1.0),on_press=self.name_search))
+        self.search_text = (TextInput(multiline=False,size_hint=(0.75,1.0)))
+        self.search_bar.add_widget(self.search_text)
 
-        self.space = Label(size_hint=(1.0,0.01))
+        self.filter_bar = BoxLayout(size_hint=(1.0,0.05))        
+        self.AHSE = ToggleButton(text='AHSE',size_hint=(0.1875,1.0))
+        self.ENGR = ToggleButton(text='ENGR',size_hint=(0.1875,1.0))
+        self.MTH = ToggleButton(text='MTH',size_hint=(0.1875,1.0))
+        self.SCI = ToggleButton(text='SCI',size_hint=(0.1875,1.0))
+        self.filter_bar.add_widget(Button(text='Filter',size_hint=(0.25,1.0),on_press=self.filter_search))
+        self.filter_bar.add_widget(self.AHSE)
+        self.filter_bar.add_widget(self.ENGR)
+        self.filter_bar.add_widget(self.MTH)
+        self.filter_bar.add_widget(self.SCI)
 
-        self.scrollview = ScrollView(size_hint=(1.0,0.94),size=(400,400))
+        self.scrollview = ScrollView(size_hint=(1.0,0.9),size=(400,400))
         self.courses = GridLayout(cols=4,spacing=5,size_hint_y=None)
         self.courses.bind(minimum_height=self.courses.setter('height'))
         for course in catalog:
-            course_button = Button(text=course.name,size_hint_y=None,height=200)
-            self.courses.add_widget(course_button)        
+            course_item = Course_Item(size_hint_y=None,height=200)
+            course_item.title.text = course.name                    
+            self.courses.add_widget(course_item)
         self.scrollview.add_widget(self.courses)
                         
-        self.add_widget(self.search)
-        self.add_widget(self.space)
+        self.add_widget(self.search_bar)
+        self.add_widget(self.filter_bar)
         self.add_widget(self.scrollview)
 
-    def search_function(self,instance):
-        query = self.search_bar.text
-        for course in self.courses.children:
-            if query != course.text:
-                self.courses.remove_widget(course)
+    def name_search(self,instance):
+        query = self.search_text.text.lower()
+        for course_item in self.courses.children:
+            if query == "":
+                for course_item in self.courses.children:
+                    course_item.title.color = (1,1,1,1)
+            if query == course_item.title.text.lower():
+                course_item.title.color = (0.1,0.6,0.8,1.0)
+
+    def filter_search(self,instance):
+        if self.AHSE.state == 'normal' and self.ENGR.state == 'normal' and self.MTH.state == 'normal' and self.SCI.state == 'normal':
+            for course_item in self.courses.children:
+                course_item.title.color = (1,1,1,1)                
+        if self.AHSE.state == 'down':
+            for course in catalog:
+                if course.credits['AHSE'] > 0:
+                    for course_item in self.courses.children:
+                        if course_item.title.text == course.name:                            
+                            course_item.title.color = (0.1,0.6,0.8,1.0)
+        if self.ENGR.state == 'down':
+            for course in catalog:
+                if course.credits['ENGR'] > 0:
+                    for course_item in self.courses.children:
+                        if course_item.title.text == course.name:                            
+                            course_item.title.color = (0.1,0.6,0.8,1.0)
+        if self.MTH.state == 'down':
+            for course in catalog:
+                if course.credits['MTH'] > 0:
+                    for course_item in self.courses.children:
+                        if course_item.title.text == course.name:                            
+                            course_item.title.color = (0.1,0.6,0.8,1.0)
+        if self.SCI.state == 'down':
+            for course in catalog:
+                if course.credits['SCI'] > 0:
+                    for course_item in self.courses.children:
+                        if course_item.title.text == course.name:                            
+                            course_item.title.color = (0.1,0.6,0.8,1.0)
 
                
 class Planner(GridLayout):
