@@ -24,8 +24,9 @@ from FileManager import FileManager
 from Course_Item import Course_Item
 
 fm = FileManager()
-catalog = fm.load_courses() 
- 
+catalog = fm.load_courses()
+
+favorite_courses = []
 
 class StartUpScreen(Screen):
     def __init__(self,**kwargs):        
@@ -213,6 +214,8 @@ class Catalog(BoxLayout):
         self.add_widget(self.filter_bar)
         self.add_widget(self.scrollview)
 
+        Clock.schedule_interval(self.add_favorites,5)
+
     def name_search(self,instance):
         query = self.search_text.text.lower()            
         for course_item in self.courses.children:
@@ -239,6 +242,11 @@ class Catalog(BoxLayout):
                 if course_item.course.credits['SCI'] > 0:                                                  
                     course_item.title.color = (0.1,0.6,0.8,1.0)
 
+    def add_favorites(self,instance):
+        for course_item in self.courses.children:
+            if course_item.favorite.state == 'down':
+                favorite_courses.append(course_item.course)
+                print course_item.course.name
                
 class Planner(GridLayout):
     def __init__(self,**kwargs):
