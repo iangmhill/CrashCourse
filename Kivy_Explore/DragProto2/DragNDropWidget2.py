@@ -175,6 +175,7 @@ class DragNDropWidget(Widget):
                 print self.pos[0]
                 self.deparent()
                 obj.add_widget(self)
+                self.size=self.parent.size
                 x = obj.center[0] - self.width/2
                 y = obj.center[1] - self.height/2
                 self.pos=(x,y)
@@ -189,7 +190,7 @@ class DragNDropWidget(Widget):
 
     def reborn(self, widget, anim):
         self.deparent()
-        self._old_parent.add_widget(self, index=self._old_index)
+        self._old_parent.add_widget(self)#, index=self._old_index)
 
     def reparent(self, widget):
         parent = widget.parent
