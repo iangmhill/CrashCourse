@@ -6,10 +6,11 @@ from kivy.uix.widget import Widget
 from kivy.properties import StringProperty
 
 kv = '''
-GridLayout:
-    cols: 3
+BoxLayout:
+    
     GridLayout:
-        cols: 2
+        size_hint: .7, 1
+        cols: 4
         rows:2
         GridLayout:
             id: PassNoRecord
@@ -32,6 +33,7 @@ GridLayout:
             Label:
                 text:'Frosh'
             Label:
+                id: PassNoRecord
                 text:'Frosh'
         GridLayout:
             id: Soph1
@@ -61,7 +63,7 @@ GridLayout:
             rows: 3
             canvas:
                 Color:
-                    rgba: 1,1,0,.7
+                    rgba: 0,1,0,.7
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -83,7 +85,7 @@ GridLayout:
             rows: 3
             canvas:
                 Color:
-                    rgba: 1,1,0,.8
+                    rgba: 0,1,0,.8
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -99,18 +101,14 @@ GridLayout:
                 text:'Frosh'
             Label:
                 text:'Frosh'
-      
-    GridLayout:
-        id: Semesters
-        cols:2
-        rows:2
-       
+            
         GridLayout:
+            id: EastHall
             cols: 2
             rows: 3
             canvas:
                 Color:
-                    rgba: 1,1,0,.5
+                    rgba: 1,0,1,.5
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -131,7 +129,7 @@ GridLayout:
             rows: 3
             canvas:
                 Color:
-                    rgba: 1,1,0,.6
+                    rgba: 1,0,1,.6
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -190,44 +188,44 @@ GridLayout:
             Label:
                 text:'Frosh'
     StackLayout:
-                
+        size_hint: .3, 1        
         id: Courses
         orientation: 'tb-rl'
         
         DragableButton:
             text: 'DesNat'
-            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
-            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            bound_zone_objects: [Courses, EastHall, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [EastHall, PassNoRecord, Soph1, awwGrades,SuiteDraw]
             drag_opacity: .5 
         DragableButton:
             text: 'ModSim '
-            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
-            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            bound_zone_objects: [Courses, EastHall, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [EastHall, PassNoRecord, Soph1, awwGrades,SuiteDraw]
             drag_opacity: .5
         DragableButton:
             text: 'ModCon'
-            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
-            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            bound_zone_objects: [Courses, EastHall, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [EastHall, PassNoRecord, Soph1, awwGrades,SuiteDraw]
             drag_opacity: .5
         DragableButton:
             text: 'Rwm'
-            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
-            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            bound_zone_objects: [Courses, EastHall, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [EastHall, PassNoRecord, Soph1, awwGrades,SuiteDraw]
             drag_opacity: .5
         DragableButton:
             text: 'Linearity 1'
-            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
-            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            bound_zone_objects: [Courses, EastHall, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [EastHall, PassNoRecord, Soph1, awwGrades,SuiteDraw]
             drag_opacity: .5
         DragableButton:
             text: 'Linearity 2'
-            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
-            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            bound_zone_objects: [Courses, EastHall, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [EastHall, PassNoRecord, Soph1, awwGrades,SuiteDraw]
             drag_opacity: .5
         DragableButton:
             text: 'POE'
-            bound_zone_objects: [Courses, Semesters, PassNoRecord, Soph1, awwGrades, SuiteDraw]
-            droppable_zone_objects: [Semesters, PassNoRecord, Soph1, awwGrades,SuiteDraw]
+            bound_zone_objects: [Courses, EastHall, PassNoRecord, Soph1, awwGrades, SuiteDraw]
+            droppable_zone_objects: [EastHall, PassNoRecord, Soph1, awwGrades,SuiteDraw]
             drag_opacity: .5
 '''
 

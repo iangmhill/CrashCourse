@@ -6,6 +6,8 @@ import copy
 from kivy.uix.widget import Widget
 from kivy.properties import (
     ListProperty, NumericProperty, BooleanProperty, ObjectProperty)
+from kivy.app import App
+from kivy.clock import Clock
 
 
 class DragNDropWidget(Widget):
@@ -67,8 +69,14 @@ class DragNDropWidget(Widget):
     def on_touch_down(self, touch):
         if self.collide_point(touch.x, touch.y) and self._dragable:
             # detect if the touch is short - has time and end (if not dispatch drag)
-            if abs(touch.time_end - touch.time_start) > 0.2:
-                self.dispatch("on_drag_start")
+    #         touch= touch
+    #         Clock.schedule_once(self.check_touch, .5)
+
+    # def check_touch(self,dt, touch):
+    #         if touch.is_double_tap:
+    #             print('Display Course Information')
+    #         else:
+            self.dispatch("on_drag_start")
 
 
     def on_touch_up(self, touch):
@@ -189,7 +197,7 @@ class DragNDropWidget(Widget):
 
     def reborn(self, widget, anim):
         self.deparent()
-        self._old_parent.add_widget(self, index=self._old_index)
+        self._old_parent.add_widget(self)#, index=self._old_index)
 
     def reparent(self, widget):
         parent = widget.parent
@@ -199,3 +207,6 @@ class DragNDropWidget(Widget):
             parent.get_root_window().add_widget(widget)
             widget.size_hint = (None, None)
             widget.size = orig_size
+
+
+        

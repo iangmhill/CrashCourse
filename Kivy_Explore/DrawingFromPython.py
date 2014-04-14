@@ -1,5 +1,6 @@
 from kivy.uix.widget import Widget
 from kivy.app import App
+from kivy.graphics import Rectangle
 #Not sure where to import Rectangle from
 
 class MyWidget1(Widget):
