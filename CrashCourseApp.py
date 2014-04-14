@@ -23,9 +23,9 @@ from kivy.clock import Clock
 from FileManager import FileManager
 from Course_Item import Course_Item
 
-
 fm = FileManager()
-catalog = fm.load_courses()  
+catalog = fm.load_courses() 
+ 
 
 class StartUpScreen(Screen):
     def __init__(self,**kwargs):        
