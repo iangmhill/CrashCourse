@@ -17,7 +17,7 @@ sys.path.insert(0, os.getcwd())
 
 class Controller(object):
     def __init__(self):
-    	self.filepath = os.getcwd()
+        self.filepath = os.getcwd()
         self.running = True
         self.working_file = ""
         current_year = date.today().year
@@ -36,14 +36,20 @@ class Controller(object):
         self.t1 = threading.Thread(target=self.ServerThread)
         self.t2 = threading.Thread(target=self.CommandThread)
         self.ip = self.get_ipaddress()
-        #try:
-        sys.path.insert(0,"//stuweb/WEB/Students/2017/ihill")
-        with open('ServerAddress.txt', 'w') as ip:
-            ip.write(self.ip)
-        sys.path.insert(0,self.filepath)
-        print("writing the file succeeded")
-        #except:
-        #	print("Writing the file to the olin server failed")
+        self.port = 5304
+        try:
+            sys.path.insert(0,"//stuweb/WEB/Students/2017/ihill")
+            os.chdir("//stuweb/WEB/Students/2017/ihill")
+            print(os.getcwd())
+            with open('ServerAddress.txt', 'w') as ip:
+                ip.write(self.ip + "\n" + str(self.port))
+            sys.path.insert(0,self.filepath)
+            os.chdir(self.filepath)
+            print("IP address posted to stuweb")
+        except:
+            sys.path.insert(0,self.filepath)
+            os.chdir(self.filepath)
+            print("IP address failed to post")
 
 
 
@@ -69,7 +75,7 @@ class Controller(object):
                 
     def ServerThread(self):
         print(self.get_ipaddress())
-        server = TftpServer(os.getcwd(),None,self.get_ipaddress(),5302,5)
+        server = TftpServer(os.getcwd(),None,self.ip,self.port,5)
         self.t2.start()
         while self.running:
             for n in range(2):
