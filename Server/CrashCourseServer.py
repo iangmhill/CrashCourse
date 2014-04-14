@@ -17,6 +17,7 @@ sys.path.insert(0, os.getcwd())
 
 class Controller(object):
     def __init__(self):
+    	self.filepath = os.getcwd()
         self.running = True
         self.working_file = ""
         current_year = date.today().year
@@ -34,6 +35,17 @@ class Controller(object):
         self.distribution = {}
         self.t1 = threading.Thread(target=self.ServerThread)
         self.t2 = threading.Thread(target=self.CommandThread)
+        self.ip = self.get_ipaddress()
+        #try:
+        sys.path.insert(0,"//stuweb/WEB/Students/2017/ihill")
+        with open('ServerAddress.txt', 'w') as ip:
+            ip.write(self.ip)
+        sys.path.insert(0,self.filepath)
+        print("writing the file succeeded")
+        #except:
+        #	print("Writing the file to the olin server failed")
+
+
 
     
     def get_ipaddress(self):
