@@ -32,11 +32,8 @@ class TestApp(App):
 
 	def __init__(self):
 		self.log1 = LoginScreen()
-	def build(self):
-		return self.log1
 	def run(self):
-		print(self.log1.username.text)
-		return
+		return self.log1
 
 
 if __name__=='__main__':   

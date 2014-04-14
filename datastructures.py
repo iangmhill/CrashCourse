@@ -34,9 +34,10 @@ class Course(object):
     """Course objects store information about courses
     that has been downloaded from the server"""
 
-    def __init__(self,code, name, prof, credits, real_credits, semester, time, description, pre_req, PNR):
+    def __init__(self,code, name, keywords, prof, credits, real_credits, semester, time, description, pre_req, PNR):
         self.code = code                  #as int e.g. 1111
         self.name = name                  #as string e.g. "Modeling and Simulation"
+        self.keywords = keywords          #as list of strings e.g. ["modsim","modeling", ...]
         self.prof = prof                  #as string e.g. "Mark Somerville"
         self.credits = credits            #as dictionary i.e. { category : numberofcredits , etc...} 
                                           #e.g. {'ENGR':0, 'AHSE':0,'MTH':2,'SCI':2}

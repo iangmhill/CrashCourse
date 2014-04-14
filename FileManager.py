@@ -22,15 +22,16 @@ class FileManager(object):
                 c = line.split("/")
                 try:
                     code = int(c[0])   #Course code as integer e.g. 1100
-                    name = c[1]        #Course name as string e.g. "Modeling and Simulation" 
-                    prof = c[2]        #Course professor as string e.g. "Jessica Townsend"
-                    cred = eval(c[3])  #Course credits as dictionary e.g. {"ENGR":4, ... }
-                    rcre = c[4]        #Real credits as integer e.g. 4
-                    seme = eval(c[5])  #semester held as list of lists i.e. [[year,semester], ...] e.g. [[2014,'f'], ... ]
-                    time = eval(c[6])  #time of day held as list of lists i.e. [[day,hour,minutes,duration], ...] e.g. [['m',13,30,100],['r',13,30,100]]
-                    desc = c[7]        #description as string
-                    prer = eval(c[8])  #Prerequisites as list of integer course codes e.g. [1100,1200, ...]
-                    pnre = eval(c[9])  #Pass/norecordable as boolean
+                    name = c[1]        #Course name as string e.g. "Modeling and Simulation"
+                    keyw = eval(c[2])  #Course keywords as list of strings e.g. ["modsim","modeling", ...] 
+                    prof = c[3]        #Course professor as string e.g. "Jessica Townsend"
+                    cred = eval(c[4])  #Course credits as dictionary e.g. {"ENGR":4, ... }
+                    rcre = c[5]        #Real credits as integer e.g. 4
+                    seme = eval(c[6])  #semester held as list of lists i.e. [[year,semester], ...] e.g. [[2014,'f'], ... ]
+                    time = eval(c[7])  #time of day held as list of lists i.e. [[day,hour,minutes,duration], ...] e.g. [['m',13,30,100],['r',13,30,100]]
+                    desc = c[8]        #description as string
+                    prer = eval(c[9])  #Prerequisites as list of integer course codes e.g. [1100,1200, ...]
+                    pnre = eval(c[10])  #Pass/norecordable as boolean
                 except:
                     print("Load error on the following line:")
                     print(line)
@@ -44,7 +45,7 @@ class FileManager(object):
                     SEMESTERS = []
                     for s in seme:
                         SEMESTERS.append(Semester(s[0],s[1]))
-                    input_course = Course(code,name,prof,cred,rcre,SEMESTERS,TIMES,desc,prer,pnre)
+                    input_course = Course(code,name,keyw,prof,cred,rcre,SEMESTERS,TIMES,desc,prer,pnre)
                     catalog.append(input_course)
         return catalog
 
@@ -98,7 +99,8 @@ class FileManager(object):
 
 filemanager = FileManager()
 catalog = filemanager.load_courses()
-print(catalog[0].name)
+for course in catalog:
+    print(course.keywords)
 # last_updated,distribution = filemanager.load_stats()
 # print(last_updated)
 # for k in distribution:
