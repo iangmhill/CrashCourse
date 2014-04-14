@@ -12,6 +12,7 @@ from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.stacklayout import StackLayout
 from kivy.uix.button import Button
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.scrollview import ScrollView
@@ -201,11 +202,10 @@ class Catalog(BoxLayout):
         self.filter_bar.add_widget(self.SCI)
 
         self.scrollview = ScrollView(size_hint=(1.0,0.9),size=(400,400))
-        self.courses = GridLayout(cols=4,spacing=5,size_hint_y=None)
+        self.courses = StackLayout(spacing=5,size_hint_y=None)
         self.courses.bind(minimum_height=self.courses.setter('height'))
-        for course in catalog:
-            course_item = Course_Item(size_hint_y=None,height=200)
-            course_item.title.text = course.name                    
+        for course_object in catalog:
+            course_item = Course_Item(course=course_object,size_hint=(0.245,None),height=200)                             
             self.courses.add_widget(course_item)
         self.scrollview.add_widget(self.courses)
                         
@@ -214,42 +214,30 @@ class Catalog(BoxLayout):
         self.add_widget(self.scrollview)
 
     def name_search(self,instance):
-        query = self.search_text.text.lower()
+        query = self.search_text.text.lower()            
         for course_item in self.courses.children:
-            if query == "":
-                for course_item in self.courses.children:
-                    course_item.title.color = (1,1,1,1)
-            if query == course_item.title.text.lower():
+            course_item.title.color = (1,1,1,1)
+            if query == course_item.course.name.lower() or query == course_item.course.code or query == course_item.course.prof.lower():
                 course_item.title.color = (0.1,0.6,0.8,1.0)
+            for keyword in course_item.course.keywords:
+                if query == keyword.lower():
+                    course_item.title.color = (0.1,0.6,0.8,1.0)
 
-    def filter_search(self,instance):
-        if self.AHSE.state == 'normal' and self.ENGR.state == 'normal' and self.MTH.state == 'normal' and self.SCI.state == 'normal':
-            for course_item in self.courses.children:
-                course_item.title.color = (1,1,1,1)                
-        if self.AHSE.state == 'down':
-            for course in catalog:
-                if course.credits['AHSE'] > 0:
-                    for course_item in self.courses.children:
-                        if course_item.title.text == course.name:                            
-                            course_item.title.color = (0.1,0.6,0.8,1.0)
-        if self.ENGR.state == 'down':
-            for course in catalog:
-                if course.credits['ENGR'] > 0:
-                    for course_item in self.courses.children:
-                        if course_item.title.text == course.name:                            
-                            course_item.title.color = (0.1,0.6,0.8,1.0)
-        if self.MTH.state == 'down':
-            for course in catalog:
-                if course.credits['MTH'] > 0:
-                    for course_item in self.courses.children:
-                        if course_item.title.text == course.name:                            
-                            course_item.title.color = (0.1,0.6,0.8,1.0)
-        if self.SCI.state == 'down':
-            for course in catalog:
-                if course.credits['SCI'] > 0:
-                    for course_item in self.courses.children:
-                        if course_item.title.text == course.name:                            
-                            course_item.title.color = (0.1,0.6,0.8,1.0)
+    def filter_search(self,instance):                     
+        for course_item in self.courses.children:
+            course_item.title.color = (1,1,1,1)                   
+            if self.AHSE.state == 'down':                    
+                if course_item.course.credits['AHSE'] > 0:                                                  
+                    course_item.title.color = (0.1,0.6,0.8,1.0)
+            if self.ENGR.state == 'down':                        
+                if course_item.course.credits['ENGR'] > 0:                                                  
+                    course_item.title.color = (0.1,0.6,0.8,1.0)
+            if self.MTH.state == 'down':                          
+                if course_item.course.credits['MTH'] > 0:                                                  
+                    course_item.title.color = (0.1,0.6,0.8,1.0)
+            if self.SCI.state == 'down':                       
+                if course_item.course.credits['SCI'] > 0:                                                  
+                    course_item.title.color = (0.1,0.6,0.8,1.0)
 
                
 class Planner(GridLayout):
