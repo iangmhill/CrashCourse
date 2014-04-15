@@ -27,6 +27,8 @@ fm = FileManager()
 catalog = fm.load_courses()
 
 favorite_courses = []
+filter_temp_list = []
+search_temp_list = []
 
 class StartUpScreen(Screen):
     def __init__(self,**kwargs):        
@@ -49,7 +51,7 @@ class LogInScreen(BoxLayout,Screen):
         self.username = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.username.add_widget(Label())
         self.username.add_widget(Label(text='Username:'))
-        self.u_entry = TextInput(multiline = False)
+        self.u_entry = TextInput(multiline=False)
         self.username.add_widget(self.u_entry)
         self.username.add_widget(Label())
         
@@ -62,8 +64,8 @@ class LogInScreen(BoxLayout,Screen):
 
         self.buttons = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.buttons.add_widget(Label())
-        self.buttons.add_widget(Button(text = 'New User?',on_press = self.new_user_function))
-        self.buttons.add_widget(Button(text = 'Log In',on_press = self.enter_function))
+        self.buttons.add_widget(Button(text='New User?',on_press=self.new_user_function))
+        self.buttons.add_widget(Button(text='Log In',on_press=self.enter_function))
         self.buttons.add_widget(Label())
             
         self.logo = Image(source='logo1.png',size_hint=(1.0,0.35))
@@ -82,7 +84,7 @@ class LogInScreen(BoxLayout,Screen):
         self.add_widget(self.space4)
         
     def new_user_function(self,instance):
-        sm.current = 'newuser'
+        sm.current =' newuser'
         
     def enter_function(self,instance):
         if self.u_entry.text != 'Username' and self.p_entry.text != 'Password':
@@ -217,36 +219,68 @@ class Catalog(BoxLayout):
         Clock.schedule_interval(self.add_favorites,5)
 
     def name_search(self,instance):
-        query = self.search_text.text.lower()            
-        for course_item in self.courses.children:
-            course_item.title.color = (1,1,1,1)
-            if query == course_item.course.name.lower() or query == course_item.course.code or query == course_item.course.prof.lower():
-                course_item.title.color = (0.1,0.6,0.8,1.0)
-            for keyword in course_item.course.keywords:
-                if query == keyword.lower():
-                    course_item.title.color = (0.1,0.6,0.8,1.0)
+        query = self.search_text.text.lower()
+        searched_items = []
 
-    def filter_search(self,instance):                     
-        for course_item in self.courses.children:
-            course_item.title.color = (1,1,1,1)                   
-            if self.AHSE.state == 'down':                    
-                if course_item.course.credits['AHSE'] > 0:                                                  
-                    course_item.title.color = (0.1,0.6,0.8,1.0)
-            if self.ENGR.state == 'down':                        
-                if course_item.course.credits['ENGR'] > 0:                                                  
-                    course_item.title.color = (0.1,0.6,0.8,1.0)
+        if len(search_temp_list) == 0:
+            for course_item in self.courses.children:
+                search_temp_list.append(course_item) 
+
+        if query == "":
+          if len(self.courses.children) < len(search_temp_list):
+            self.courses.clear_widgets()
+            for course_item in search_temp_list:
+                self.courses.add_widget(course_item)
+        else:
+            for course_item in self.courses.children:            
+                if query == course_item.course.name.lower() or query == course_item.course.code or query == course_item.course.prof.lower():
+                    searched_items.append(course_item)
+                for keyword in course_item.course.keywords:
+                    if query == keyword.lower():
+                        searched_items.append(course_item)
+
+            self.courses.clear_widgets()
+            for course_item in searched_items:
+                self.courses.add_widget(course_item)
+
+    def filter_search(self,instance): 
+        filtered_items = []
+        
+        if len(filter_temp_list) == 0:
+            for course_item in self.courses.children:
+                filter_temp_list.append(course_item)  
+
+        if self.AHSE.state == 'normal' and self.ENGR.state == 'normal' and self.MTH.state == 'normal' and self.SCI.state == 'normal':
+            if len(self.courses.children) < len(filter_temp_list):
+                self.courses.clear_widgets()
+                for course_item in filter_temp_list:
+                    self.courses.add_widget(course_item)
+        else:                               
+            if self.AHSE.state == 'down':
+                for course_item in self.courses.children:                   
+                    if course_item.course.credits['AHSE'] > 0:                                                  
+                        filtered_items.append(course_item)
+            if self.ENGR.state == 'down': 
+                for course_item in self.courses.children:                      
+                    if course_item.course.credits['ENGR'] > 0 and course_item not in filtered_items:                                                  
+                        filtered_items.append(course_item)
             if self.MTH.state == 'down':                          
-                if course_item.course.credits['MTH'] > 0:                                                  
-                    course_item.title.color = (0.1,0.6,0.8,1.0)
-            if self.SCI.state == 'down':                       
-                if course_item.course.credits['SCI'] > 0:                                                  
-                    course_item.title.color = (0.1,0.6,0.8,1.0)
+                for course_item in self.courses.children:
+                    if course_item.course.credits['MTH'] > 0 and course_item not in filtered_items:                                                 
+                        filtered_items.append(course_item)
+            if self.SCI.state == 'down':
+                for course_item in self.courses.children:                   
+                    if course_item.course.credits['SCI'] > 0 and course_item not in filtered_items:                                             
+                        filtered_items.append(course_item)
+
+            self.courses.clear_widgets()
+            for course_item in filtered_items:
+                self.courses.add_widget(course_item)
 
     def add_favorites(self,instance):
         for course_item in self.courses.children:
             if course_item.favorite.state == 'down':
-                favorite_courses.append(course_item.course)
-                print course_item.course.name
+                favorite_courses.append(course_item.course)                
                
 class Planner(GridLayout):
     def __init__(self,**kwargs):
