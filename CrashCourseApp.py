@@ -36,7 +36,7 @@ class StartUpScreen(Screen):
         self.orientation = 'vertical'
 
         self.image = Image(source='logo1.png',allow_stretch=False,keep_ratio=True)
-        Clock.schedule_once(self.transition,5)        
+        Clock.schedule_once(self.transition,3)        
                 
         self.add_widget(self.image)
                              
@@ -216,7 +216,7 @@ class Catalog(BoxLayout):
         self.add_widget(self.filter_bar)
         self.add_widget(self.scrollview)
 
-        Clock.schedule_interval(self.add_favorites,5)
+        Clock.schedule_interval(self.update_favorites,2)
 
     def name_search(self,instance):
         query = self.search_text.text.lower()
@@ -277,25 +277,30 @@ class Catalog(BoxLayout):
             for course_item in filtered_items:
                 self.courses.add_widget(course_item)
 
-    def add_favorites(self,instance):
+    def update_favorites(self,instance):        
         for course_item in self.courses.children:
-            if course_item.favorite.state == 'down':
+            if course_item.favorite.state == 'normal' and course_item.course in favorite_courses:
+                favorite_courses.remove(course_item.course)
+            if course_item.favorite.state == 'down' and course_item.course not in favorite_courses:
                 favorite_courses.append(course_item.course)                
-               
-class Planner(GridLayout):
+        
+class Planner(StackLayout):
     def __init__(self,**kwargs):
         super(Planner, self).__init__(**kwargs)
 
-        self.cols = 2
-        self.one = Label(text='one')
-        self.two = Label(text = 'two')
-        self.three = Label(text='three')
-        self.four = Label(text = 'four') 
+        Clock.schedule_interval(self.update_favorites,2) 
+        self.favorites = []   
         
-        self.add_widget(self.one)
-        self.add_widget(self.two)
-        self.add_widget(self.three)
-        self.add_widget(self.four)
+    def update_favorites(self,instance):
+        if len(favorite_courses) == len(self.favorites):
+            return
+        if len(favorite_courses) < len(self.favorites):
+            self.favorites = []
+            self.clear_widgets()
+        for course in favorite_courses:
+            if course not in self.favorites:
+                self.favorites.append(course)
+                self.add_widget(Label(text=course.name,size_hint=(0.25,0.25)))      
         
         
 class Schedule(BoxLayout):
