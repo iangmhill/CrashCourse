@@ -6,6 +6,7 @@ from TftpClient import TftpClient
 from TftpShared import TftpException
 os.chdir('..')
 sys.path.insert(0, os.getcwd())
+import urllib
 import urllib2
 import cPickle as pickle
 from datastructures import User
@@ -13,17 +14,40 @@ from datastructures import User
 
 class NetworkManager(object):
     def __init__(self):
-
-        self.client = TftpClient('10.7.64.61',5301)
+        try:
+            urllib.urlretrieve("http://students.olin.edu/2017/ihill/ServerAddress.txt", "ServerAddress.txt")
+            with open('ServerAddress.txt', 'r') as ip:
+                lines  = ip.readlines()
+                self.ip = lines[0].rstrip()
+                self.port = int(lines[1])
+            os.remove('ServerAddress.txt')
+            self.client = TftpClient(self.ip,self.port)
+            self.started = True
+        except:
+            self.started = False
         
     def check_internet(self):
-        try:
-            urllib2.urlopen('http://www.google.com',None,timeout=5)
-            print("Connected to the Internet")
-            return True
-        except urllib2.URLError:
-            print("Disconnected from the Internet")
-            return False
+        if self.started == False:
+            try:
+                urllib.urlretrieve("http://students.olin.edu/2017/ihill/ServerAddress.txt", "ServerAddress.txt")
+                with open('ServerAddress.txt', 'r') as ip:
+                    lines  = ip.readlines()
+                    self.ip = lines[0]
+                    self.port = lines[1]
+                os.remove('ServerAddress.txt')
+                self.client = TftpClient(self.ip,self.port)
+                self.started = True
+            except:
+                self.started = False
+                return False
+        else:
+            try:
+                urllib2.urlopen('http://www.google.com',None,timeout=5)
+                print("Connected to the Internet")
+                return True
+            except urllib2.URLError:
+                print("Disconnected from the Internet")
+                return False
             
     def create_user(self,username):
         if self.check_internet():
