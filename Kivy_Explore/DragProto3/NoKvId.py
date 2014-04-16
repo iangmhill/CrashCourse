@@ -5,16 +5,28 @@ from kivy.uix.stacklayout import StackLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
-from kivy.graphics import Rectangle
+from kivy.graphics import Rectangle, Color
+from kivy.uix.button import Button
+
 #Found a way to make the drag and drop work without having to use those weak-refs in kv called 'id'
 class Semester(StackLayout):
-	def __init__(self, **kwargs):
+	def __init__(self, text, **kwargs):
 		super(Semester,self).__init__(**kwargs)
+		self.text=text
+		#self.color= color
 		orientation='tb-lr'
 		with self.canvas:
+			Color(0, 0, 1., .2)
 			self.rect=Rectangle(pos=self.pos, size=self.size)
 		self.bind(pos=self.update_rect)
 		self.bind(size=self.update_rect)
+
+		self.Me=Button(text=self.text, size_hint=(1,.1))
+		self.coursehouse=GridLayout(size_hint=(1,.9), rows=3, cols=2)
+
+		self.add_widget(self.Me)
+		self.add_widget(self.coursehouse)
+
 	def update_rect(self,*args):
 		self.rect.pos=self.pos
 		self.rect.size=self.size
@@ -64,7 +76,7 @@ class TestApp(App):
 		main.add_widget(dest)
 		main.add_widget(source)
 
-		return main
+		return Semester()
 
 if __name__=='__main__':
 	TestApp().run()
