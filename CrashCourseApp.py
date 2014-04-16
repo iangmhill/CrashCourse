@@ -22,6 +22,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen, WipeTransition
 from kivy.clock import Clock
 from FileManager import FileManager
 from Course_Item import Course_Item
+from Proto3_5 import DragTab
 
 fm = FileManager()
 catalog = fm.load_courses()
@@ -83,7 +84,7 @@ class LogInScreen(BoxLayout,Screen):
         self.add_widget(self.space4)
         
     def new_user_function(self,instance):
-        sm.current =' newuser'
+        sm.current = 'newuser'
         
     def enter_function(self,instance):
         if self.u_entry.text != 'Username' and self.p_entry.text != 'Password':
@@ -138,6 +139,7 @@ class NewUserScreen(BoxLayout,Screen):
         
     def back_function(self,instance):
         sm.current = 'login'
+
         
     def enter_function(self,instance):
         #add self.u_entry.text to file
@@ -226,9 +228,7 @@ class Catalog(BoxLayout):
         #fills up the temp list the first time it runs
         if len(search_temp_list) == 0:
             for course_item in self.courses.children:
-                search_temp_list.append(course_item)
-
-       
+                search_temp_list.append(course_item)       
         
         #if the query is not empty, do term search
         if query != "":                      
@@ -262,8 +262,6 @@ class Catalog(BoxLayout):
                     if course_item.course.credits['SCI'] > 0 and course_item not in filtered_items:                                             
                         filtered_items.append(course_item)
 
-
-
         if len(self.courses.children) != len(filtered_items):
             self.courses.clear_widgets()
             for course_item in filtered_items:
@@ -276,23 +274,23 @@ class Catalog(BoxLayout):
             if course_item.favorite.state == 'down' and course_item.course not in favorite_courses:
                 favorite_courses.append(course_item.course)                
         
-class Planner(StackLayout):
+
+class Planner(DragTab):
     def __init__(self,**kwargs):
         super(Planner, self).__init__(**kwargs)
 
+        self.favorites = []        
         Clock.schedule_interval(self.update_favorites,0.1) 
-        self.favorites = []   
         
     def update_favorites(self,instance):
         if len(favorite_courses) == len(self.favorites):
             return
         if len(favorite_courses) < len(self.favorites):
-            self.favorites = []
-            self.clear_widgets()
+            self.favorites = []            
         for course in favorite_courses:
             if course not in self.favorites:
-                self.favorites.append(course)
-                self.add_widget(Label(text=course.name,size_hint=(0.25,0.25)))      
+                self.favorites.append(course)  
+                self.add_Icon(course.name)
         
         
 class Schedule(BoxLayout):
@@ -319,9 +317,9 @@ class TabsScreen(Screen):
         
     
 sm = ScreenManager(transition = WipeTransition())
-#sm.add_widget(StartUpScreen(name='startup'))
-#sm.add_widget(LogInScreen(name='login'))
-#sm.add_widget(NewUserScreen(name='newuser'))
+sm.add_widget(StartUpScreen(name='startup'))
+sm.add_widget(LogInScreen(name='login'))
+sm.add_widget(NewUserScreen(name='newuser'))
 sm.add_widget(TabsScreen(name='tabs'))
 
 
