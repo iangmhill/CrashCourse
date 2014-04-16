@@ -22,12 +22,15 @@ from kivy.uix.screenmanager import ScreenManager, Screen, WipeTransition
 from kivy.clock import Clock
 from FileManager import FileManager
 from Course_Item import Course_Item
+from kivy.uix.dropdown import DropDown
 
 fm = FileManager()
 catalog = fm.load_courses()
+user = fm.load_user('ihill','crashcourse')
+
 
 favorite_courses = []
-search_temp_list = []
+search_temp_list = [] 
 
 class StartUpScreen(Screen):
     def __init__(self,**kwargs):        
@@ -168,18 +171,69 @@ class TabsPanel(TabbedPanel):
 class Dashboard(GridLayout):
     def __init__(self,**kwargs):
         super(Dashboard, self).__init__(**kwargs)
-
         self.cols = 2
-        self.one = Label(text='one')
-        self.two = Label(text = 'two')
-        self.three = Label(text='three')
-        self.four = Label(text = 'four') 
         
-        self.add_widget(self.one)
-        self.add_widget(self.two)
-        self.add_widget(self.three)
-        self.add_widget(self.four)
+        self.info = GridLayout (rows=5)
+        self.info.add_widget(Label(text='Your Information'))
+        grad_dropdown = DropDown()
+        for x in ('2014','2015','2016','2017'):
+            btn = Button(text=x, size_hint_y=None, height=20)
+            # Underneath attaches the text of the button to the variable btn.text
+            btn.bind(on_release=lambda btn: grad_dropdown.select(btn.text))
+            grad_dropdown.add_widget(btn)
+        mainbutton_gradYear = Button(text='Grad Year', size_hint_y=None, height=25)
+        mainbutton_gradYear.bind(on_release=grad_dropdown.open)
+        grad_dropdown.bind(on_select=lambda instance, x: setattr(mainbutton_gradYear, 'text', x))
+        self.info.add_widget (mainbutton_gradYear)
         
+        maj_dropdown = DropDown()
+        for x in ('ECE','MechE','RoboE','E:Design','E:C','Sys:E','E:MatSci'):
+            btn = Button(text=x, size_hint_y=None, height=20)
+            # Underneath attaches the text of the button to the variable btn.text
+            btn.bind(on_release=lambda btn: maj_dropdown.select(btn.text))
+            maj_dropdown.add_widget(btn)
+        mainbutton_major = Button(text='Major', size_hint_y=None, height=25)
+        mainbutton_major.bind(on_release=maj_dropdown.open)
+        maj_dropdown.bind(on_select=lambda instance, x: setattr(mainbutton_major, 'text', x))
+        self.info.add_widget (mainbutton_major)
+        self.info.add_widget(Label())
+        self.info.add_widget(Label())
+        
+        
+        self.reminders = GridLayout (rows=5)
+        self.reminders.add_widget(Label(text='Reminders'))
+        self.reminders.add_widget(Button(text='Email Loretta Lynn about 22 Credits', size_hint_y=None, height = 25))
+        self.reminders.add_widget(Label())
+        self.reminders.add_widget(Label())
+
+        
+        
+        self.stats = BoxLayout (orientation='vertical')
+        self.information = GridLayout (cols = 2, size_hint = (1,.7))
+        self.information.add_widget (Label(text='Graduate:' + ' Yes!'))
+        self.credits=GridLayout (cols=2, row=2)
+        self.credits.add_widget (Label(text = 'AHS: ' + '12'))
+        self.credits.add_widget (Label(text = 'ENGR: ' + '12'))
+        self.credits.add_widget (Label(text = 'MTH: ' + '12'))
+        self.credits.add_widget (Label(text = 'SCI: ' + '12'))
+        
+        self.information.add_widget (self.credits)
+        
+        self.stats.add_widget (Label (text = 'Statistics', size_hint =(1,.3)))
+        self.stats.add_widget (self.information)
+        
+        
+        self.notes = GridLayout(cols=1)
+        self.n_entry = TextInput(text=user.notes, multiline=True)
+        self.notes.add_widget(self.n_entry)
+        
+        
+        self.add_widget(self.info)
+        self.add_widget(self.reminders)
+        self.add_widget(self.stats)
+        self.add_widget(self.notes)
+        
+
         
 class Catalog(BoxLayout):
     def __init__(self,**kwargs):

@@ -19,7 +19,8 @@ from kivy.uix.button import Button
 from kivy.base import runTouchApp
 
 fm = FileManager()
-user = fm.load_user('ihill','crashcourse')  
+user = fm.load_user('ihill','crashcourse')
+  
 
  
 
@@ -83,10 +84,17 @@ class Dashboard(GridLayout):
         
         
         self.stats = BoxLayout (orientation='vertical')
-        self.stats.add_widget (Label (text = 'Statistics', size_hint =(1,.3)))
         self.information = GridLayout (cols = 2, size_hint = (1,.7))
         self.information.add_widget (Label(text='Graduate:' + ' Yes!'))
-        self.information.add_widget (Label (text='AHS'))
+        self.credits=GridLayout (cols=2, row=2)
+        self.credits.add_widget (Label(text = 'AHS: ' + '12'))
+        self.credits.add_widget (Label(text = 'ENGR: ' + '12'))
+        self.credits.add_widget (Label(text = 'MTH: ' + '12'))
+        self.credits.add_widget (Label(text = 'SCI: ' + '12'))
+        
+        self.information.add_widget (self.credits)
+        
+        self.stats.add_widget (Label (text = 'Statistics', size_hint =(1,.3)))
         self.stats.add_widget (self.information)
         
         
