@@ -64,7 +64,7 @@ class TestApp(App):
 		main.add_widget(dest)
 		main.add_widget(source)
 
-		return main
+		return Semester()
 
 if __name__=='__main__':
 	TestApp().run()

@@ -27,7 +27,6 @@ fm = FileManager()
 catalog = fm.load_courses()
 
 favorite_courses = []
-filter_temp_list = []
 search_temp_list = []
 
 class StartUpScreen(Screen):
@@ -189,16 +188,15 @@ class Catalog(BoxLayout):
         self.orientation = 'vertical'
 
         self.search_bar = BoxLayout(size_hint=(1.0,0.05))        
-        self.search_bar.add_widget(Button(text='Search',size_hint=(0.25,1.0),on_press=self.name_search))
-        self.search_text = (TextInput(multiline=False,size_hint=(0.75,1.0)))
+        self.search_bar.add_widget(Label(text='Search',size_hint=(0.25,1.0)))
+        self.search_text = (TextInput(multiline=False))
         self.search_bar.add_widget(self.search_text)
 
         self.filter_bar = BoxLayout(size_hint=(1.0,0.05))        
-        self.AHSE = ToggleButton(text='AHSE',size_hint=(0.1875,1.0))
-        self.ENGR = ToggleButton(text='ENGR',size_hint=(0.1875,1.0))
-        self.MTH = ToggleButton(text='MTH',size_hint=(0.1875,1.0))
-        self.SCI = ToggleButton(text='SCI',size_hint=(0.1875,1.0))
-        self.filter_bar.add_widget(Button(text='Filter',size_hint=(0.25,1.0),on_press=self.filter_search))
+        self.AHSE = ToggleButton(text='AHSE',size_hint=(0.25,1.0))
+        self.ENGR = ToggleButton(text='ENGR',size_hint=(0.25,1.0))
+        self.MTH = ToggleButton(text='MTH',size_hint=(0.25,1.0))
+        self.SCI = ToggleButton(text='SCI',size_hint=(0.25,1.0))        
         self.filter_bar.add_widget(self.AHSE)
         self.filter_bar.add_widget(self.ENGR)
         self.filter_bar.add_widget(self.MTH)
@@ -216,66 +214,60 @@ class Catalog(BoxLayout):
         self.add_widget(self.filter_bar)
         self.add_widget(self.scrollview)
 
-        Clock.schedule_interval(self.update_favorites,2)
+        Clock.schedule_interval(self.update_favorites,0.1)
+        Clock.schedule_interval(self.search_function,0.1)
 
-    def name_search(self,instance):
-        query = self.search_text.text.lower()
+
+    def search_function(self,instance):
+        query = self.search_text.text.lower()        
         searched_items = []
+        filtered_items = []
 
+        #fills up the temp list the first time it runs
         if len(search_temp_list) == 0:
             for course_item in self.courses.children:
-                search_temp_list.append(course_item) 
+                search_temp_list.append(course_item)
 
-        if query == "":
-          if len(self.courses.children) < len(search_temp_list):
-            self.courses.clear_widgets()
-            for course_item in search_temp_list:
-                self.courses.add_widget(course_item)
-        else:
-            for course_item in self.courses.children:            
+       
+        
+        #if the query is not empty, do term search
+        if query != "":                      
+            for course_item in search_temp_list:                            
                 if query == course_item.course.name.lower() or query == course_item.course.code or query == course_item.course.prof.lower():
                     searched_items.append(course_item)
                 for keyword in course_item.course.keywords:
-                    if query == keyword.lower():
-                        searched_items.append(course_item)
-
-            self.courses.clear_widgets()
-            for course_item in searched_items:
-                self.courses.add_widget(course_item)
-
-    def filter_search(self,instance): 
-        filtered_items = []
+                    if query == keyword.lower():                        
+                        searched_items.append(course_item)           
+        else:
+            searched_items = search_temp_list
         
-        if len(filter_temp_list) == 0:
-            for course_item in self.courses.children:
-                filter_temp_list.append(course_item)  
-
         if self.AHSE.state == 'normal' and self.ENGR.state == 'normal' and self.MTH.state == 'normal' and self.SCI.state == 'normal':
-            if len(self.courses.children) < len(filter_temp_list):
-                self.courses.clear_widgets()
-                for course_item in filter_temp_list:
-                    self.courses.add_widget(course_item)
-        else:                               
+            filtered_items = searched_items
+
+        else:                                
             if self.AHSE.state == 'down':
-                for course_item in self.courses.children:                   
+                for course_item in searched_items:                   
                     if course_item.course.credits['AHSE'] > 0:                                                  
                         filtered_items.append(course_item)
             if self.ENGR.state == 'down': 
-                for course_item in self.courses.children:                      
+                for course_item in searched_items:                      
                     if course_item.course.credits['ENGR'] > 0 and course_item not in filtered_items:                                                  
                         filtered_items.append(course_item)
             if self.MTH.state == 'down':                          
-                for course_item in self.courses.children:
+                for course_item in searched_items:
                     if course_item.course.credits['MTH'] > 0 and course_item not in filtered_items:                                                 
                         filtered_items.append(course_item)
             if self.SCI.state == 'down':
-                for course_item in self.courses.children:                   
+                for course_item in searched_items:                   
                     if course_item.course.credits['SCI'] > 0 and course_item not in filtered_items:                                             
                         filtered_items.append(course_item)
 
+
+
+        if len(self.courses.children) != len(filtered_items):
             self.courses.clear_widgets()
             for course_item in filtered_items:
-                self.courses.add_widget(course_item)
+                self.courses.add_widget(course_item)   
 
     def update_favorites(self,instance):        
         for course_item in self.courses.children:
@@ -288,7 +280,7 @@ class Planner(StackLayout):
     def __init__(self,**kwargs):
         super(Planner, self).__init__(**kwargs)
 
-        Clock.schedule_interval(self.update_favorites,2) 
+        Clock.schedule_interval(self.update_favorites,0.1) 
         self.favorites = []   
         
     def update_favorites(self,instance):
