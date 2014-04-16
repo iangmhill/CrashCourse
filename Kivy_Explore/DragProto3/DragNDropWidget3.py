@@ -183,6 +183,15 @@ class DragNDropWidget(Widget):
                 
                 self.deparent()
                 obj.add_widget(self)
+                if obj.width<self.width or obj.height/6<self.height:
+                    self.width = obj.width
+                    self.height= obj.height/6
+                    print "dieting!"
+                if obj.width>self.width or obj.height/6>self.height:
+                    self.width=100
+                    self.height=100
+                    print 'Nutella!'
+
                 x = obj.center[0] - self.width/2
                 y = obj.center[1] - self.height/2
                 self.pos=(x,y)

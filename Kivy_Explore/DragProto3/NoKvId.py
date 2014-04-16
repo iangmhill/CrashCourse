@@ -22,7 +22,7 @@ class Semester(StackLayout):
 		self.bind(size=self.update_rect)
 
 		self.Me=Button(text=self.text, size_hint=(1,.1))
-		self.coursehouse=GridLayout(size_hint=(1,.9), rows=3, cols=2)
+		self.coursehouse=GridLayout(size_hint=(1,.9), rows=6, cols=1)
 
 		self.add_widget(self.Me)
 		self.add_widget(self.coursehouse)
