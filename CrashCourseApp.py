@@ -150,28 +150,8 @@ class NewUserScreen(BoxLayout,Screen):
     def enter_function(self,instance):
         #add self.u_entry.text to file
         #add self.p_entry.text to file
-        sm.current = 'tabs'
-        
-        
-class TabsPanel(TabbedPanel):
-    def __init__(self,**kwargs):
-        super(TabsPanel, self).__init__(**kwargs)
-
-        self.strip_image = 'strip_logo2.png'
-        self.tab1 = TabbedPanelHeader(text='Dashboard')
-        self.tab1.content = Dashboard()
-        self.tab2 = TabbedPanelHeader(text='Catalog')
-        self.tab2.content = Catalog()
-        self.tab3 = TabbedPanelHeader(text='Planner')
-        self.tab3.content = Planner()
-        self.tab4 = TabbedPanelHeader(text='Schedule')
-        self.tab4.content = Schedule()        
-        
-        self.add_widget(self.tab1)
-        self.add_widget(self.tab2)
-        self.add_widget(self.tab3)
-        self.add_widget(self.tab4)
-        
+        sm.current = 'tabs'        
+      
         
 class Dashboard(GridLayout):
     def __init__(self,**kwargs):
@@ -281,25 +261,29 @@ class Catalog(BoxLayout):
         searched_items = []
         filtered_items = []
 
-        #fills up the temp list the first time it runs
+        #fills up the temp list the first time the function is called (copy of list of all courses)
         if len(search_temp_list) == 0:
             for course_item in self.courses.children:
                 search_temp_list.append(course_item)       
         
-        #if the query is not empty, do term search
+        #if the query is not empty, does term search
         if query != "":                      
             for course_item in search_temp_list:                            
                 if query == course_item.course.name.lower() or query == course_item.course.code or query == course_item.course.prof.lower():
                     searched_items.append(course_item)
                 for keyword in course_item.course.keywords:
                     if query == keyword.lower():                        
-                        searched_items.append(course_item)           
+                        searched_items.append(course_item)
+
+        #if the query is empty, searched courses = all courses
         else:
             searched_items = search_temp_list
         
+        #if none of the buttons are down, keep all searched courses
         if self.AHSE.state == 'normal' and self.ENGR.state == 'normal' and self.MTH.state == 'normal' and self.SCI.state == 'normal':
             filtered_items = searched_items
 
+        #if a button is down, shows only courses in that category (holding multiple buttons shows more courses)
         else:                                
             if self.AHSE.state == 'down':
                 for course_item in searched_items:                   
@@ -342,10 +326,15 @@ class Planner(DragTab):
         if len(favorite_courses) == len(self.favorites):
             return
         if len(favorite_courses) < len(self.favorites):
-            self.favorites = []            
+            self.favorites = []
+            self.Scrollhome.clear_widgets()
+            for child in self.Planner.children:
+                for kid in child.children:
+                    for grandkid in kid.children:                        
+                        kid.remove_widget(grandkid)
         for course in favorite_courses:
             if course not in self.favorites:
-                self.favorites.append(course)  
+                self.favorites.append(course)
                 self.add_Icon(course.name)
         
         
@@ -355,15 +344,35 @@ class Schedule(BoxLayout):
 
         self.mon = Label(text= 'Mon')
         self.tue = Label(text= 'Tue')
-        self.wed = Label(text=' Wed')
+        self.wed = Label(text= 'Wed')
         self.thu = Label(text= 'Thu')
-        self.fri = Label(text=' Fri')       
+        self.fri = Label(text= 'Fri')       
         
         self.add_widget(self.mon)
         self.add_widget(self.tue)
         self.add_widget(self.wed)
         self.add_widget(self.thu)
         self.add_widget(self.fri)
+
+        
+class TabsPanel(TabbedPanel):
+    def __init__(self,**kwargs):
+        super(TabsPanel, self).__init__(**kwargs)
+
+        self.strip_image = 'strip_logo2.png'
+        self.tab1 = TabbedPanelHeader(text='Dashboard')
+        self.tab1.content = Dashboard()
+        self.tab2 = TabbedPanelHeader(text='Catalog')
+        self.tab2.content = Catalog()
+        self.tab3 = TabbedPanelHeader(text='Planner')
+        self.tab3.content = Planner()
+        self.tab4 = TabbedPanelHeader(text='Schedule')
+        self.tab4.content = Schedule()        
+        
+        self.add_widget(self.tab1)
+        self.add_widget(self.tab2)
+        self.add_widget(self.tab3)
+        self.add_widget(self.tab4)
         
     
 class TabsScreen(Screen):
@@ -373,9 +382,9 @@ class TabsScreen(Screen):
         
     
 sm = ScreenManager(transition = WipeTransition())
-sm.add_widget(StartUpScreen(name='startup'))
-sm.add_widget(LogInScreen(name='login'))
-sm.add_widget(NewUserScreen(name='newuser'))
+#sm.add_widget(StartUpScreen(name='startup'))
+#sm.add_widget(LogInScreen(name='login'))
+#sm.add_widget(NewUserScreen(name='newuser'))
 sm.add_widget(TabsScreen(name='tabs'))
 
 

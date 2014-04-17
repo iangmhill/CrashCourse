@@ -1,6 +1,7 @@
 import sys
 import os
 import shutil
+import datetime
 os.chdir('..')
 os.chdir('tftpy')
 sys.path.insert(0, os.getcwd())
@@ -36,7 +37,8 @@ class Controller(object):
         self.t1 = threading.Thread(target=self.ServerThread)
         self.t2 = threading.Thread(target=self.CommandThread)
         self.ip = self.get_ipaddress()
-        self.port = 5304
+        self.port = 5301
+        self.log = ""
         try:
             sys.path.insert(0,"//stuweb/WEB/Students/2017/ihill")
             os.chdir("//stuweb/WEB/Students/2017/ihill")
@@ -72,31 +74,34 @@ class Controller(object):
             elif k == "merge":
                 self.merge()
                 print("Merge Complete")
+            elif k == "log":
+                print(self.log)
                 
     def ServerThread(self):
         print(self.get_ipaddress())
         server = TftpServer(os.getcwd(),None,self.ip,self.port,5)
-        self.t2.start()
         while self.running:
-            for n in range(2):
+            for n in range(5):
                 if self.running:
                     server.listen()
+                    if server.working_file != self.working_file:
+                    self.log += datetime.now() + ' ' + server.working_file + '\n'
+                    self.working_file = server.working_file
                 else:
                     break
             try:
-##                print(server.working_file == self.working_file)
-##                if server.working_file != self.working_file:
-##                    self.t2.__stop = True
-##                    print(server.working_file)
-##                    self.working_file = server.working_file
-##                    self.t2.start()
                 self.merge()
+                self.log += datetime.now() + ' Merge completed'
                 self.generate_statistics()
+                self.log += datetime.now() + ' Statistics generated'
+                with open('ServerLog.txt','w') as log:
+                    log.write(self.log)
             except:
                 pass
                 
         print("Beginning shutdown")
-        server.stop() 
+        server.stop()
+        #self.t2.join()
         
     def generate_statistics(self):
         self.distribution = {k:{} for k in self.semesters}
@@ -127,6 +132,7 @@ class Controller(object):
     
     def run(self):
             self.t1.start()
+            self.t2.start()
 
 if __name__ == '__main__':
     ops = Controller()
