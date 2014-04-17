@@ -1,0 +1,55 @@
+<Semester>:
+	GridLayout:
+		rows: 3
+		cols:2
+		canvas:
+			Color:
+		    	rgba: 0,0,0,.5      
+			Rectangle: 
+				pos: self.pos
+				size: self.size
+
+<DragTab>:
+	GridLayout:
+		cols: 2
+		BoxLayout:
+			id: lefthand
+			orientation: 'vertical'
+			size_hint: .7,1
+			canvas:
+				Color: 
+					rgba: 0,0,0,.4
+				Rectangle: 
+					pos: self.pos
+					size: self.size
+			Label:
+				size_hint: 1, .1
+				text: 'We can display statistics here'
+			StackLayout:
+				size_hint: 1, .9
+				#rows:2
+				#cols:4
+				canvas:
+					Color: 
+						rgba: 0,0,1,.2
+					Rectangle: 
+						pos: self.pos
+						size: self.size
+				
+				Semester:
+					id: tryout2
+				Semester:
+					id: tryout3
+			
+			
+		StackLayout:
+			id: Scrollhome
+			orientation: 'tb-lr'
+			size_hint: .3,1
+			canvas:
+				Color: 
+					rgba: 1,1,1,.2
+				Rectangle: 
+					pos: self.pos
+					size: self.size
+			
