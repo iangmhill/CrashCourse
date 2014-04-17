@@ -121,6 +121,8 @@ class NetworkManager(object):
                     else:
                         print("Update complete.")
                         return True
+        else:
+            return 0
             
 if __name__ == '__main__':
     network = NetworkManager()
