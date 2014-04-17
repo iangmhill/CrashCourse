@@ -4,7 +4,7 @@ Created on Tue Apr  8 20:41:40 2014
 
 @author: hpelletier
 """
-
+import os
 from kivy.app import App
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.tabbedpanel import TabbedPanelHeader, StripLayout
@@ -21,20 +21,25 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen, WipeTransition
 from kivy.clock import Clock
 from FileManager import FileManager
+from NetworkManager import NetworkManager
 from Course_Item import Course_Item
 from kivy.uix.dropdown import DropDown
 from Proto3_5_stable import DragTab
+from datastructures import User
 #from dashNoKv import Dashboard
+
 
 fm = FileManager()
 catalog = fm.load_courses()
 user = fm.load_user('ihill','crashcourse')
 
+
 favorite_courses = []
 search_temp_list = [] 
 
 class StartUpScreen(Screen):
-    def __init__(self,**kwargs):        
+    def __init__(self,sm,**kwargs):   
+        self.sm = sm
         super(StartUpScreen, self).__init__(**kwargs)
         self.orientation = 'vertical'
 
@@ -44,11 +49,15 @@ class StartUpScreen(Screen):
         self.add_widget(self.image)
                              
     def transition(self,instance):            
-        sm.current = 'login'
+        self.sm.current = 'login'
         
 class LogInScreen(BoxLayout,Screen):
-    def __init__(self,**kwargs):
+    def __init__(self,sm,user,fm,nm,**kwargs):
         super(LogInScreen, self).__init__(**kwargs)
+        self.sm = sm
+        self.user = user
+        self.fm = fm
+        self.nm = nm
         self.orientation = 'vertical'
 
         self.username = GridLayout(cols=4,size_hint=(1.0,0.05))
@@ -87,22 +96,37 @@ class LogInScreen(BoxLayout,Screen):
         self.add_widget(self.space4)
         
     def new_user_function(self,instance):
-        sm.current = 'newuser'
+        self.sm.current = 'newuser'
         
     def enter_function(self,instance):
-        if self.u_entry.text != 'Username' and self.p_entry.text != 'Password':
-            self.space4.text = 'Username and password incorrect. Please try again.'
-        elif self.u_entry.text != 'Username':
-            self.space4.text = 'Username incorrect. Please try again.'
-        elif self.p_entry.text != 'Password':
-            self.space4.text = 'Password incorrect. Please try again.'        
-        else:
-            sm.current = 'tabs'
+        self.space4.text = 'Connecting...'
+        result = self.nm.update(self.u_entry.text,self.p_entry.text)
+        if result == 0:
+            self.space4.text = 'No internet connection.'
+            return
+        elif result == -1:
+            self.space4.text = 'User does not exist on server. Please create new user'
+            return
+        elif result == -3:
+            self.space4.text = 'Connecting to server. Incorrect password.'
+            return
+        elif result == -4:
+            self.space4.text = 'Lost internet connection while downloading new content.'
+            return
+        elif result == -5:
+            self.space4.text = 'Lost internet connection while syncing user information.'
+            return
+        elif result == True:
+            self.fm.load_courses()
+            self.user = self.fm.load_user()
+            self.space4.text = 'All systems go!'
+            self.sm.current = 'tabs'
         
         
 class NewUserScreen(BoxLayout,Screen):
-    def __init__(self,**kwargs):
-        super(NewUserScreen, self).__init__(**kwargs)        
+    def __init__(self,sm,**kwargs):
+        super(NewUserScreen, self).__init__(**kwargs)
+        self.sm = sm       
         self.orientation = 'vertical'    
 
         self.username = GridLayout(cols=4,size_hint=(1.0,0.05))
@@ -141,18 +165,19 @@ class NewUserScreen(BoxLayout,Screen):
         self.add_widget(self.warning)
         
     def back_function(self,instance):
-        sm.current = 'login'
+        self.sm.current = 'login'
 
         
     def enter_function(self,instance):
         #add self.u_entry.text to file
         #add self.p_entry.text to file
-        sm.current = 'tabs'        
+        self.sm.current = 'tabs'        
       
         
 class Dashboard(GridLayout):
-    def __init__(self,**kwargs):
+    def __init__(self,user,**kwargs):
         super(Dashboard, self).__init__(**kwargs)
+        self.user = user
         self.cols = 2
         
         self.info = GridLayout (rows=5)
@@ -203,7 +228,7 @@ class Dashboard(GridLayout):
         
         
         self.notes = GridLayout(cols=1)
-        self.n_entry = TextInput(text=user.notes, multiline=True)
+        self.n_entry = TextInput(text=self.user.notes, multiline=True)
         self.notes.add_widget(self.n_entry)
         
         
@@ -214,8 +239,10 @@ class Dashboard(GridLayout):
         
         
 class Catalog(BoxLayout):
-    def __init__(self,**kwargs):
-        super(Catalog, self).__init__(**kwargs)       
+    def __init__(self,fm,**kwargs):
+        super(Catalog, self).__init__(**kwargs)
+        self.fm = fm
+        self.catalog = self.fm.load_courses()
 
         self.orientation = 'vertical'
 
@@ -237,7 +264,7 @@ class Catalog(BoxLayout):
         self.scrollview = ScrollView(size_hint=(1.0,0.9),size=(400,400))
         self.courses = StackLayout(spacing=5,size_hint_y=None)
         self.courses.bind(minimum_height=self.courses.setter('height'))
-        for course_object in catalog:
+        for course_object in self.catalog:
             course_item = Course_Item(course=course_object,size_hint=(0.245,None),height=200)                             
             self.courses.add_widget(course_item)
         self.scrollview.add_widget(self.courses)
@@ -346,14 +373,16 @@ class Schedule(BoxLayout):
 
         
 class TabsPanel(TabbedPanel):
-    def __init__(self,**kwargs):
+    def __init__(self,user,fm,**kwargs):
         super(TabsPanel, self).__init__(**kwargs)
+        self.user = user
+        self.fm = fm
 
         self.strip_image = 'strip_logo2.png'
         self.tab1 = TabbedPanelHeader(text='Dashboard')
-        self.tab1.content = Dashboard()
+        self.tab1.content = Dashboard(self.user)
         self.tab2 = TabbedPanelHeader(text='Catalog')
-        self.tab2.content = Catalog()
+        self.tab2.content = Catalog(self.fm)
         self.tab3 = TabbedPanelHeader(text='Planner')
         self.tab3.content = Planner()
         self.tab4 = TabbedPanelHeader(text='Schedule')
@@ -366,23 +395,25 @@ class TabsPanel(TabbedPanel):
         
     
 class TabsScreen(Screen):
-    def __init__(self,**kwargs):
-        super(TabsScreen, self).__init__(**kwargs)        
-        self.add_widget(TabsPanel(do_default_tab=False))
+    def __init__(self,user,fm,**kwargs):
+        super(TabsScreen, self).__init__(**kwargs)  
+        self.user = user   
+        self.fm = fm   
+        self.add_widget(TabsPanel(self.user,self.fm,do_default_tab=False))
         
     
 class CrashCourseApp(App):
-    def __init__(self):
-        self.sm = ScreenManager(transition = WipeTransition())
-        self.sm.add_widget(StartUpScreen(name='startup'))
-        self.sm.add_widget(LogInScreen(name='login'))
-        self.sm.add_widget(NewUserScreen(name='newuser'))
-        self.sm.add_widget(TabsScreen(name='tabs'))
-        self.catalog = []
-        self.profs = []
-        self.user = None
-
     def build(self):
+        fm = FileManager()
+        nm = NetworkManager()
+        catalog = []
+        profs = []
+        user = User('noone','crashcourse','No One',2017,'E:C',{'ENGR':0, 'AHSE':0,'MTH':2,'SCI':2},[],"")
+        sm = ScreenManager(transition = WipeTransition())
+        sm.add_widget(StartUpScreen(sm,name='startup'))
+        sm.add_widget(LogInScreen(sm,user,fm,nm,name='login'))
+        sm.add_widget(NewUserScreen(sm,name='newuser'))
+        sm.add_widget(TabsScreen(user,fm,name='tabs'))
         return sm
 
 
