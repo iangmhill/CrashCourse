@@ -52,7 +52,8 @@ class DragTab(BoxLayout):
 		for course in catalog:
 			self.add_Icon(course)
 
-		Clock.schedule_interval(self.update_stats_widget, 1)
+		if len(self.lefthand.children)>=2:
+			Clock.schedule_interval(self.update_stats_widget, .1)
 		
 
 	def add_Icon(self, display):
@@ -61,6 +62,7 @@ class DragTab(BoxLayout):
                               bound_zone_objects=[],
                               drag_opacity=.5,
                               remove_on_drag=True)
+		# Icon.text_size=self.size
 		Icon.bound_zone_objects.append(self.Planner)
 		Icon.bound_zone_objects.append(self.Scrollhome)
 		
@@ -78,6 +80,7 @@ class DragTab(BoxLayout):
 
 	def update_stats_widget(self, dt):
 		count=0
+		Fixed=False
 		for child in self.lefthand.children[:]:
 			if child.height> 300:
 				for semester_block in child.children[:]:
@@ -86,10 +89,14 @@ class DragTab(BoxLayout):
 							for course in semester_element.children[:]:
 								count+=1
 		for child in self.lefthand.children[:]:
-			if child.height< 300:
-				self.lefthand.remove_widget(child)
-		stats_widget=Label(size_hint=(1,.1),text= 'Your schedule includes: ' + str(count)+' courses', color=(1,1,1,1))
-		self.lefthand.add_widget(stats_widget)
+			if child.height>300:
+				Fixed=True
+		if Fixed:
+			for child in self.lefthand.children[:]:
+				if child.height< 300:
+					self.lefthand.remove_widget(child)
+			stats_widget=Label(size_hint=(1,.1),text= 'Your schedule includes: ' + str(count)+' courses', color=(1,1,1,1))
+			self.lefthand.add_widget(stats_widget)
 
 class DemoApp2(App):
 	"""docstring for TestApp"""
