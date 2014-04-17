@@ -316,12 +316,13 @@ class Catalog(BoxLayout):
             for course_item in filtered_items:
                 self.courses.add_widget(course_item)   
 
-    def update_favorites(self,instance):        
+    def update_favorites(self,instance):  
+        global favorite_courses      
         for course_item in self.courses.children:
-            if course_item.favorite.state == 'normal' and course_item.course in favorite_courses:
-                favorite_courses.remove(course_item.course)
-            if course_item.favorite.state == 'down' and course_item.course not in favorite_courses:
-                favorite_courses.append(course_item.course)                
+            if course_item.favorite.state == 'normal' and course_item.course.code in favorite_courses:
+                favorite_courses.remove(course_item.course.code)
+            if course_item.favorite.state == 'down' and course_item.course.code not in favorite_courses:
+                favorite_courses.append(course_item.course.code)                
         
 
 class Planner(DragTab):
@@ -337,10 +338,11 @@ class Planner(DragTab):
         if len(favorite_courses) < len(self.favorites):
             self.favorites = []
             self.Scrollhome.clear_widgets()           
-        for course in favorite_courses:
-            if course not in self.favorites:
-                self.favorites.append(course)
-                self.add_Icon(course.name)
+
+        for course_code in favorite_courses:
+            if course_code not in self.favorites:
+                self.favorites.append(course_code)
+                self.add_Icon(str(course_code))
         
         
 class Schedule(BoxLayout):
@@ -390,6 +392,11 @@ class TabsPanel(TabbedPanel):
             for course_object in catalog:
                 course_item = Course_Item(course=course_object,size_hint=(0.245,None),height=200)
                 self.tab2.content.courses.add_widget(course_item)
+            for course_item in self.tab2.content.courses.children:
+                if course_item.course.code in favorite_courses:
+                    course_item.favorite.state = 'down'
+
+
         self.last_tab = self.current_tab
     
 class TabsScreen(Screen):
