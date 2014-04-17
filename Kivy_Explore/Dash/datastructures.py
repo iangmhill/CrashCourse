@@ -40,7 +40,7 @@ class Course(object):
         self.keywords = keywords          #as list of strings e.g. ["modsim","modeling", ...]
         self.prof = prof                  #as string e.g. "Mark Somerville"
         self.credits = credits            #as dictionary i.e. { category : numberofcredits , etc...} 
-                                          #e.g. {'ENGR':0,'AHSE':0,'MTH':2,'SCI':2}
+                                          #e.g. {'ENGR':0, 'AHSE':0,'MTH':2,'SCI':2}
         self.real_credits = real_credits  #as int e.g. 4
         self.semester = semester          #as list of Semester object
         self.time = time                  #as list of Time objects
