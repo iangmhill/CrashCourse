@@ -29,11 +29,6 @@ from datastructures import User
 #from dashNoKv import Dashboard
 
 
-fm = FileManager()
-catalog = fm.load_courses()
-user = fm.load_user('ihill','crashcourse')
-
-
 favorite_courses = []
 search_temp_list = [] 
 
