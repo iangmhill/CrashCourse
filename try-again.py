@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-Created on Tue Apr  8 20:41:40 2014
+Created on Wed Apr 16 20:18:45 2014
 
-@author: hpelletier
+@author: susie
 """
 
 from kivy.app import App
@@ -24,8 +24,6 @@ from FileManager import FileManager
 from Course_Item import Course_Item
 from kivy.uix.dropdown import DropDown
 from Proto3_5 import DragTab
-#from dashNoKv import Dashboard
-
 
 
 fm = FileManager()
@@ -151,8 +149,10 @@ class NewUserScreen(BoxLayout,Screen):
         #add self.u_entry.text to file
         #add self.p_entry.text to file
         sm.current = 'tabs'
-        
-        
+  
+
+ 
+
 class TabsPanel(TabbedPanel):
     def __init__(self,**kwargs):
         super(TabsPanel, self).__init__(**kwargs)
@@ -160,19 +160,18 @@ class TabsPanel(TabbedPanel):
         self.strip_image = 'strip_logo2.png'
         self.tab1 = TabbedPanelHeader(text='Dashboard')
         self.tab1.content = Dashboard()
-        self.tab2 = TabbedPanelHeader(text='Catalog')
-        self.tab2.content = Catalog()
-        self.tab3 = TabbedPanelHeader(text='Planner')
-        self.tab3.content = Planner()
-        self.tab4 = TabbedPanelHeader(text='Schedule')
-        self.tab4.content = Schedule()        
+        #self.tab2 = TabbedPanelHeader(text='Catalog')
+        #self.tab2.content = Catalog()
+        #self.tab3 = TabbedPanelHeader(text='Planner')
+        #self.tab3.content = Planner()
+        #self.tab4 = TabbedPanelHeader(text='Schedule')
+        #self.tab4.content = Schedule()        
         
         self.add_widget(self.tab1)
-        self.add_widget(self.tab2)
-        self.add_widget(self.tab3)
-        self.add_widget(self.tab4)
-        
-        
+        #self.add_widget(self.tab2)
+        #self.add_widget(self.tab3)
+        #self.add_widget(self.tab4)
+
 class Dashboard(GridLayout):
     def __init__(self,**kwargs):
         super(Dashboard, self).__init__(**kwargs)
@@ -239,133 +238,8 @@ class Dashboard(GridLayout):
         self.add_widget(self.notes)
         
         
-class Catalog(BoxLayout):
-    def __init__(self,**kwargs):
-        super(Catalog, self).__init__(**kwargs)       
-
-        self.orientation = 'vertical'
-
-        self.search_bar = BoxLayout(size_hint=(1.0,0.05))        
-        self.search_bar.add_widget(Label(text='Search',size_hint=(0.25,1.0)))
-        self.search_text = (TextInput(multiline=False))
-        self.search_bar.add_widget(self.search_text)
-
-        self.filter_bar = BoxLayout(size_hint=(1.0,0.05))        
-        self.AHSE = ToggleButton(text='AHSE',size_hint=(0.25,1.0))
-        self.ENGR = ToggleButton(text='ENGR',size_hint=(0.25,1.0))
-        self.MTH = ToggleButton(text='MTH',size_hint=(0.25,1.0))
-        self.SCI = ToggleButton(text='SCI',size_hint=(0.25,1.0))        
-        self.filter_bar.add_widget(self.AHSE)
-        self.filter_bar.add_widget(self.ENGR)
-        self.filter_bar.add_widget(self.MTH)
-        self.filter_bar.add_widget(self.SCI)
-
-        self.scrollview = ScrollView(size_hint=(1.0,0.9),size=(400,400))
-        self.courses = StackLayout(spacing=5,size_hint_y=None)
-        self.courses.bind(minimum_height=self.courses.setter('height'))
-        for course_object in catalog:
-            course_item = Course_Item(course=course_object,size_hint=(0.245,None),height=200)                             
-            self.courses.add_widget(course_item)
-        self.scrollview.add_widget(self.courses)
-                        
-        self.add_widget(self.search_bar)
-        self.add_widget(self.filter_bar)
-        self.add_widget(self.scrollview)
-
-        Clock.schedule_interval(self.update_favorites,0.1)
-        Clock.schedule_interval(self.search_function,0.1)
 
 
-    def search_function(self,instance):
-        query = self.search_text.text.lower()        
-        searched_items = []
-        filtered_items = []
-
-        #fills up the temp list the first time it runs
-        if len(search_temp_list) == 0:
-            for course_item in self.courses.children:
-                search_temp_list.append(course_item)       
-        
-        #if the query is not empty, do term search
-        if query != "":                      
-            for course_item in search_temp_list:                            
-                if query == course_item.course.name.lower() or query == course_item.course.code or query == course_item.course.prof.lower():
-                    searched_items.append(course_item)
-                for keyword in course_item.course.keywords:
-                    if query == keyword.lower():                        
-                        searched_items.append(course_item)           
-        else:
-            searched_items = search_temp_list
-        
-        if self.AHSE.state == 'normal' and self.ENGR.state == 'normal' and self.MTH.state == 'normal' and self.SCI.state == 'normal':
-            filtered_items = searched_items
-
-        else:                                
-            if self.AHSE.state == 'down':
-                for course_item in searched_items:                   
-                    if course_item.course.credits['AHSE'] > 0:                                                  
-                        filtered_items.append(course_item)
-            if self.ENGR.state == 'down': 
-                for course_item in searched_items:                      
-                    if course_item.course.credits['ENGR'] > 0 and course_item not in filtered_items:                                                  
-                        filtered_items.append(course_item)
-            if self.MTH.state == 'down':                          
-                for course_item in searched_items:
-                    if course_item.course.credits['MTH'] > 0 and course_item not in filtered_items:                                                 
-                        filtered_items.append(course_item)
-            if self.SCI.state == 'down':
-                for course_item in searched_items:                   
-                    if course_item.course.credits['SCI'] > 0 and course_item not in filtered_items:                                             
-                        filtered_items.append(course_item)
-
-        if len(self.courses.children) != len(filtered_items):
-            self.courses.clear_widgets()
-            for course_item in filtered_items:
-                self.courses.add_widget(course_item)   
-
-    def update_favorites(self,instance):        
-        for course_item in self.courses.children:
-            if course_item.favorite.state == 'normal' and course_item.course in favorite_courses:
-                favorite_courses.remove(course_item.course)
-            if course_item.favorite.state == 'down' and course_item.course not in favorite_courses:
-                favorite_courses.append(course_item.course)                
-        
-
-class Planner(DragTab):
-    def __init__(self,**kwargs):
-        super(Planner, self).__init__(**kwargs)
-
-        self.favorites = []        
-        Clock.schedule_interval(self.update_favorites,0.1) 
-        
-    def update_favorites(self,instance):
-        if len(favorite_courses) == len(self.favorites):
-            return
-        if len(favorite_courses) < len(self.favorites):
-            self.favorites = []            
-        for course in favorite_courses:
-            if course not in self.favorites:
-                self.favorites.append(course)  
-                self.add_Icon(course.name)
-        
-        
-class Schedule(BoxLayout):
-    def __init__(self,**kwargs):
-        super(Schedule, self).__init__(**kwargs)
-
-        self.mon = Label(text= 'Mon')
-        self.tue = Label(text= 'Tue')
-        self.wed = Label(text=' Wed')
-        self.thu = Label(text= 'Thu')
-        self.fri = Label(text=' Fri')       
-        
-        self.add_widget(self.mon)
-        self.add_widget(self.tue)
-        self.add_widget(self.wed)
-        self.add_widget(self.thu)
-        self.add_widget(self.fri)
-        
-    
 class TabsScreen(Screen):
     def __init__(self,**kwargs):
         super(TabsScreen, self).__init__(**kwargs)        

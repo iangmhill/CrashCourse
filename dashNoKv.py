@@ -21,7 +21,26 @@ fm = FileManager()
 user = fm.load_user('ihill','crashcourse')
   
 
+ 
 
+class TabsPanel(TabbedPanel):
+    def __init__(self,**kwargs):
+        super(TabsPanel, self).__init__(**kwargs)
+
+        self.strip_image = 'strip_logo2.png'
+        self.tab1 = TabbedPanelHeader(text='Dashboard')
+        self.tab1.content = Dashboard()
+        #self.tab2 = TabbedPanelHeader(text='Catalog')
+        #self.tab2.content = Catalog()
+        #self.tab3 = TabbedPanelHeader(text='Planner')
+        #self.tab3.content = Planner()
+        #self.tab4 = TabbedPanelHeader(text='Schedule')
+        #self.tab4.content = Schedule()        
+        
+        self.add_widget(self.tab1)
+        #self.add_widget(self.tab2)
+        #self.add_widget(self.tab3)
+        #self.add_widget(self.tab4)
 
 class Dashboard(GridLayout):
     def __init__(self,**kwargs):
@@ -88,24 +107,6 @@ class Dashboard(GridLayout):
         self.add_widget(self.stats)
         self.add_widget(self.notes)
         
-class TabsPanel(TabbedPanel):
-    def __init__(self,**kwargs):
-        super(TabsPanel, self).__init__(**kwargs)
-
-        self.strip_image = 'strip_logo2.png'
-        self.tab1 = TabbedPanelHeader(text='Dashboard')
-        self.tab1.content = Dashboard()
-        #self.tab2 = TabbedPanelHeader(text='Catalog')
-        #self.tab2.content = Catalog()
-        #self.tab3 = TabbedPanelHeader(text='Planner')
-        #self.tab3.content = Planner()
-        #self.tab4 = TabbedPanelHeader(text='Schedule')
-        #self.tab4.content = Schedule()        
-        
-        self.add_widget(self.tab1)
-        #self.add_widget(self.tab2)
-        #self.add_widget(self.tab3)
-        #self.add_widget(self.tab4)        
 
 class TabsScreen(Screen):
     def __init__(self,**kwargs):
