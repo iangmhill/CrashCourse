@@ -24,10 +24,9 @@ from FileManager import FileManager
 from NetworkManager import NetworkManager
 from Course_Item import Course_Item
 from kivy.uix.dropdown import DropDown
-from Proto3_5 import DragTab
+from Proto3_5_stable import DragTab
 from datastructures import User
 #from dashNoKv import Dashboard
-
 
 
 favorite_courses = []
@@ -347,15 +346,11 @@ class Planner(DragTab):
             return
         if len(favorite_courses) < len(self.favorites):
             self.favorites = []
-            self.Scrollhome.clear_widgets()
-            for child in self.Planner.children:
-                for kid in child.children:
-                    for grandkid in kid.children:                        
-                        kid.remove_widget(grandkid)
+            self.Scrollhome.clear_widgets()           
         for course in favorite_courses:
             if course not in self.favorites:
                 self.favorites.append(course)
-                self.add_Icon(course.name)
+                self.add_Icon(course)
         
         
 class Schedule(BoxLayout):
