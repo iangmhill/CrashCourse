@@ -262,8 +262,6 @@ class Catalog(BoxLayout):
         self.add_widget(self.filter_bar)
         self.add_widget(self.scrollview)
 
-        print self.catalog
-
         Clock.schedule_interval(self.update_favorites,0.1)
         Clock.schedule_interval(self.search_function,0.1)    
 
@@ -342,7 +340,7 @@ class Planner(DragTab):
         for course in favorite_courses:
             if course not in self.favorites:
                 self.favorites.append(course)
-                self.add_Icon(course)
+                self.add_Icon(course.name)
         
         
 class Schedule(BoxLayout):
