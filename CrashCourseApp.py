@@ -26,7 +26,6 @@ from kivy.uix.dropdown import DropDown
 from Proto3_5_stable import DragTab
 #from dashNoKv import Dashboard
 
-
 fm = FileManager()
 catalog = fm.load_courses()
 user = fm.load_user('ihill','crashcourse')
@@ -180,16 +179,13 @@ class Dashboard(GridLayout):
         maj_dropdown.bind(on_select=lambda instance, x: setattr(mainbutton_major, 'text', x))
         self.info.add_widget (mainbutton_major)
         self.info.add_widget(Label())
-        self.info.add_widget(Label())
-        
+        self.info.add_widget(Label())        
         
         self.reminders = GridLayout (rows=5)
         self.reminders.add_widget(Label(text='Reminders'))
         self.reminders.add_widget(Button(text='Email Loretta Lynn about 22 Credits', size_hint_y=None, height = 25))
         self.reminders.add_widget(Label())
-        self.reminders.add_widget(Label())
-
-        
+        self.reminders.add_widget(Label())        
         
         self.stats = BoxLayout (orientation='vertical')
         self.information = GridLayout (cols = 2, size_hint = (1,.7))

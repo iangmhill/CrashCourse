@@ -10,7 +10,7 @@ from kivy.uix.button import Button
 from NoKvId import Semester
 from kivy.clock import Clock
 
-catalog1=['ModCon','ModSim','DesNat','AHS \nFound.','OIE','MODRWM']
+catalog=['ModCon','ModSim','DesNat','AHS \nFound.','OIE','MODRWM']
 semesters=['FL 2013', 'SP 2014','FL 2014','SP 2015','FL 2015','SP 2016','FL 2016','SP 2017']
 
 class DragTab(BoxLayout):
@@ -42,25 +42,27 @@ class DragTab(BoxLayout):
 		self.Planner.add_widget(self.slot8)
 
 		self.lefthand.add_widget(self.Planner)
-		stats_widget=Label(size_hint=(1,.1),text= 'Your schedule includes: 0 courses', color=(1,1,1,.3))
+		stats_widget=Label(size_hint=(1,.1),text= 'We can display statistics here', color=(1,1,1,.3))
 		self.lefthand.add_widget(stats_widget)
 		
 		#Now stuff it all in
 		self.add_widget(self.lefthand)
 		self.add_widget(self.Scrollhome)
 
-		#for course in catalog1:
-		#	self.add_Icon(course)
-		
-		Clock.schedule_interval(self.update_stats_widget, 5)
+		for course in catalog:
+			self.add_Icon(course)
+
+		if len(self.lefthand.children)>=2:
+			Clock.schedule_interval(self.update_stats_widget, .1)
 		
 
 	def add_Icon(self, display):
-		Icon=DragableButton(text=display.name,size=(100,100),
+		Icon=DragableButton(text=display,size=(100,100),
                               droppable_zone_objects=[],
                               bound_zone_objects=[],
                               drag_opacity=.5,
                               remove_on_drag=True)
+		# Icon.text_size=self.size
 		Icon.bound_zone_objects.append(self.Planner)
 		Icon.bound_zone_objects.append(self.Scrollhome)
 		
@@ -78,6 +80,7 @@ class DragTab(BoxLayout):
 
 	def update_stats_widget(self, dt):
 		count=0
+		Fixed=False
 		for child in self.lefthand.children[:]:
 			if child.height> 300:
 				for semester_block in child.children[:]:
@@ -86,10 +89,14 @@ class DragTab(BoxLayout):
 							for course in semester_element.children[:]:
 								count+=1
 		for child in self.lefthand.children[:]:
-			if child.height< 300:
-				self.lefthand.remove_widget(child)
-		stats_widget=Label(size_hint=(1,.1),text= 'Your schedule includes: ' + str(count)+' courses', color=(1,1,1,1))
-		self.lefthand.add_widget(stats_widget)
+			if child.height>300:
+				Fixed=True
+		if Fixed:
+			for child in self.lefthand.children[:]:
+				if child.height< 300:
+					self.lefthand.remove_widget(child)
+			stats_widget=Label(size_hint=(1,.1),text= 'Your schedule includes: ' + str(count)+' courses', color=(1,1,1,1))
+			self.lefthand.add_widget(stats_widget)
 
 class DemoApp2(App):
 	"""docstring for TestApp"""
