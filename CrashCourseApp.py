@@ -47,12 +47,13 @@ class StartUpScreen(Screen):
         self.sm.current = 'login'
         
 class LogInScreen(BoxLayout,Screen):
-    def __init__(self,sm,user,fm,nm,**kwargs):
+    def __init__(self,sm,user,fm,nm,catalog,**kwargs):
         super(LogInScreen, self).__init__(**kwargs)
         self.sm = sm
         self.user = user
         self.fm = fm
         self.nm = nm
+        self.catalog = catalog
         self.orientation = 'vertical'
 
         self.username = GridLayout(cols=4,size_hint=(1.0,0.05))
@@ -114,6 +115,7 @@ class LogInScreen(BoxLayout,Screen):
         elif result == True:
             self.fm.load_courses()
             self.user = self.fm.load_user()
+            self.catalog = self.fm.load_courses()
             self.space4.text = 'All systems go!'
             self.sm.current = 'tabs'
         
@@ -234,10 +236,9 @@ class Dashboard(GridLayout):
         
         
 class Catalog(BoxLayout):
-    def __init__(self,fm,**kwargs):
+    def __init__(self,catalog,**kwargs):
         super(Catalog, self).__init__(**kwargs)
-        self.fm = fm
-        self.catalog = self.fm.load_courses()
+        self.catalog = catalog
 
         self.orientation = 'vertical'
 
@@ -368,16 +369,17 @@ class Schedule(BoxLayout):
 
         
 class TabsPanel(TabbedPanel):
-    def __init__(self,user,fm,**kwargs):
+    def __init__(self,user,fm,catalog,**kwargs):
         super(TabsPanel, self).__init__(**kwargs)
         self.user = user
         self.fm = fm
+        self.catalog = catalog
 
         self.strip_image = 'strip_logo2.png'
         self.tab1 = TabbedPanelHeader(text='Dashboard')
         self.tab1.content = Dashboard(self.user)
         self.tab2 = TabbedPanelHeader(text='Catalog')
-        self.tab2.content = Catalog(self.fm)
+        self.tab2.content = Catalog(self.catalog)
         self.tab3 = TabbedPanelHeader(text='Planner')
         self.tab3.content = Planner()
         self.tab4 = TabbedPanelHeader(text='Schedule')
@@ -390,11 +392,12 @@ class TabsPanel(TabbedPanel):
         
     
 class TabsScreen(Screen):
-    def __init__(self,user,fm,**kwargs):
+    def __init__(self,user,fm,catalog,**kwargs):
         super(TabsScreen, self).__init__(**kwargs)  
         self.user = user   
         self.fm = fm   
-        self.add_widget(TabsPanel(self.user,self.fm,do_default_tab=False))
+        self.catalog = catalog
+        self.add_widget(TabsPanel(self.user,self.fm,self.catalog,do_default_tab=False))
         
     
 class CrashCourseApp(App):
@@ -406,9 +409,9 @@ class CrashCourseApp(App):
         user = User('noone','crashcourse','No One',2017,'E:C',{'ENGR':0, 'AHSE':0,'MTH':2,'SCI':2},[],"")
         sm = ScreenManager(transition = WipeTransition())
         sm.add_widget(StartUpScreen(sm,name='startup'))
-        sm.add_widget(LogInScreen(sm,user,fm,nm,name='login'))
+        sm.add_widget(LogInScreen(sm,user,fm,nm,catalog,name='login'))
         sm.add_widget(NewUserScreen(sm,name='newuser'))
-        sm.add_widget(TabsScreen(user,fm,name='tabs'))
+        sm.add_widget(TabsScreen(user,fm,catalog,name='tabs'))
         return sm
 
 
