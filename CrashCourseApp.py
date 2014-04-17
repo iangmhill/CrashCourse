@@ -260,9 +260,7 @@ class Catalog(BoxLayout):
         self.scrollview = ScrollView(size_hint=(1.0,0.9),size=(400,400))
         self.courses = StackLayout(spacing=5,size_hint_y=None)
         self.courses.bind(minimum_height=self.courses.setter('height'))
-        for course_object in self.catalog:
-            course_item = Course_Item(course=course_object,size_hint=(0.245,None),height=200)                             
-            self.courses.add_widget(course_item)
+
         self.scrollview.add_widget(self.courses)
                         
         self.add_widget(self.search_bar)
@@ -272,8 +270,7 @@ class Catalog(BoxLayout):
         print self.catalog
 
         Clock.schedule_interval(self.update_favorites,0.1)
-        Clock.schedule_interval(self.search_function,0.1)
-
+        Clock.schedule_interval(self.search_function,0.1)    
 
     def search_function(self,instance):
         query = self.search_text.text.lower()        
@@ -392,6 +389,14 @@ class TabsPanel(TabbedPanel):
         self.add_widget(self.tab3)
         self.add_widget(self.tab4)
         
+        Clock.schedule_interval(self.populate,1)
+
+    def populate(self,instance):
+        if self.current_tab == self.tab2:
+            print 'yay'            
+            for course_object in self.catalog:
+                course_item = Course_Item(course=course_object,size_hint=(0.245,None),height=200)                             
+                self.tab2.content.courses.add_widget(course_item)
     
 class TabsScreen(Screen):
     def __init__(self,user,fm,catalog,**kwargs):
