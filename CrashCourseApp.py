@@ -370,16 +370,19 @@ class TabsScreen(Screen):
         self.add_widget(TabsPanel(do_default_tab=False))
         
     
-sm = ScreenManager(transition = WipeTransition())
-sm.add_widget(StartUpScreen(name='startup'))
-sm.add_widget(LogInScreen(name='login'))
-sm.add_widget(NewUserScreen(name='newuser'))
-sm.add_widget(TabsScreen(name='tabs'))
+class CrashCourseApp(App):
+    def __init__(self):
+        self.sm = ScreenManager(transition = WipeTransition())
+        self.sm.add_widget(StartUpScreen(name='startup'))
+        self.sm.add_widget(LogInScreen(name='login'))
+        self.sm.add_widget(NewUserScreen(name='newuser'))
+        self.sm.add_widget(TabsScreen(name='tabs'))
+        self.catalog = []
+        self.profs = []
+        self.user = None
 
-
-class CrashCourseApp(App):   
-    def build(self):                
-        return sm   
+    def build(self):
+        return sm
 
 
 if __name__ == '__main__':
