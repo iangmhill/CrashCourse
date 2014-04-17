@@ -23,12 +23,11 @@ from kivy.clock import Clock
 from FileManager import FileManager
 from Course_Item import Course_Item
 from kivy.uix.dropdown import DropDown
-from Proto3_5 import DragTab
+from Proto3_5_stable import DragTab
 
 fm = FileManager()
 catalog = fm.load_courses()
 user = fm.load_user('ihill','crashcourse')
-
 
 favorite_courses = []
 search_temp_list = [] 
@@ -325,15 +324,11 @@ class Planner(DragTab):
             return
         if len(favorite_courses) < len(self.favorites):
             self.favorites = []
-            self.Scrollhome.clear_widgets()
-            for child in self.Planner.children:
-                for kid in child.children:
-                    for grandkid in kid.children:                        
-                        kid.remove_widget(grandkid)
+            self.Scrollhome.clear_widgets()           
         for course in favorite_courses:
             if course not in self.favorites:
                 self.favorites.append(course)
-                self.add_Icon(course.name)
+                self.add_Icon(course)
         
         
 class Schedule(BoxLayout):

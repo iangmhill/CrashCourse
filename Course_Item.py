@@ -59,4 +59,3 @@ class Course_Item(BoxLayout):
 
 	def pop_up(self,instance):	
 		self.popup.open()
-
