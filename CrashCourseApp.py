@@ -203,7 +203,7 @@ class Dashboard(GridLayout):
         
         self.reminders = GridLayout (rows=5)
         self.reminders.add_widget(Label(text='Reminders'))
-        self.reminders.add_widget(Button(text='Email Loretta Lynn about 22 Credits', size_hint_y=None, height = 25))
+        self.reminders.add_widget(Button(text='Email Loretta Dinnon about 22 Credits', size_hint_y=None, height = 25))
         self.reminders.add_widget(Label())
         self.reminders.add_widget(Label())        
         
