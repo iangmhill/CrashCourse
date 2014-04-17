@@ -28,7 +28,6 @@ from Proto3_5_stable import DragTab
 from datastructures import User
 #from dashNoKv import Dashboard
 
-
 favorite_courses = []
 search_temp_list = [] 
 
@@ -47,13 +46,10 @@ class StartUpScreen(Screen):
         self.sm.current = 'login'
         
 class LogInScreen(BoxLayout,Screen):
-    def __init__(self,sm,user,fm,nm,catalog,**kwargs):
+    def __init__(self,sm,**kwargs):
         super(LogInScreen, self).__init__(**kwargs)
         self.sm = sm
-        self.user = user
-        self.fm = fm
-        self.nm = nm
-        self.catalog = catalog
+
         self.orientation = 'vertical'
 
         self.username = GridLayout(cols=4,size_hint=(1.0,0.05))
@@ -95,8 +91,9 @@ class LogInScreen(BoxLayout,Screen):
         self.sm.current = 'newuser'
         
     def enter_function(self,instance):
+        global catalog
         self.space4.text = 'Connecting...'
-        result = self.nm.update(self.u_entry.text,self.p_entry.text)
+        result = nm.update(self.u_entry.text,self.p_entry.text)
         if result == 0:
             self.space4.text = 'No internet connection.'
             return
@@ -113,9 +110,9 @@ class LogInScreen(BoxLayout,Screen):
             self.space4.text = 'Lost internet connection while syncing user information.'
             return
         elif result == True:
-            self.fm.load_courses()
-            self.user = self.fm.load_user()
-            self.catalog = self.fm.load_courses()
+            fm.load_courses()
+            user = fm.load_user()
+            catalog = fm.load_courses()
             self.space4.text = 'All systems go!'
             self.sm.current = 'tabs'
         
@@ -172,9 +169,8 @@ class NewUserScreen(BoxLayout,Screen):
       
         
 class Dashboard(GridLayout):
-    def __init__(self,user,**kwargs):
+    def __init__(self,**kwargs):
         super(Dashboard, self).__init__(**kwargs)
-        self.user = user
         self.cols = 2
         
         self.info = GridLayout (rows=5)
@@ -225,7 +221,7 @@ class Dashboard(GridLayout):
         
         
         self.notes = GridLayout(cols=1)
-        self.n_entry = TextInput(text=self.user.notes, multiline=True)
+        self.n_entry = TextInput(text=user.notes, multiline=True)
         self.notes.add_widget(self.n_entry)
         
         
@@ -236,9 +232,8 @@ class Dashboard(GridLayout):
         
         
 class Catalog(BoxLayout):
-    def __init__(self,catalog,**kwargs):
+    def __init__(self,**kwargs):
         super(Catalog, self).__init__(**kwargs)
-        self.catalog = catalog
 
         self.orientation = 'vertical'
 
@@ -366,17 +361,15 @@ class Schedule(BoxLayout):
 
         
 class TabsPanel(TabbedPanel):
-    def __init__(self,user,fm,catalog,**kwargs):
+    def __init__(self,**kwargs):
         super(TabsPanel, self).__init__(**kwargs)
-        self.user = user
-        self.fm = fm
-        self.catalog = catalog
+        self.last_tab = None
 
         self.strip_image = 'strip_logo2.png'
         self.tab1 = TabbedPanelHeader(text='Dashboard')
-        self.tab1.content = Dashboard(self.user)
+        self.tab1.content = Dashboard()
         self.tab2 = TabbedPanelHeader(text='Catalog')
-        self.tab2.content = Catalog(self.catalog)
+        self.tab2.content = Catalog()
         self.tab3 = TabbedPanelHeader(text='Planner')
         self.tab3.content = Planner()
         self.tab4 = TabbedPanelHeader(text='Schedule')
@@ -390,35 +383,35 @@ class TabsPanel(TabbedPanel):
         Clock.schedule_interval(self.populate,1)
 
     def populate(self,instance):
-        if self.current_tab == self.tab2:
-            print 'yay'            
-            for course_object in self.catalog:
-                course_item = Course_Item(course=course_object,size_hint=(0.245,None),height=200)                             
+        
+        if self.current_tab != self.last_tab and self.current_tab == self.tab2:
+            self.tab2.content.courses.clear_widgets()
+            print("changed to tab 2")
+            for course_object in catalog:
+                course_item = Course_Item(course=course_object,size_hint=(0.245,None),height=200)
                 self.tab2.content.courses.add_widget(course_item)
+        self.last_tab = self.current_tab
     
 class TabsScreen(Screen):
-    def __init__(self,user,fm,catalog,**kwargs):
+    def __init__(self,**kwargs):
         super(TabsScreen, self).__init__(**kwargs)  
-        self.user = user   
-        self.fm = fm   
-        self.catalog = catalog
-        self.add_widget(TabsPanel(self.user,self.fm,self.catalog,do_default_tab=False))
+        self.add_widget(TabsPanel(do_default_tab=False))
         
     
 class CrashCourseApp(App):
     def build(self):
-        fm = FileManager()
-        nm = NetworkManager()
-        catalog = []
-        profs = []
-        user = User('noone','crashcourse','No One',2017,'E:C',{'ENGR':0, 'AHSE':0,'MTH':2,'SCI':2},[],"")
         sm = ScreenManager(transition = WipeTransition())
         sm.add_widget(StartUpScreen(sm,name='startup'))
-        sm.add_widget(LogInScreen(sm,user,fm,nm,catalog,name='login'))
+        sm.add_widget(LogInScreen(sm,name='login'))
         sm.add_widget(NewUserScreen(sm,name='newuser'))
-        sm.add_widget(TabsScreen(user,fm,catalog,name='tabs'))
+        sm.add_widget(TabsScreen(name='tabs'))
         return sm
 
 
 if __name__ == '__main__':
+    fm = FileManager()
+    nm = NetworkManager()
+    catalog = []
+    profs = []
+    user = User('noone','crashcourse','No One',2017,'E:C',{'ENGR':0, 'AHSE':0,'MTH':2,'SCI':2},[],"")
     CrashCourseApp().run()
