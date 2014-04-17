@@ -262,6 +262,8 @@ class Catalog(BoxLayout):
         self.add_widget(self.filter_bar)
         self.add_widget(self.scrollview)
 
+        print self.catalog
+
         Clock.schedule_interval(self.update_favorites,0.1)
         Clock.schedule_interval(self.search_function,0.1)    
 
