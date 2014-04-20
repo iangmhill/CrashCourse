@@ -37,7 +37,7 @@ class Controller(object):
         self.t1 = threading.Thread(target=self.ServerThread)
         self.t2 = threading.Thread(target=self.CommandThread)
         self.ip = self.get_ipaddress()
-        self.port = 5301
+        self.port = 5303
         self.log = ""
         try:
             sys.path.insert(0,"//stuweb/WEB/Students/2017/ihill")
@@ -78,22 +78,22 @@ class Controller(object):
                 print(self.log)
                 
     def ServerThread(self):
-        print(self.get_ipaddress())
         server = TftpServer(os.getcwd(),None,self.ip,self.port,5)
+        print("Server started: " + self.get_ipaddress() + ":" + str(self.port))
         while self.running:
             for n in range(5):
                 if self.running:
                     server.listen()
                     if server.working_file != self.working_file:
-                    self.log += datetime.now() + ' ' + server.working_file + '\n'
-                    self.working_file = server.working_file
+                        self.log += str(datetime.now()) + ' ' + server.working_file + '\n'
+                        self.working_file = server.working_file
                 else:
                     break
             try:
                 self.merge()
-                self.log += datetime.now() + ' Merge completed'
+                self.log += str(datetime.now()) + ' Merge completed\n'
                 self.generate_statistics()
-                self.log += datetime.now() + ' Statistics generated'
+                self.log += str(datetime.now()) + ' Statistics generated\n'
                 with open('ServerLog.txt','w') as log:
                     log.write(self.log)
             except:
