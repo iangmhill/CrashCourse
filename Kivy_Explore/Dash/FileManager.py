@@ -75,7 +75,7 @@ class FileManager(object):
             distribution = pickle.load(statsfile)
         return last_updated,distribution
 
-    def load_user(self):
+    def load_user(self,username,password):
         with open('user.usr', 'rb') as userfile:
             try:
                 user = pickle.load(userfile)
@@ -83,8 +83,11 @@ class FileManager(object):
                 print("User file does not exist")
                 return False
             else:
-                return user
-
+                if user.username == username and user.password == password:
+                    return user
+                else:
+                    print("Incorrect username or password")
+                    return False
 
     def save_user(self,user):
         with open('user.usr', 'wb') as userfile:

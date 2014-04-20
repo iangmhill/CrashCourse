@@ -41,8 +41,7 @@ class DragTab(BoxLayout):
 		self.Planner.add_widget(self.slot8)
 
 		self.lefthand.add_widget(self.Planner)
-		self.lefthand.add_widget(Label(size_hint=(1,.1),text= 'We can display statistics here', color=(1,1,1,.3)))
-		
+		self.lefthand.add_widget(Label(size_hint=(1,.1),text= 'We can display statistics here', color=(1,1,1,.3)))		
 
 		self.add_widget(self.lefthand)
 		self.add_widget(self.Scrollhome)

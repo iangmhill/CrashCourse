@@ -9,7 +9,6 @@ from kivy.graphics import Rectangle
 from kivy.uix.button import Button
 from NoKvId import Semester
 from kivy.clock import Clock
-from kivy.uix.scrollview import ScrollView
 
 catalog=['ModCon','ModSim','DesNat','AHS \nFound.','OIE','MODRWM']
 semesters=['FL 2013', 'SP 2014','FL 2014','SP 2015','FL 2015','SP 2016','FL 2016','SP 2017']
@@ -19,21 +18,7 @@ class DragTab(BoxLayout):
 		super(DragTab,self).__init__(**kwargs)
 		#Base Layer is a BoxLayout
 		#right-hand column is StackLayout, lefthand is a vertical box layout
-		
-		self.stack1 = StackLayout(spacing=5,size_hint_y=None)
-		self.stack2 = StackLayout(spacing=5,size_hint_y=None)
-		self.stack3 = StackLayout(spacing=5,size_hint_y=None)
-		self.scrollview1 = ScrollView(size_hint=(1.0,0.33),size=(400,400))
-		self.scrollview2 = ScrollView(size_hint=(1.0,0.33),size=(400,400))
-		self.scrollview3 = ScrollView(size_hint=(1.0,0.33),size=(400,400))
-		self.scrollview1.add_widget(self.stack1)
-		self.scrollview2.add_widget(self.stack2)
-		self.scrollview3.add_widget(self.stack3)
-		self.Scrollhome=BoxLayout(orientation='vertical', size_hint=(.3,1))
-		self.Scrollhome.add_widget(self.scrollview1)
-		#self.Scrollhome.add_widget(self.scrollview2)
-		#self.Scrollhome.add_widget(self.scrollview3)
-		
+		self.Scrollhome=StackLayout(orientation='tb-rl', size_hint=(.3,1))
 		#self.Scrollhome.add_widget(Button(text='hi'))
 		self.lefthand=BoxLayout(orientation='vertical', size_hint=(.7,1))
 		#within lefthand, stats and a series of semesters
@@ -67,17 +52,19 @@ class DragTab(BoxLayout):
 		for course in catalog:
 			self.add_Icon(course)
 
-		Clock.schedule_interval(self.update_stats_widget, 1)
+		if len(self.lefthand.children)>=2:
+			Clock.schedule_interval(self.update_stats_widget, .1)
 		
 
 	def add_Icon(self, display):
-		Icon=DragableButton(text=display,height=100,size_hint_y=None,
+		Icon=DragableButton(text=display,size=(100,100),
                               droppable_zone_objects=[],
                               bound_zone_objects=[],
                               drag_opacity=.5,
                               remove_on_drag=True)
+		# Icon.text_size=self.size
 		Icon.bound_zone_objects.append(self.Planner)
-		Icon.bound_zone_objects.append(self.scrollview1)
+		Icon.bound_zone_objects.append(self.Scrollhome)
 		
 		Icon.droppable_zone_objects.append(self.slot1.coursehouse)
 		Icon.droppable_zone_objects.append(self.slot2.coursehouse)
@@ -88,11 +75,12 @@ class DragTab(BoxLayout):
 		Icon.droppable_zone_objects.append(self.slot7.coursehouse)
 		Icon.droppable_zone_objects.append(self.slot8.coursehouse)
 		
-		Icon.droppable_zone_objects.append(self.scrollview1)
-		self.stack1.add_widget(Icon)
+		Icon.droppable_zone_objects.append(self.Scrollhome)
+		self.Scrollhome.add_widget(Icon)
 
 	def update_stats_widget(self, dt):
 		count=0
+		Fixed=False
 		for child in self.lefthand.children[:]:
 			if child.height> 300:
 				for semester_block in child.children[:]:
@@ -101,10 +89,14 @@ class DragTab(BoxLayout):
 							for course in semester_element.children[:]:
 								count+=1
 		for child in self.lefthand.children[:]:
-			if child.height< 300:
-				self.lefthand.remove_widget(child)
-		stats_widget=Label(size_hint=(1,.1),text= 'Your schedule includes: ' + str(count)+' courses', color=(1,1,1,1))
-		self.lefthand.add_widget(stats_widget)
+			if child.height>300:
+				Fixed=True
+		if Fixed:
+			for child in self.lefthand.children[:]:
+				if child.height< 300:
+					self.lefthand.remove_widget(child)
+			stats_widget=Label(size_hint=(1,.1),text= 'Your schedule includes: ' + str(count)+' courses', color=(1,1,1,1))
+			self.lefthand.add_widget(stats_widget)
 
 class DemoApp2(App):
 	"""docstring for TestApp"""
