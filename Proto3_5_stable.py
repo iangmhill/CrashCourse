@@ -54,24 +54,24 @@ class DragTab(BoxLayout):
 		self.add_widget(self.lefthand)
 		self.add_widget(self.Scrollhome)
 
-		for course in catalog:
-			self.add_Icon(course)
+		# for course in catalog:
+		# 	self.add_Icon(course)
 
 		# if len(self.lefthand.children)>=2:
 		Clock.schedule_interval(self.update_stats_widget, .1)
 		
 
-	def add_Icon(self, display):
-		Icon=DragableButton(text=display,size=(100,100),
-                              droppable_zone_objects=[],
+	def add_Icon(self, course):
+		Icon=DragableButton(course=course, text=self.course.name,size=(100,100),
+                              droppable_zone_objects=[self.Planner, self.Scrollhome, self.recycle],
                               bound_zone_objects=[],
-                              kill_zone_objects=[],
+                              kill_zone_objects=[self.recycle],
                               drag_opacity=.5,
                               remove_on_drag=True)
 		# Icon.text_size=self.size
-		Icon.bound_zone_objects.append(self.Planner)
-		Icon.bound_zone_objects.append(self.Scrollhome)
-		Icon.bound_zone_objects.append(self.recycle)
+		# Icon.bound_zone_objects.append(self.Planner)
+		# Icon.bound_zone_objects.append(self.Scrollhome)
+		# Icon.bound_zone_objects.append(self.recycle)
 		
 		Icon.droppable_zone_objects.append(self.slot1.coursehouse)
 		Icon.droppable_zone_objects.append(self.slot2.coursehouse)
@@ -84,7 +84,7 @@ class DragTab(BoxLayout):
 		
 		Icon.droppable_zone_objects.append(self.Scrollhome)
 
-		Icon.kill_zone_objects.append(self.recycle)
+		# Icon.kill_zone_objects.append(self.recycle)
 
 		self.Scrollhome.add_widget(Icon)
 

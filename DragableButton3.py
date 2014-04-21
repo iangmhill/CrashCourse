@@ -10,13 +10,14 @@ class DragableButton(Button, DragNDropWidget):
     '''
     classdocs
     '''
-    def __init__(self, **kw):
+    def __init__(self, course, **kw):
         '''
         Constructor
         '''
         #Button.__init__(self, **kw)
         super(DragableButton, self).__init__(**kw)
         self.size_hint = (None, None)
+        self.course=course
 
     def add_bound_zone(self, new_zone_object):
         self.bound_zone_objects.append(new_zone_object)
