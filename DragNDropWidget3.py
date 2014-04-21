@@ -190,8 +190,15 @@ class DragNDropWidget(Widget):
             if obj.collide_point(*[self.pos[0]+self.width/2, self.pos[1]+self.height/2]):
                 
                 self.deparent()
-                obj.add_widget(self)
-                if obj.height/6<self.height:
+                obj.add_widget(self)                    
+
+                try:
+                    if obj==obj.parent.Scrollhome:
+                        self.width=100
+                        print "width correct"
+                        self.height=100
+                        print "height correct"
+                except AttributeError:
                     print obj.height/6, self.height
                     print "height/6 matching would now occur"
                            
@@ -200,18 +207,6 @@ class DragNDropWidget(Widget):
 
                     self.height= obj.height/6
                     self.width = obj.width
-
-                    if obj==obj.parent.Scrollhome:
-                        self.width=100
-                        print "width correct"
-                    if self.height>100:
-                        self.height=100
-                        print "height correct"
-            
-                elif obj.height/6>self.height:
-                    self.width=100
-                    self.height=100
-                    #print 'Nutella!'
 
                 x = obj.center[0] - self.width/2
                 y = obj.center[1] - self.height/2
