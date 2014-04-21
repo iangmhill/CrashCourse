@@ -1,3 +1,4 @@
+import os
 import sys
 import cPickle as pickle
 from datastructures import Course, Professor, Time, Semester, User
@@ -15,13 +16,15 @@ class FileManager(object):
         data. The course objects are appended to the variable catalog which
         is a list of all course objects. This catalog is returned.
         """
+        if not os.path.isfile('courses.csv'):
+            return None
         catalog = []
         with open('courses.csv', 'r') as courses:
             lines = courses.readlines()
             for line in lines:
                 c = line.split("/")
                 try:
-                    code = int(c[0])   #Course code as integer e.g. 1100
+                    code = c[0]   #Course code as integer e.g. 1100
                     name = c[1]        #Course name as string e.g. "Modeling and Simulation"
                     keyw = eval(c[2])  #Course keywords as list of strings e.g. ["modsim","modeling", ...] 
                     prof = c[3]        #Course professor as string e.g. "Jessica Townsend"
@@ -75,7 +78,7 @@ class FileManager(object):
             distribution = pickle.load(statsfile)
         return last_updated,distribution
 
-    def load_user(self):
+    def load_user(self,username,password):
         with open('user.usr', 'rb') as userfile:
             try:
                 user = pickle.load(userfile)
@@ -83,7 +86,10 @@ class FileManager(object):
                 print("User file does not exist")
                 return False
             else:
-                return user
+                if username == user.username and password == user.password:
+                    return user
+                else:
+                    return None
 
 
     def save_user(self,user):

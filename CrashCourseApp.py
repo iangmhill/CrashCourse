@@ -71,8 +71,9 @@ class LogInScreen(BoxLayout,Screen):
         self.buttons.add_widget(Label())
         
         self.offline = GridLayout (cols = 3, size_hint = (1.0,0.05))
-        self.offline.add_widget(Label())  
-        self.offline.add_widget(ToggleButton(text = 'Offline Mode'))
+        self.offline.add_widget(Label())
+        self.offline_button = ToggleButton(text = 'Offline Mode')
+        self.offline.add_widget(self.offline_button)
         self.offline.add_widget(Label())
             
         self.logo = Image(source='logo1.png',size_hint=(1.0,0.35))
@@ -97,29 +98,43 @@ class LogInScreen(BoxLayout,Screen):
         
     def enter_function(self,instance):
         global catalog
-        self.space4.text = 'Connecting...'
-        result = nm.update(self.u_entry.text,self.p_entry.text)
-        if result == 0:
-            self.space4.text = 'No internet connection.'
-            return
-        elif result == -1:
-            self.space4.text = 'User does not exist on server. Please create new user'
-            return
-        elif result == -3:
-            self.space4.text = 'Connecting to server. Incorrect password.'
-            return
-        elif result == -4:
-            self.space4.text = 'Lost internet connection while downloading new content.'
-            return
-        elif result == -5:
-            self.space4.text = 'Lost internet connection while syncing user information.'
-            return
-        elif result == True:
-            fm.load_courses()
-            user = fm.load_user()
+        if self.offline_button.state == 'normal':
+            self.space4.text = 'Connecting...'
+            result = nm.update(self.u_entry.text,self.p_entry.text)
+            if result == 0:
+                self.space4.text = 'No internet connection.'
+                return
+            elif result == -1:
+                self.space4.text = 'User does not exist on server. Please create new user'
+                return
+            elif result == -3:
+                self.space4.text = 'Connecting to server. Incorrect password.'
+                return
+            elif result == -4:
+                self.space4.text = 'Lost internet connection while downloading new content.'
+                return
+            elif result == -5:
+                self.space4.text = 'Lost internet connection while syncing user information.'
+                return
+            elif result == True:
+                user = fm.load_user(self.u_entry.text,self.p_entry.text)
+                if user != None:
+                    catalog = fm.load_courses()
+                    self.space4.text = 'All systems go!'
+                    self.sm.current = 'tabs'
+                else:
+                    self.space4.text = 'Login failed. Incorrect username or password.'
+
+        else:
+            user = fm.load_user(self.u_entry.text,self.p_entry.text)
             catalog = fm.load_courses()
-            self.space4.text = 'All systems go!'
-            self.sm.current = 'tabs'
+            if catalog == None:
+                self.space4.text = 'Login failed. No courses.csv file.'
+            elif user == None:
+                self.space4.text = 'Login failed. Incorrect username or password for local user.'
+            else:
+                self.space4.text = 'Starting in Offline Mode.'
+                self.sm.current = 'tabs'
         
         
 class NewUserScreen(BoxLayout,Screen):
