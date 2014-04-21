@@ -70,6 +70,11 @@ class LogInScreen(BoxLayout,Screen):
         self.buttons.add_widget(Button(text='New User?',on_press=self.new_user_function))
         self.buttons.add_widget(Button(text='Log In',on_press=self.enter_function))
         self.buttons.add_widget(Label())
+        
+        self.offline = GridLayout (cols = 3, size_hint = (1.0,0.05))
+        self.offline.add_widget(Label())  
+        self.offline.add_widget(ToggleButton(text = 'Offline Mode'))
+        self.offline.add_widget(Label())
             
         self.logo = Image(source='logo1.png',size_hint=(1.0,0.35))
         self.space1 = Label(size_hint=(1.0,0.175))
@@ -84,7 +89,9 @@ class LogInScreen(BoxLayout,Screen):
         self.add_widget(self.password)
         self.add_widget(self.space3)
         self.add_widget(self.buttons)
+        self.add_widget(self.offline)
         self.add_widget(self.space4)
+        
         
     def new_user_function(self,instance):
         self.sm.current = 'newuser'
