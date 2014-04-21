@@ -58,9 +58,8 @@ class Course_Item(BoxLayout):
 		self.add_widget(self.options)
 
 	def add_to_planner(self,instance):
-		#there might be a better way to do this but i have yet to find one
 		for child in self.parent.parent.parent.parent.parent.parent.children:			
-			child.tab3.content.add_Icon(self.course.name)								
+			child.tab3.content.add_Icon(self.course)				
 				
 	def pop_up(self,instance):	
 		self.popup.open()

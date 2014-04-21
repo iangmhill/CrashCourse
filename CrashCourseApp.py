@@ -23,7 +23,6 @@ from kivy.clock import Clock
 from FileManager import FileManager
 from NetworkManager import NetworkManager
 from Course_Item import Course_Item
-from kivy.uix.dropdown import DropDown
 from Proto3_5_stable import DragTab
 from datastructures import User
 #from dashNoKv import Dashboard
@@ -329,23 +328,6 @@ class Planner(DragTab):
     def __init__(self,**kwargs):
         super(Planner, self).__init__(**kwargs)
 
-
-class Schedule(BoxLayout):
-    def __init__(self,**kwargs):
-        super(Schedule, self).__init__(**kwargs)
-
-        self.mon = Label(text= 'Mon')
-        self.tue = Label(text= 'Tue')
-        self.wed = Label(text= 'Wed')
-        self.thu = Label(text= 'Thu')
-        self.fri = Label(text= 'Fri')       
-        
-        self.add_widget(self.mon)
-        self.add_widget(self.tue)
-        self.add_widget(self.wed)
-        self.add_widget(self.thu)
-        self.add_widget(self.fri)
-
         
 class TabsPanel(TabbedPanel):
     def __init__(self,**kwargs):
@@ -359,13 +341,10 @@ class TabsPanel(TabbedPanel):
         self.tab2.content = Catalog()
         self.tab3 = TabbedPanelHeader(text='Planner')
         self.tab3.content = Planner()
-        self.tab4 = TabbedPanelHeader(text='Schedule')
-        self.tab4.content = Schedule()        
-        
+
         self.add_widget(self.tab1)
         self.add_widget(self.tab2)
-        self.add_widget(self.tab3)
-        self.add_widget(self.tab4)
+        self.add_widget(self.tab3)     
         
         Clock.schedule_interval(self.populate,1)
 
@@ -389,9 +368,9 @@ class TabsScreen(Screen):
 class CrashCourseApp(App):
     def build(self):
         sm = ScreenManager(transition = WipeTransition())
-        #sm.add_widget(StartUpScreen(sm,name='startup'))
-        #sm.add_widget(LogInScreen(sm,name='login'))
-        #sm.add_widget(NewUserScreen(sm,name='newuser'))
+        sm.add_widget(StartUpScreen(sm,name='startup'))
+        sm.add_widget(LogInScreen(sm,name='login'))
+        sm.add_widget(NewUserScreen(sm,name='newuser'))
         sm.add_widget(TabsScreen(name='tabs'))
         return sm
 
