@@ -169,6 +169,7 @@ class DragNDropWidget(Widget):
                 if obj.collide_point(*[self.pos[0]+self.width/2, self.pos[1]+self.height/2]):
                     kill_object = True
                     dropped_ok = False
+
             if dropped_ok:
                 self.drop_func()
                 #anim = Animation(opacity=0, duration=0.7, t="in_quad")

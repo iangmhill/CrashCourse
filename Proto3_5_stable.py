@@ -62,16 +62,21 @@ class DragTab(BoxLayout):
 		
 
 	def add_Icon(self, course):
+<<<<<<< HEAD
 		Icon=DragableButton(course=course,text=course.name,size=(100,100),
                               droppable_zone_objects=[self.Planner, self.Scrollhome, self.recycle],
+=======
+		Icon=DragableButton(course=course, text=course.name,size=(100,100),
+                              droppable_zone_objects=[],
+>>>>>>> 0be89d5a39d42da53e33e2d04e5393490551aa9c
                               bound_zone_objects=[],
-                              kill_zone_objects=[self.recycle],
+                              kill_zone_objects=[],
                               drag_opacity=.5,
                               remove_on_drag=True)
 		# Icon.text_size=self.size
-		# Icon.bound_zone_objects.append(self.Planner)
-		# Icon.bound_zone_objects.append(self.Scrollhome)
-		# Icon.bound_zone_objects.append(self.recycle)
+		Icon.bound_zone_objects.append(self.Planner)
+		Icon.bound_zone_objects.append(self.Scrollhome)
+		Icon.bound_zone_objects.append(self.recycle)
 		
 		Icon.droppable_zone_objects.append(self.slot1.coursehouse)
 		Icon.droppable_zone_objects.append(self.slot2.coursehouse)
@@ -84,7 +89,7 @@ class DragTab(BoxLayout):
 		
 		Icon.droppable_zone_objects.append(self.Scrollhome)
 
-		# Icon.kill_zone_objects.append(self.recycle)
+		Icon.kill_zone_objects.append(self.recycle)
 
 		self.Scrollhome.add_widget(Icon)
 
