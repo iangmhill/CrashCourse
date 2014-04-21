@@ -22,7 +22,7 @@ class DragTab(BoxLayout):
 		#self.Scrollhome.add_widget(Button(text='hi'))
 		self.lefthand=BoxLayout(orientation='vertical', size_hint=(.7,1))
 		#within lefthand, stats and a series of semesters
-		self.Planner=GridLayout(size_hint=(1,.9),rows=2, cols=4, spacing=5)
+		self.Planner=GridLayout(size_hint=(1,.9),rows=2, cols=4, spacing=3)
 
 		self.slot1=Semester(text=str(semesters[0]))
 		self.Planner.add_widget(self.slot1)
@@ -107,7 +107,7 @@ class DragTab(BoxLayout):
 					for grandchild in child.children[:]:
 						if grandchild.width> 300:
 							child.remove_widget(grandchild)
-							stats=Label(size_hint=(1,.1),text= 'Your schedule includes: ' + str(count)+' courses', color=(1,1,1,1))
+							stats=Label(size_hint=(1,1),text= 'Your schedule includes: ' + str(count)+' courses', color=(1,1,1,1))
 							child.add_widget(stats)
 						
 						

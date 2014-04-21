@@ -15,6 +15,7 @@ class DragNDropWidget(Widget):
     # properties
     droppable_zone_objects = ListProperty([])
     bound_zone_objects = ListProperty([])
+    kill_zone_objects= ListProperty([])
     drag_opacity = NumericProperty(1.0)
     #drop_func = ObjectProperty(None)
     #drop_args = ListProperty([])
@@ -160,9 +161,13 @@ class DragNDropWidget(Widget):
         if self._dragged and self._dragable:
             self.opacity = 1.0
             dropped_ok = False
+            kill_object= False
             for obj in self.droppable_zone_objects:
                 if obj.collide_point(*[self.pos[0]+self.width/2, self.pos[1]+self.height/2]):
                     dropped_ok = True
+            for obj in self.kill_zone_objects:
+                if obj.collide_point(*[self.pos[0]+self.width/2, self.pos[1]+self.height/2]):
+                    kill_object = True
             if dropped_ok:
                 self.drop_func()
                 #anim = Animation(opacity=0, duration=0.7, t="in_quad")
@@ -170,10 +175,13 @@ class DragNDropWidget(Widget):
                 #anim.start(self)
             else:
                 anim = Animation(pos=self._old_drag_pos, duration=0.7, t="in_quad")
-                if self.remove_on_drag:
-                    anim.bind(on_complete = self.reborn)
+                if kill_object:
+                    anim.bind(on_complete= self.deparent)
                 else:
-                    anim.bind(on_complete = self.deparent)
+                    if self.remove_on_drag:
+                        anim.bind(on_complete = self.reborn)
+                    else:
+                        anim.bind(on_complete = self.deparent)
                 anim.start(self)
             self._dragged = False
             
@@ -183,11 +191,24 @@ class DragNDropWidget(Widget):
                 
                 self.deparent()
                 obj.add_widget(self)
-                if obj.width<self.width or obj.height/6<self.height:
-                    self.width = obj.width
+                if obj.height/6<self.height:
+                    print obj.height/6, self.height
+                    print "height/6 matching would now occur"
+                           
+                    print obj.width, self.width
+                    print "width matching would now occur"
+
                     self.height= obj.height/6
-                    print "dieting!"
-                if obj.width>self.width or obj.height/6>self.height:
+                    self.width = obj.width
+
+                    if obj==obj.parent.Scrollhome:
+                        self.width=100
+                        print "width correct"
+                    if self.height>100:
+                        self.height=100
+                        print "height correct"
+            
+                elif obj.height/6>self.height:
                     self.width=100
                     self.height=100
                     print 'Nutella!'
@@ -195,7 +216,7 @@ class DragNDropWidget(Widget):
                 x = obj.center[0] - self.width/2
                 y = obj.center[1] - self.height/2
                 self.pos=(x,y)
-                print "add success"
+                #print "add success"
                 
     def deparent(self, widget="dumb", anim="dumb2"):
         self.get_root_window().remove_widget(self)

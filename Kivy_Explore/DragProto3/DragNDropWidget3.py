@@ -161,6 +161,7 @@ class DragNDropWidget(Widget):
         if self._dragged and self._dragable:
             self.opacity = 1.0
             dropped_ok = False
+            kill_object= False
             for obj in self.droppable_zone_objects:
                 if obj.collide_point(*[self.pos[0]+self.width/2, self.pos[1]+self.height/2]):
                     dropped_ok = True
@@ -191,13 +192,18 @@ class DragNDropWidget(Widget):
                 self.deparent()
                 obj.add_widget(self)
                 if obj.width<self.width or obj.height/6<self.height:
+                    print obj.height/6, self.height
+                    print "height/6 matching would now occur"
+                    self.height= obj.height/6   
+                if obj.width<self.width:
+                    print obj.width, self.width
+                    print "width matching would now occur"
                     self.width = obj.width
-                    self.height= obj.height/6
-                    #print "dieting!"
-                if obj.width>self.width or obj.height/6>self.height:
+                                     
+                elif obj.width>self.width or obj.height/6>self.height:
                     self.width=100
                     self.height=100
-                    #print 'Nutella!'
+                    print 'Nutella!'
 
                 x = obj.center[0] - self.width/2
                 y = obj.center[1] - self.height/2
