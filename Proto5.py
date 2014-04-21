@@ -26,7 +26,7 @@ class DragTab(BoxLayout):
 		#right-hand column is StackLayout, lefthand is a vertical box layout		
 		self.Scrollhome = GridLayout(cols=1,size_hint=(.3,1),)
 		self.scrollview = ScrollView(size=(400,400))
-		self.courses = StackLayout(spacing=5,size_hint_y=None)
+		self.courses = StackLayout(spacing=5,size_hint_y=None, orientattion='tb-rl')
 		self.courses.bind(minimum_height=self.courses.setter('height'))
 		self.scrollview.add_widget(self.courses)
 		self.Scrollhome.add_widget(self.scrollview)		

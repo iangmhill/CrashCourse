@@ -99,6 +99,8 @@ class LogInScreen(BoxLayout,Screen):
         self.sm.current = 'newuser'
         
     def enter_function(self,instance):    
+        global user
+        global catalog
         if self.offline_button.state == 'normal':
             self.space4.text = 'Connecting...'
             result = all_globals.nm.update(self.u_entry.text,self.p_entry.text)
@@ -128,6 +130,7 @@ class LogInScreen(BoxLayout,Screen):
 
         else:
             all_globals.user = all_globals.fm.load_user(self.u_entry.text,self.p_entry.text)
+            all_globals.user.credits={'ENGR':100, 'AHSE':1000,'MTH':2,'SCI':2}
             all_globals.catalog = all_globals.fm.load_courses()
             if all_globals.catalog == None:
                 self.space4.text = 'Login failed. No courses.csv file.'
@@ -279,6 +282,18 @@ class Dashboard(GridLayout):
             will_grad = 'Yes'
         else:
             will_grad = 'No'
+
+        self.information.clear_widgets()
+        self.information.add_widget (Label(text='Graduate:' + will_grad))
+        self.credits.clear_widgets()
+        self.information.add_widget(self.credits)
+        self.credits.add_widget (Label(text = 'AHSE: ' + str(ahse_cred)))
+        self.credits.add_widget (Label(text = 'ENGR: ' + str(engr_cred)))
+        self.credits.add_widget (Label(text = 'MTH: ' + str(mth_cred)))
+        self.credits.add_widget (Label(text = 'SCI: ' + str(sci_cred)))
+
+        # self.information.clear_widgets()
+        # self.information.add_widget (Label(text='Graduate:' + will_grad))
 
     
 class Catalog(BoxLayout):
