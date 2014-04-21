@@ -24,9 +24,13 @@ class DragableButton(Button, DragNDropWidget):
     def add_droppable_zone(self, new_zone_object):
         self.droppable_zone_objects.append(new_zone_object)
 
+    def add_kill_zone(self, new_zone_object):
+        self.kill_zone_objects.append(new_zone_object)
+        
     def __deepcopy__(self, dumb):
         return DragableButton(text=self.text,
                               droppable_zone_objects=self.droppable_zone_objects,
                               bound_zone_objects=self.bound_zone_objects,
+                              kill_zone_objects=self.kill_zone_objects,
                               drag_opacity=self.drag_opacity,
                               remove_on_drag=self.remove_on_drag)

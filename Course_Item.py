@@ -5,7 +5,6 @@ from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
-from Proto3_5_stable import DragTab
 
 class Course_Item(BoxLayout):
 	def __init__(self,course,**kwargs):
