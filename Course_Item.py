@@ -16,10 +16,10 @@ class Course_Item(BoxLayout):
 		self.title = (Label(text=course.name, size_hint=(1.0,0.85)))
 
 		self.options = BoxLayout(size_hint=(1.0,0.15)) 
-		self.favorite = ToggleButton(text='Favorite')
-		self.details = Button(text='Details',on_press=self.pop_up)		
-		self.options.add_widget(self.favorite)
-		self.options.add_widget(self.details)
+		self.add_button = Button(text='Add to Planner',on_press=self.add_to_planner)
+		self.details_button = Button(text='Details',on_press=self.pop_up)		
+		self.options.add_widget(self.add_button)
+		self.options.add_widget(self.details_button)
 
 		ahse = str(self.course.credits['AHSE'])
 		engr = str(self.course.credits['ENGR'])
@@ -57,5 +57,10 @@ class Course_Item(BoxLayout):
 		self.add_widget(self.title)            
 		self.add_widget(self.options)
 
+	def add_to_planner(self,instance):
+		#there might be a better way to do this but i have yet to find one
+		for child in self.parent.parent.parent.parent.parent.parent.children:			
+			child.tab3.content.add_Icon(self.course.name)								
+				
 	def pop_up(self,instance):	
 		self.popup.open()

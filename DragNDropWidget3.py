@@ -211,7 +211,7 @@ class DragNDropWidget(Widget):
                 elif obj.height/6>self.height:
                     self.width=100
                     self.height=100
-                    print 'Nutella!'
+                    #print 'Nutella!'
 
                 x = obj.center[0] - self.width/2
                 y = obj.center[1] - self.height/2
