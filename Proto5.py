@@ -10,9 +10,8 @@ from kivy.uix.button import Button
 from kivy.uix.scrollview import ScrollView
 from NoKvId import Semester
 from kivy.clock import Clock
-from all_globals import *
+import all_globals
 
-catalog=['ModCon','ModSim','DesNat','AHS Found.','OIE','MODRWM']
 semesters=['FL 2013','SP 2014','FL 2014','SP 2015','FL 2015','SP 2016','FL 2016','SP 2017']
 count = 0
 pre_ahse = 0
@@ -65,9 +64,6 @@ class DragTab(BoxLayout):
 		self.add_widget(self.lefthand)
 		self.add_widget(self.Scrollhome)
 
-		#for course in catalog:
-			#self.add_Icon(course)
-
 		# if len(self.lefthand.children)>=2:
 		Clock.schedule_interval(self.update_stats_widget, .1)
 
@@ -108,15 +104,15 @@ class DragTab(BoxLayout):
 		global pre_sci
 		global count
 		if count == 0:
-			pre_ahse = user.credits['AHSE']
-			pre_engr = user.credits['ENGR']
-			pre_mth = user.credits['MTH']
-			pre_sci = user.credits['SCI']
+			pre_ahse = all_globals.user.credits['AHSE']
+			pre_engr = all_globals.user.credits['ENGR']
+			pre_mth = all_globals.user.credits['MTH']
+			pre_sci = all_globals.user.credits['SCI']
 		count += 1
-		user.credits['AHSE']=pre_ahse
-		user.credits['ENGR']=pre_engr
-		user.credits['MTH']=pre_mth
-		user.credits['SCI']=pre_sci
+		all_globals.user.credits['AHSE']=pre_ahse
+		all_globals.user.credits['ENGR']=pre_engr
+		all_globals.user.credits['MTH']=pre_mth
+		all_globals.user.credits['SCI']=pre_sci
 		Fixed=False
 		for child in self.lefthand.children[:]:
 			if child.height> 300:
@@ -124,10 +120,10 @@ class DragTab(BoxLayout):
 					for semester_element in semester_block.children[:]:
 						if semester_element.height>100:
 							for course in semester_element.children[:]:
-								user.credits['AHSE']+=course.course.credits['AHSE']														
-								user.credits['ENGR']+=course.course.credits['ENGR']															
-								user.credits['MTH']+=course.course.credits['MTH']													
-								user.credits['SCI']+=course.course.credits['SCI']
+								all_globals.user.credits['AHSE']+=course.course.credits['AHSE']														
+								all_globals.user.credits['ENGR']+=course.course.credits['ENGR']															
+								all_globals.user.credits['MTH']+=course.course.credits['MTH']													
+								all_globals.user.credits['SCI']+=course.course.credits['SCI']
 														
 		for child in self.lefthand.children[:]:
 			if child.height>300:
@@ -138,7 +134,7 @@ class DragTab(BoxLayout):
 					for grandchild in child.children[:]:
 						if grandchild.width> 300:
 							child.remove_widget(grandchild)
-							stats=Label(size_hint=(1,1),text='AHSE:  '+str(user.credits['AHSE'])+'  '+'ENGR:  '+str(user.credits['ENGR'])+'  '+'MTH:  '+str(user.credits['MTH'])+'  '+'SCI:  '+str(user.credits['SCI'])+'  ',color=(1,1,1,1))
+							stats=Label(size_hint=(1,1),text='AHSE:  '+str(all_globals.user.credits['AHSE'])+'  '+'ENGR:  '+str(all_globals.user.credits['ENGR'])+'  '+'MTH:  '+str(all_globals.user.credits['MTH'])+'  '+'SCI:  '+str(all_globals.user.credits['SCI'])+'  ',color=(1,1,1,1))
 							child.add_widget(stats)
 
 
