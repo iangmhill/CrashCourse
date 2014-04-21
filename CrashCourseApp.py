@@ -208,13 +208,13 @@ class Dashboard(GridLayout):
         self.info.add_widget(self.majors)         
         
         self.reminders = GridLayout (rows=5)
-        self.reminders.add_widget(Label(text='Reminders'))
-        self.reminders.add_widget(Button(text='Email Loretta Dinnon about 22 Credits', size_hint_y=None, height = 25))
+        self.reminders.add_widget(Label(text='Reminders', size_hint=(1, .3)))
+        self.reminders.add_widget(Label(text='Email Loretta Dinnon about 22 Credits', size_hint_y=None, height = 25))
         self.reminders.add_widget(Label())
         self.reminders.add_widget(Label())        
         
         self.stats = BoxLayout (orientation='vertical')
-        self.information = GridLayout (cols = 2, size_hint = (1,.7))
+        self.information = GridLayout (cols = 2, size_hint = (1,.85))
         self.information.add_widget (Label(text='Graduate:' + ' Yes!'))
         self.credits=GridLayout (cols=2, row=2)
         self.credits.add_widget (Label(text = 'AHS: ' + '12'))
@@ -224,7 +224,7 @@ class Dashboard(GridLayout):
         
         self.information.add_widget (self.credits)
         
-        self.stats.add_widget (Label (text = 'Statistics', size_hint =(1,.3)))
+        self.stats.add_widget (Label (text = 'Statistics', size_hint =(1,.15)))
         self.stats.add_widget (self.information)
         
         
