@@ -14,6 +14,11 @@ from all_globals import *
 
 catalog=['ModCon','ModSim','DesNat','AHS Found.','OIE','MODRWM']
 semesters=['FL 2013','SP 2014','FL 2014','SP 2015','FL 2015','SP 2016','FL 2016','SP 2017']
+count = 0
+pre_ahse = 0
+pre_engr = 0
+pre_mth = 0
+pre_sci = 0
 
 class DragTab(BoxLayout):
 	def __init__(self,**kwargs):
@@ -96,10 +101,22 @@ class DragTab(BoxLayout):
 		self.courses.add_widget(Icon)
 
 	def update_stats_widget(self, dt):
-		ahse_count=0
-		engr_count=0
-		mth_count=0
-		sci_count=0
+	
+		global pre_ahse
+		global pre_engr
+		global pre_mth
+		global pre_sci
+		global count
+		if count == 0:
+			pre_ahse = user.credits['AHSE']
+			pre_engr = user.credits['ENGR']
+			pre_mth = user.credits['MTH']
+			pre_sci = user.credits['SCI']
+		count += 1
+		user.credits['AHSE']=pre_ahse
+		user.credits['ENGR']=pre_engr
+		user.credits['MTH']=pre_mth
+		user.credits['SCI']=pre_sci
 		Fixed=False
 		for child in self.lefthand.children[:]:
 			if child.height> 300:
@@ -107,14 +124,11 @@ class DragTab(BoxLayout):
 					for semester_element in semester_block.children[:]:
 						if semester_element.height>100:
 							for course in semester_element.children[:]:
-								ahse_count+=course.course.credits['AHSE']
-								ahse_count+=user.credits['AHSE']								
-								engr_count+=course.course.credits['ENGR']
-								engr_count+=user.credits['ENGR']							
-								mth_count+=course.course.credits['MTH']	
-								mth_count+=user.credits['MTH']						
-								sci_count+=course.course.credits['SCI']
-								sci_count+=user.credits['SCI']							
+								user.credits['AHSE']+=course.course.credits['AHSE']														
+								user.credits['ENGR']+=course.course.credits['ENGR']															
+								user.credits['MTH']+=course.course.credits['MTH']													
+								user.credits['SCI']+=course.course.credits['SCI']
+														
 		for child in self.lefthand.children[:]:
 			if child.height>300:
 				Fixed=True
@@ -124,7 +138,7 @@ class DragTab(BoxLayout):
 					for grandchild in child.children[:]:
 						if grandchild.width> 300:
 							child.remove_widget(grandchild)
-							stats=Label(size_hint=(1,1),text='AHSE:  '+str(ahse_count)+'  '+'ENGR:  '+str(engr_count)+'  '+'MTH:  '+str(mth_count)+'  '+'SCI:  '+str(sci_count)+'  ',color=(1,1,1,1))
+							stats=Label(size_hint=(1,1),text='AHSE:  '+str(user.credits['AHSE'])+'  '+'ENGR:  '+str(user.credits['ENGR'])+'  '+'MTH:  '+str(user.credits['MTH'])+'  '+'SCI:  '+str(user.credits['SCI'])+'  ',color=(1,1,1,1))
 							child.add_widget(stats)
 
 

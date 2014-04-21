@@ -177,6 +177,13 @@ class NewUserScreen(BoxLayout,Screen):
 class Dashboard(GridLayout):
     def __init__(self,**kwargs):
         super(Dashboard, self).__init__(**kwargs)
+
+        ahse_cred = 0
+        engr_cred = 0
+        mth_cred = 0
+        sci_cred = 0
+        will_grad = 'No'
+
         self.cols = 2
         
         self.info = GridLayout(rows=5)
@@ -223,29 +230,41 @@ class Dashboard(GridLayout):
         
         self.stats = BoxLayout (orientation='vertical')
         self.information = GridLayout (cols = 2, size_hint = (1,.85))
-        self.information.add_widget (Label(text='Graduate:' + ' Yes!'))
+
+        self.information.add_widget (Label(text='Graduate:' + will_grad))
+
         self.credits=GridLayout (cols=2, row=2)
-        self.credits.add_widget (Label(text = 'AHSE: ' + str(user.credits['AHSE'])))
-        self.credits.add_widget (Label(text = 'ENGR: ' + str(user.credits['ENGR'])))
-        self.credits.add_widget (Label(text = 'MTH: ' + str(user.credits['MTH'])))
-        self.credits.add_widget (Label(text = 'SCI: ' + str(user.credits['SCI'])))
+        self.credits.add_widget (Label(text = 'AHSE: ' + str(ahse_cred)))
+        self.credits.add_widget (Label(text = 'ENGR: ' + str(engr_cred)))
+        self.credits.add_widget (Label(text = 'MTH: ' + str(mth_cred)))
+        self.credits.add_widget (Label(text = 'SCI: ' + str(sci_cred)))
         
         self.information.add_widget (self.credits)
         
         self.stats.add_widget (Label (text = 'Statistics', size_hint =(1,.15)))
-        self.stats.add_widget (self.information)
-        
+        self.stats.add_widget (self.information)        
         
         self.notes = GridLayout(cols=1)
         self.n_entry = TextInput(text=user.notes, multiline=True)
         self.notes.add_widget(self.n_entry)
         
-        
         self.add_widget(self.info)
         self.add_widget(self.reminders)
         self.add_widget(self.stats)
         self.add_widget(self.notes)
-        
+
+        Clock.schedule_interval(self.update_stats,0.1)
+
+        def update_stats(self,instance):
+            ahse_cred = user.credits['AHSE']
+            engr_cred = user.credits['ENGR']
+            mth_cred = user.credits['MTH']
+            sci_cred = user.credits['SCI']
+            if user.credits['AHSE']+user.credits['ENGR']+user.credits['MTH']+user.credits['SCI'] > 128:
+                will_grad = 'Yes'
+            else:
+                will_grad = 'No'
+
         
 class Catalog(BoxLayout):
     def __init__(self,**kwargs):
