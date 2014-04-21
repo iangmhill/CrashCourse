@@ -27,6 +27,9 @@ class Semester(StackLayout):
 		self.add_widget(self.Me)
 		self.add_widget(self.coursehouse)
 
+		#self.coursecount=0
+		#self.bind(coursecount=self.update_count)
+
 	def update_rect(self,*args):
 		self.rect.pos=self.pos
 		self.rect.size=self.size
@@ -34,6 +37,7 @@ class Semester(StackLayout):
 		# self.rows=3
 		# self.cols=2
 		#self.size_hint=(.25,.5)
+	#def update_count(self, *args):
 		
 
 class TestApp(App):
