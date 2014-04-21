@@ -62,13 +62,9 @@ class DragTab(BoxLayout):
 		
 
 	def add_Icon(self, course):
-<<<<<<< HEAD
-		Icon=DragableButton(course=course,text=course.name,size=(100,100),
-                              droppable_zone_objects=[self.Planner, self.Scrollhome, self.recycle],
-=======
+
 		Icon=DragableButton(course=course, text=course.name,size=(100,100),
                               droppable_zone_objects=[],
->>>>>>> 0be89d5a39d42da53e33e2d04e5393490551aa9c
                               bound_zone_objects=[],
                               kill_zone_objects=[],
                               drag_opacity=.5,
@@ -95,7 +91,9 @@ class DragTab(BoxLayout):
 
 	def update_stats_widget(self, dt):
 		ahse_count=0
+		engr_count=0
 		mth_count=0
+		sci_count=0
 		Fixed=False
 		for child in self.lefthand.children[:]:
 			if child.height> 300:
@@ -103,8 +101,10 @@ class DragTab(BoxLayout):
 					for semester_element in semester_block.children[:]:
 						if semester_element.height>100:
 							for course in semester_element.children[:]:
-								ahse_count+=course.credits['AHSE']
-								mth_count+=coure.credits['MTH']
+								ahse_count+=course.course.credits['AHSE']
+								engr_count+=course.course.credits['ENGR']
+								mth_count+=course.course.credits['MTH']
+								sci_count+=course.course.credits['SCI']
 		for child in self.lefthand.children[:]:
 			if child.height>300:
 				Fixed=True
@@ -114,7 +114,7 @@ class DragTab(BoxLayout):
 					for grandchild in child.children[:]:
 						if grandchild.width> 300:
 							child.remove_widget(grandchild)
-							stats=Label(size_hint=(1,1),text= 'Your schedule includes: ' + str(mth_count)+' MTH credits', color=(1,1,1,1))
+							stats=Label(size_hint=(1,1),text='AHSE:  '+str(ahse_count)+'  '+'ENGR:  '+str(engr_count)+'  '+'MTH:  '+str(mth_count)+'  '+'SCI:  '+str(sci_count)+'  ',color=(1,1,1,1))
 							child.add_widget(stats)
 						
 						
