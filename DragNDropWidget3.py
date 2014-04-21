@@ -196,15 +196,15 @@ class DragNDropWidget(Widget):
                 try:
                     if obj==obj.parent.Scrollhome:
                         self.width=100
-                        print "width correct"
+                        # print "width correct"
                         self.height=100
-                        print "height correct"
+                        # print "height correct"
                 except AttributeError:
-                    print obj.height/6, self.height
-                    print "height/6 matching would now occur"
+                    # print obj.height/6, self.height
+                    # print "height/6 matching would now occur"
                            
-                    print obj.width, self.width
-                    print "width matching would now occur"
+                    # print obj.width, self.width
+                    # print "width matching would now occur"
 
                     self.height= obj.height/6
                     self.width = obj.width
