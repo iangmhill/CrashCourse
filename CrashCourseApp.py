@@ -25,6 +25,7 @@ from NetworkManager import NetworkManager
 from Course_Item import Course_Item
 from Proto5 import DragTab
 from datastructures import User
+from all_globals import *
 #from dashNoKv import Dashboard
 
 search_temp_list = [] 
@@ -397,10 +398,5 @@ class CrashCourseApp(App):
         return sm
 
 
-if __name__ == '__main__':
-    fm = FileManager()
-    nm = NetworkManager()
-    catalog = []
-    profs = []
-    user = User('noone','crashcourse','No One',2017,'E:C',{'ENGR':0, 'AHSE':0,'MTH':2,'SCI':2},[],"")
+if __name__ == '__main__': 
     CrashCourseApp().run()

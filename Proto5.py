@@ -10,6 +10,7 @@ from kivy.uix.button import Button
 from kivy.uix.scrollview import ScrollView
 from NoKvId import Semester
 from kivy.clock import Clock
+from all_globals import *
 
 catalog=['ModCon','ModSim','DesNat','AHS Found.','OIE','MODRWM']
 semesters=['FL 2013','SP 2014','FL 2014','SP 2015','FL 2015','SP 2016','FL 2016','SP 2017']
@@ -107,9 +108,13 @@ class DragTab(BoxLayout):
 						if semester_element.height>100:
 							for course in semester_element.children[:]:
 								ahse_count+=course.course.credits['AHSE']
+								ahse_count+=user.credits['AHSE']								
 								engr_count+=course.course.credits['ENGR']
-								mth_count+=course.course.credits['MTH']
+								engr_count+=user.credits['ENGR']							
+								mth_count+=course.course.credits['MTH']	
+								mth_count+=user.credits['MTH']						
 								sci_count+=course.course.credits['SCI']
+								sci_count+=user.credits['SCI']							
 		for child in self.lefthand.children[:]:
 			if child.height>300:
 				Fixed=True
@@ -130,5 +135,5 @@ class DemoApp2(App):
 
 		return DragTab()
 
-if __name__=='__main__':
+if __name__=='__main__':	
 	DemoApp2().run()
