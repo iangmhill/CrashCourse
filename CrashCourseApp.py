@@ -25,6 +25,7 @@ from NetworkManager import NetworkManager
 from Course_Item import Course_Item
 from Proto5 import DragTab
 from datastructures import User
+from all_globals import *
 #from dashNoKv import Dashboard
 
 search_temp_list = [] 
@@ -217,10 +218,10 @@ class Dashboard(GridLayout):
         self.information = GridLayout (cols = 2, size_hint = (1,.85))
         self.information.add_widget (Label(text='Graduate:' + ' Yes!'))
         self.credits=GridLayout (cols=2, row=2)
-        self.credits.add_widget (Label(text = 'AHS: ' + '12'))
-        self.credits.add_widget (Label(text = 'ENGR: ' + '12'))
-        self.credits.add_widget (Label(text = 'MTH: ' + '12'))
-        self.credits.add_widget (Label(text = 'SCI: ' + '12'))
+        self.credits.add_widget (Label(text = 'AHSE: ' + str(user.credits['AHSE'])))
+        self.credits.add_widget (Label(text = 'ENGR: ' + str(user.credits['ENGR'])))
+        self.credits.add_widget (Label(text = 'MTH: ' + str(user.credits['MTH'])))
+        self.credits.add_widget (Label(text = 'SCI: ' + str(user.credits['SCI'])))
         
         self.information.add_widget (self.credits)
         
@@ -375,10 +376,5 @@ class CrashCourseApp(App):
         return sm
 
 
-if __name__ == '__main__':
-    fm = FileManager()
-    nm = NetworkManager()
-    catalog = []
-    profs = []
-    user = User('noone','crashcourse','No One',2017,'E:C',{'ENGR':0, 'AHSE':0,'MTH':2,'SCI':2},[],"")
+if __name__ == '__main__': 
     CrashCourseApp().run()
