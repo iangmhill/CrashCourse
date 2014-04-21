@@ -172,31 +172,41 @@ class Dashboard(GridLayout):
         super(Dashboard, self).__init__(**kwargs)
         self.cols = 2
         
-        self.info = GridLayout (rows=5)
-        self.info.add_widget(Label(text='Your Information'))
-        grad_dropdown = DropDown()
-        for x in ('2014','2015','2016','2017'):
-            btn = Button(text=x, size_hint_y=None, height=20)
-            # Underneath attaches the text of the button to the variable btn.text
-            btn.bind(on_release=lambda btn: grad_dropdown.select(btn.text))
-            grad_dropdown.add_widget(btn)
-        mainbutton_gradYear = Button(text='Grad Year', size_hint_y=None, height=25)
-        mainbutton_gradYear.bind(on_release=grad_dropdown.open)
-        grad_dropdown.bind(on_select=lambda instance, x: setattr(mainbutton_gradYear, 'text', x))
-        self.info.add_widget (mainbutton_gradYear)
-        
-        maj_dropdown = DropDown()
-        for x in ('ECE','MechE','RoboE','E:Design','E:C','Sys:E','E:MatSci'):
-            btn = Button(text=x, size_hint_y=None, height=20)
-            # Underneath attaches the text of the button to the variable btn.text
-            btn.bind(on_release=lambda btn: maj_dropdown.select(btn.text))
-            maj_dropdown.add_widget(btn)
-        mainbutton_major = Button(text='Major', size_hint_y=None, height=25)
-        mainbutton_major.bind(on_release=maj_dropdown.open)
-        maj_dropdown.bind(on_select=lambda instance, x: setattr(mainbutton_major, 'text', x))
-        self.info.add_widget (mainbutton_major)
-        self.info.add_widget(Label())
-        self.info.add_widget(Label())        
+        self.info = GridLayout(rows=5)
+        self.info.add_widget(Label(text='Your Information',size_hint=(1.0,0.1)))
+       
+        self.years = BoxLayout(size_hint=(1.0,0.1))
+        self.majors = BoxLayout(orientation='vertical',size_hint=(1.0,0.8))
+
+        self.year1 = ToggleButton(text='2014',group='year')        
+        self.year2 = ToggleButton(text='2015',group='year')   
+        self.year3 = ToggleButton(text='2016',group='year')   
+        self.year4 = ToggleButton(text='2017',group='year')
+        self.years.add_widget(self.year1)
+        self.years.add_widget(self.year2)   
+        self.years.add_widget(self.year3)   
+        self.years.add_widget(self.year4)
+        self.info.add_widget(self.years) 
+   
+        self.ece = ToggleButton(text='ECE',group='major')
+        self.meche = ToggleButton(text='Mech:E',group='major')
+        self.roboe = ToggleButton(text='Robo:E',group='major')
+        self.bioe = ToggleButton(text='Bio:E',group='major')
+        self.edesign = ToggleButton(text='E:Design',group='major')
+        self.ec = ToggleButton(text='E:C',group='major')
+        self.syse = ToggleButton(text='E:Sys',group='major')
+        self.ematsci = ToggleButton(text='E:MatSci',group='major')
+        self.other = ToggleButton(text='Other',group='major')    
+        self.majors.add_widget(self.ece)
+        self.majors.add_widget(self.meche)
+        self.majors.add_widget(self.roboe)
+        self.majors.add_widget(self.bioe)
+        self.majors.add_widget(self.edesign)
+        self.majors.add_widget(self.ec)
+        self.majors.add_widget(self.syse)
+        self.majors.add_widget(self.ematsci)
+        self.majors.add_widget(self.other)
+        self.info.add_widget(self.majors)         
         
         self.reminders = GridLayout (rows=5)
         self.reminders.add_widget(Label(text='Reminders'))
@@ -379,9 +389,9 @@ class TabsScreen(Screen):
 class CrashCourseApp(App):
     def build(self):
         sm = ScreenManager(transition = WipeTransition())
-        sm.add_widget(StartUpScreen(sm,name='startup'))
-        sm.add_widget(LogInScreen(sm,name='login'))
-        sm.add_widget(NewUserScreen(sm,name='newuser'))
+        #sm.add_widget(StartUpScreen(sm,name='startup'))
+        #sm.add_widget(LogInScreen(sm,name='login'))
+        #sm.add_widget(NewUserScreen(sm,name='newuser'))
         sm.add_widget(TabsScreen(name='tabs'))
         return sm
 
