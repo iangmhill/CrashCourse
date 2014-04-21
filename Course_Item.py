@@ -16,7 +16,7 @@ class Course_Item(BoxLayout):
 		self.title = (Label(text=course.name, size_hint=(1.0,0.85)))
 
 		self.options = BoxLayout(size_hint=(1.0,0.15)) 
-		self.favorite = ToggleButton(text='Favorite')
+		self.favorite = ToggleButton(text='Add to Planner')
 		self.details = Button(text='Details',on_press=self.pop_up)		
 		self.options.add_widget(self.favorite)
 		self.options.add_widget(self.details)

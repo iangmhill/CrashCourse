@@ -341,7 +341,7 @@ class Planner(DragTab):
 
         for course_code in favorite_courses:
             if course_code not in self.favorites:
-                self.favorites.append(course_code)
+                self.favorites.append(course_code)                
                 self.add_Icon(str(course_code))
         
         
