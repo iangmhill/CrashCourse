@@ -28,7 +28,6 @@ from Proto3_5_stable import DragTab
 from datastructures import User
 #from dashNoKv import Dashboard
 
-favorite_courses = []
 search_temp_list = [] 
 
 class StartUpScreen(Screen):
@@ -262,7 +261,6 @@ class Catalog(BoxLayout):
         self.add_widget(self.filter_bar)
         self.add_widget(self.scrollview)
 
-        Clock.schedule_interval(self.update_favorites,0.1)
         Clock.schedule_interval(self.search_function,0.1)    
 
     def search_function(self,instance):
@@ -314,37 +312,14 @@ class Catalog(BoxLayout):
         if len(self.courses.children) != len(filtered_items):
             self.courses.clear_widgets()
             for course_item in filtered_items:
-                self.courses.add_widget(course_item)   
+                self.courses.add_widget(course_item) 
 
-    def update_favorites(self,instance):  
-        global favorite_courses      
-        for course_item in self.courses.children:
-            if course_item.favorite.state == 'normal' and course_item.course.code in favorite_courses:
-                favorite_courses.remove(course_item.course.code)
-            if course_item.favorite.state == 'down' and course_item.course.code not in favorite_courses:
-                favorite_courses.append(course_item.course.code)                
-        
 
 class Planner(DragTab):
     def __init__(self,**kwargs):
         super(Planner, self).__init__(**kwargs)
 
-        self.favorites = []        
-        Clock.schedule_interval(self.update_favorites,0.1) 
-        
-    def update_favorites(self,instance):
-        if len(favorite_courses) == len(self.favorites):
-            return
-        if len(favorite_courses) < len(self.favorites):
-            self.favorites = []
-            self.Scrollhome.clear_widgets()           
 
-        for course_code in favorite_courses:
-            if course_code not in self.favorites:
-                self.favorites.append(course_code)                
-                self.add_Icon(str(course_code))
-        
-        
 class Schedule(BoxLayout):
     def __init__(self,**kwargs):
         super(Schedule, self).__init__(**kwargs)
@@ -392,10 +367,6 @@ class TabsPanel(TabbedPanel):
             for course_object in catalog:
                 course_item = Course_Item(course=course_object,size_hint=(0.245,None),height=200)
                 self.tab2.content.courses.add_widget(course_item)
-            for course_item in self.tab2.content.courses.children:
-                if course_item.course.code in favorite_courses:
-                    course_item.favorite.state = 'down'
-
 
         self.last_tab = self.current_tab
     
