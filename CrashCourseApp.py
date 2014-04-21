@@ -28,6 +28,7 @@ from datastructures import User
 import all_globals
 #from dashNoKv import Dashboard
 
+
 search_temp_list = [] 
 
 class StartUpScreen(Screen):
