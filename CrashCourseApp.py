@@ -270,15 +270,15 @@ class Dashboard(GridLayout):
 
         Clock.schedule_interval(self.update_stats,0.1)
 
-        def update_stats(self,instance):
-            ahse_cred = user.credits['AHSE']
-            engr_cred = user.credits['ENGR']
-            mth_cred = user.credits['MTH']
-            sci_cred = user.credits['SCI']
-            if user.credits['AHSE']+user.credits['ENGR']+user.credits['MTH']+user.credits['SCI'] > 128:
-                will_grad = 'Yes'
-            else:
-                will_grad = 'No'
+    def update_stats(self,instance):
+        ahse_cred = user.credits['AHSE']
+        engr_cred = user.credits['ENGR']
+        mth_cred = user.credits['MTH']
+        sci_cred = user.credits['SCI']
+        if user.credits['AHSE']+user.credits['ENGR']+user.credits['MTH']+user.credits['SCI'] > 128:
+            will_grad = 'Yes'
+        else:
+            will_grad = 'No'
 
         
 class Catalog(BoxLayout):

@@ -138,7 +138,7 @@ class DragTab(BoxLayout):
 					for grandchild in child.children[:]:
 						if grandchild.width> 300:
 							child.remove_widget(grandchild)
-							stats=Label(size_hint=(1,1),text='AHSE:  '+str(user.credits['AHSE'])+'  '+'ENGR:  '+str(user.credits['ENGR'])+'  '+'MTH:  '+str(user.credits['MTH'])+'  '+'SCI:  '+str(user.credits['SCI'])+'  ',color=(1,1,1,1))
+							stats=Label(size_hint=(1,1),text='AHSE:  '+str(user.credits['AHSE'])+'  '+'ENGR:  '+str(user.credits['ENGR'])+'  '+'MTH:  '+str(user.credits['MTH'])+'  '+'SCI:  '+str(user.credits['SCI']),color=(1,1,1,1))
 							child.add_widget(stats)
 
 
