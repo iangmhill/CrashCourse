@@ -69,6 +69,11 @@ class LogInScreen(BoxLayout,Screen):
         self.buttons.add_widget(Button(text='New User?',on_press=self.new_user_function))
         self.buttons.add_widget(Button(text='Log In',on_press=self.enter_function))
         self.buttons.add_widget(Label())
+        
+        self.offline = GridLayout (cols = 3, size_hint = (1.0,0.05))
+        self.offline.add_widget(Label())  
+        self.offline.add_widget(ToggleButton(text = 'Offline Mode'))
+        self.offline.add_widget(Label())
             
         self.logo = Image(source='logo1.png',size_hint=(1.0,0.35))
         self.space1 = Label(size_hint=(1.0,0.175))
@@ -83,7 +88,9 @@ class LogInScreen(BoxLayout,Screen):
         self.add_widget(self.password)
         self.add_widget(self.space3)
         self.add_widget(self.buttons)
+        self.add_widget(self.offline)
         self.add_widget(self.space4)
+        
         
     def new_user_function(self,instance):
         self.sm.current = 'newuser'
@@ -217,10 +224,10 @@ class Dashboard(GridLayout):
         self.information = GridLayout (cols = 2, size_hint = (1,.85))
         self.information.add_widget (Label(text='Graduate:' + ' Yes!'))
         self.credits=GridLayout (cols=2, row=2)
-        self.credits.add_widget (Label(text = 'AHS: ' + '12'))
-        self.credits.add_widget (Label(text = 'ENGR: ' + '12'))
-        self.credits.add_widget (Label(text = 'MTH: ' + '12'))
-        self.credits.add_widget (Label(text = 'SCI: ' + '12'))
+        self.credits.add_widget (Label(text = 'AHSE: ' + str(user.credits['AHSE'])))
+        self.credits.add_widget (Label(text = 'ENGR: ' + str(user.credits['ENGR'])))
+        self.credits.add_widget (Label(text = 'MTH: ' + str(user.credits['MTH'])))
+        self.credits.add_widget (Label(text = 'SCI: ' + str(user.credits['SCI'])))
         
         self.information.add_widget (self.credits)
         
