@@ -28,6 +28,10 @@ from datastructures import User
 import all_globals
 #from dashNoKv import Dashboard
 
+fm = FileManager()
+user = fm.load_user('ihill','crashcourse')
+#user.credits = {'
+#fm.save_user(user)
 
 search_temp_list = [] 
 
