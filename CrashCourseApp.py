@@ -25,7 +25,7 @@ from NetworkManager import NetworkManager
 from Course_Item import Course_Item
 from Proto5 import DragTab
 from datastructures import User
-from all_globals import *
+import all_globals
 #from dashNoKv import Dashboard
 
 search_temp_list = [] 
@@ -97,11 +97,10 @@ class LogInScreen(BoxLayout,Screen):
     def new_user_function(self,instance):
         self.sm.current = 'newuser'
         
-    def enter_function(self,instance):
-        global catalog
+    def enter_function(self,instance):    
         if self.offline_button.state == 'normal':
             self.space4.text = 'Connecting...'
-            result = nm.update(self.u_entry.text,self.p_entry.text)
+            result = all_globals.nm.update(self.u_entry.text,self.p_entry.text)
             if result == 0:
                 self.space4.text = 'No internet connection.'
                 return
@@ -118,20 +117,20 @@ class LogInScreen(BoxLayout,Screen):
                 self.space4.text = 'Lost internet connection while syncing user information.'
                 return
             elif result == True:
-                user = fm.load_user(self.u_entry.text,self.p_entry.text)
-                if user != None:
-                    catalog = fm.load_courses()
+                all_globals.user = all_globals.fm.load_user(self.u_entry.text,self.p_entry.text)
+                if all_globals.user != None:
+                    all_globals.catalog = all_globals.fm.load_courses()
                     self.space4.text = 'All systems go!'
                     self.sm.current = 'tabs'
                 else:
                     self.space4.text = 'Login failed. Incorrect username or password.'
 
         else:
-            user = fm.load_user(self.u_entry.text,self.p_entry.text)
-            catalog = fm.load_courses()
-            if catalog == None:
+            all_globals.user = all_globals.fm.load_user(self.u_entry.text,self.p_entry.text)
+            all_globals.catalog = all_globals.fm.load_courses()
+            if all_globals.catalog == None:
                 self.space4.text = 'Login failed. No courses.csv file.'
-            elif user == None:
+            elif all_globals.user == None:
                 self.space4.text = 'Login failed. Incorrect username or password for local user.'
             else:
                 self.space4.text = 'Starting in Offline Mode.'
@@ -260,7 +259,7 @@ class Dashboard(GridLayout):
         self.stats.add_widget (self.information)        
         
         self.notes = GridLayout(cols=1)
-        self.n_entry = TextInput(text=user.notes, multiline=True)
+        self.n_entry = TextInput(text=all_globals.user.notes, multiline=True)
         self.notes.add_widget(self.n_entry)
         
         self.add_widget(self.info)
@@ -271,16 +270,16 @@ class Dashboard(GridLayout):
         Clock.schedule_interval(self.update_stats,0.1)
 
     def update_stats(self,instance):
-        ahse_cred = user.credits['AHSE']
-        engr_cred = user.credits['ENGR']
-        mth_cred = user.credits['MTH']
-        sci_cred = user.credits['SCI']
-        if user.credits['AHSE']+user.credits['ENGR']+user.credits['MTH']+user.credits['SCI'] > 128:
+        ahse_cred = all_globals.user.credits['AHSE']
+        engr_cred = all_globals.user.credits['ENGR']
+        mth_cred = all_globals.user.credits['MTH']
+        sci_cred = all_globals.user.credits['SCI']
+        if all_globals.user.credits['AHSE']+all_globals.user.credits['ENGR']+all_globals.user.credits['MTH']+all_globals.user.credits['SCI'] > 128:
             will_grad = 'Yes'
         else:
             will_grad = 'No'
 
-        
+    
 class Catalog(BoxLayout):
     def __init__(self,**kwargs):
         super(Catalog, self).__init__(**kwargs)
@@ -395,7 +394,7 @@ class TabsPanel(TabbedPanel):
         if self.current_tab != self.last_tab and self.current_tab == self.tab2:
             self.tab2.content.courses.clear_widgets()
             print("changed to tab 2")
-            for course_object in catalog:
+            for course_object in all_globals.catalog:
                 course_item = Course_Item(course=course_object,size_hint=(0.245,None),height=200)
                 self.tab2.content.courses.add_widget(course_item)
 
