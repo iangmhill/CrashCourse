@@ -12,12 +12,6 @@ from NoKvId import Semester
 from kivy.clock import Clock
 import all_globals
 
-semesters=['2013','2014','2014','2015','2015','2016','2016','2017']
-count = 0
-pre_ahse = 0
-pre_engr = 0
-pre_mth = 0
-pre_sci = 0
 
 class DragTab(BoxLayout):
 	def __init__(self,**kwargs):
@@ -64,7 +58,7 @@ class DragTab(BoxLayout):
 		self.add_widget(self.scrollview)
 
 		# if len(self.lefthand.children)>=2:
-		Clock.schedule_interval(self.update, .1)
+		Clock.schedule_interval(self.update_stats_widget, .1)
 
 
 	def add_Icon(self,course):
@@ -95,23 +89,8 @@ class DragTab(BoxLayout):
 
 		self.courses.add_widget(Icon)
 
-	def update(self, dt):
-	
-		global pre_ahse
-		global pre_engr
-		global pre_mth
-		global pre_sci
-		global count
-		if count == 0:
-			pre_ahse = all_globals.user.credits['AHSE']
-			pre_engr = all_globals.user.credits['ENGR']
-			pre_mth = all_globals.user.credits['MTH']
-			pre_sci = all_globals.user.credits['SCI']
-		count += 1
-		all_globals.user.credits['AHSE']=pre_ahse
-		all_globals.user.credits['ENGR']=pre_engr
-		all_globals.user.credits['MTH']=pre_mth
-		all_globals.user.credits['SCI']=pre_sci
+	def update_stats_widget(self, dt):		
+		##DON'T REWRITE OVER THE USER INFORMATION WITH THE STUDIP DUMMY DATA!!!!!!
 		Fixed=False
 		for child in self.lefthand.children[:]:
 			if child.height> 300:
@@ -119,8 +98,8 @@ class DragTab(BoxLayout):
 					for semester_element in semester_block.children[:]:
 						if semester_element.height>100:
 							for course in semester_element.children[:]:
-								all_globals.user.credits['AHSE']+=course.course.credits['AHSE']														
-								all_globals.user.credits['ENGR']+=course.course.credits['ENGR']															
+								all_globals.user.credits['AHSE']+=course.course.credits['AHSE']	#+ course.course.pre_credits['AHSE']												
+								all_globals.user.credits['ENGR']+=course.course.credits['ENGR']													
 								all_globals.user.credits['MTH']+=course.course.credits['MTH']													
 								all_globals.user.credits['SCI']+=course.course.credits['SCI']
 														
@@ -128,33 +107,17 @@ class DragTab(BoxLayout):
 			if child.height>300:
 				Fixed=True
 		if Fixed:
-			# self.stats_widget.remove_widget(self.stats)
-			# self.stats_widget.add_widget(Label(size_hint=(1,1),text='AHSE:  '+str(all_globals.user.credits['AHSE'])+'  '+'ENGR:  '+str(all_globals.user.credits['ENGR'])+'  '+'MTH:  '+str(all_globals.user.credits['MTH'])+'  '+'SCI:  '+str(all_globals.user.credits['SCI'])+'  ',color=(1,1,1,1)))
 			for child in self.lefthand.children[:]:
 				if child.height< 300:
 					for grandchild in child.children[:]:
 						if grandchild.width> 300:
 							child.remove_widget(grandchild)
+
 							stats=Label(size_hint=(1,1),text='AHSE:  '+str(all_globals.user.credits['AHSE'])+'  '+'ENGR:  '+str(all_globals.user.credits['ENGR'])+'  '+'MTH:  '+str(all_globals.user.credits['MTH'])+'  '+'SCI:  '+str(all_globals.user.credits['SCI'])+'  ',color=(1,1,1,1))
+
 							child.add_widget(stats)
 
-		self.slot1.Me.clear_widgets()
-		self.slot1.Me.add_widget(Label(text="Fall "+ str(int(all_globals.user.grad_year)-4)))
-		self.slot2.Me.clear_widgets()
-		self.slot2.Me.add_widget(Label(text="Fall "+ str(int(all_globals.user.grad_year)-3)))
-		self.slot3.Me.clear_widgets()
-		self.slot3.Me.add_widget(Label(text="Fall "+ str(int(all_globals.user.grad_year)-2)))
-		self.slot4.Me.clear_widgets()
-		self.slot4.Me.add_widget(Label(text="Fall "+ str(int(all_globals.user.grad_year)-1)))
-		self.slot5.Me.clear_widgets()
-		self.slot5.Me.add_widget(Label(text="Spring "+ str(int(all_globals.user.grad_year)-3)))
-		self.slot6.Me.clear_widgets()
-		self.slot6.Me.add_widget(Label(text="Spring "+ str(int(all_globals.user.grad_year)-2)))
-		self.slot7.Me.clear_widgets()
-		self.slot7.Me.add_widget(Label(text="Spring "+ str(int(all_globals.user.grad_year)-1)))
-		self.slot8.Me.clear_widgets()
-		self.slot8.Me.add_widget(Label(text="Spring "+ str(int(all_globals.user.grad_year))))
-		
+
 
 class DemoApp2(App):
 	"""docstring for TestApp"""

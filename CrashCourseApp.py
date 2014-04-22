@@ -103,8 +103,6 @@ class LogInScreen(BoxLayout,Screen):
         self.sm.current = 'newuser'
         
     def enter_function(self,instance):    
-        global user
-        global catalog
         if self.offline_button.state == 'normal':
             self.space4.text = 'Connecting...'
             result = all_globals.nm.update(self.u_entry.text,self.p_entry.text)
@@ -124,7 +122,7 @@ class LogInScreen(BoxLayout,Screen):
                 self.space4.text = 'Lost internet connection while syncing user information.'
                 return
             elif result == True:
-                all_globals.user = all_globals.fm.load_user(self.u_entry.text,self.p_entry.text)
+                all_globals.user = all_globals.fm.load_user(self.u_entry.text,self.p_entry.text)                
                 if all_globals.user != None:
                     all_globals.catalog = all_globals.fm.load_courses()
                     self.space4.text = 'All systems go!'
@@ -133,8 +131,14 @@ class LogInScreen(BoxLayout,Screen):
                     self.space4.text = 'Login failed. Incorrect username or password.'
 
         else:
+            print all_globals.user.name
+            new_user = all_globals.fm.load_user(self.u_entry.text,self.p_entry.text)
+            print new_user.name 
+
             all_globals.user = all_globals.fm.load_user(self.u_entry.text,self.p_entry.text)
-            #all_globals.user.credits={'ENGR':100, 'AHSE':1000,'MTH':2,'SCI':2}
+            print all_globals.user.name
+            print all_globals.user.credits['AHSE']
+            #all_globals.user.credits={'ENGR':100,'AHSE':1000,'MTH':2,'SCI':2}
             all_globals.catalog = all_globals.fm.load_courses()
             if all_globals.catalog == None:
                 self.space4.text = 'Login failed. No courses.csv file.'
@@ -278,7 +282,7 @@ class Dashboard(GridLayout):
         Clock.schedule_interval(self.update_stats,0.1)
 
     def update_stats(self,instance):        
-        ahse_cred = all_globals.user.credits['AHSE']
+        ahse_cred = all_globals.user.credits['AHSE']         
         engr_cred = all_globals.user.credits['ENGR']
         mth_cred = all_globals.user.credits['MTH']
         sci_cred = all_globals.user.credits['SCI']
@@ -288,7 +292,7 @@ class Dashboard(GridLayout):
             will_grad = 'No'
 
         self.information.clear_widgets()
-        self.information.add_widget (Label(text='Graduate:' + will_grad))
+        self.information.add_widget (Label(text='Graduate: ' + will_grad))
         self.credits.clear_widgets()
         self.information.add_widget(self.credits)
         self.credits.add_widget (Label(text = 'AHSE: ' + str(ahse_cred)))
