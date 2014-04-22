@@ -26,7 +26,7 @@ class DragTab(BoxLayout):
 		#right-hand column is StackLayout, lefthand is a vertical box layout		
 		self.Scrollhome = GridLayout(cols=1,size_hint=(.3,1),)
 		self.scrollview = ScrollView(size=(400,400))
-		self.courses = StackLayout(spacing=5,size_hint_y=None)
+		self.courses = StackLayout(spacing=5,size_hint_y=None, orientattion='tb-rl')
 		self.courses.bind(minimum_height=self.courses.setter('height'))
 		self.scrollview.add_widget(self.courses)
 		self.Scrollhome.add_widget(self.scrollview)		
@@ -134,7 +134,9 @@ class DragTab(BoxLayout):
 					for grandchild in child.children[:]:
 						if grandchild.width> 300:
 							child.remove_widget(grandchild)
+
 							stats=Label(size_hint=(1,1),text='AHSE:  '+str(all_globals.user.credits['AHSE'])+'  '+'ENGR:  '+str(all_globals.user.credits['ENGR'])+'  '+'MTH:  '+str(all_globals.user.credits['MTH'])+'  '+'SCI:  '+str(all_globals.user.credits['SCI'])+'  ',color=(1,1,1,1))
+
 							child.add_widget(stats)
 
 
