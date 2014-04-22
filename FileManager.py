@@ -3,6 +3,8 @@ import sys
 import cPickle as pickle
 from datastructures import Course, Professor, Time, Semester, User
 import datetime
+import xlsxwriter
+import re
 
 class FileManager(object):
     """Crash course object to handle the loading and saving of course, professor, and user data"""
@@ -96,14 +98,29 @@ class FileManager(object):
         with open('user.usr', 'wb') as userfile:
             pickle.dump(user, userfile, -1)
 
+    def export_user(self,user):
+        filename = ""
+        for c in user.name:
+            if re.match("[a-zA-Z]", c):
+                filename += c
+        workbook = xlsxwriter.Workbook(filename + 'CoursePlan.xlsx')
+        worksheet = workbook.add_worksheet()
+
+        worksheet.write(0, 0, "Course Plan for " + user.name)
+        worksheet.write(1, 0, "Class of " + str(user.grad_year))
+        worksheet.write(2, 0, "Majoring in " + user.major)
+
+
+        workbook.close()
+
+
 
 
 
 
 filemanager = FileManager()
-catalog = filemanager.load_courses()
-for course in catalog:
-    print(course.keywords)
+user = filemanager.load_user('ihill','crashcourse')
+filemanager.export_user(user)
 # last_updated,distribution = filemanager.load_stats()
 # print(last_updated)
 # for k in distribution:
