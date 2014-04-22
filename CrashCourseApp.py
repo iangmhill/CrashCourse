@@ -214,10 +214,10 @@ class Dashboard(GridLayout):
         self.years = BoxLayout(size_hint=(1.0,0.1))
         self.majors = BoxLayout(orientation='vertical',size_hint=(1.0,0.8))
 
-        self.year1 = ToggleButton(text='2014',group='year')        
-        self.year2 = ToggleButton(text='2015',group='year')   
-        self.year3 = ToggleButton(text='2016',group='year')   
-        self.year4 = ToggleButton(text='2017',group='year')
+        self.year1 = ToggleButton(text=str(2014),group='year')        
+        self.year2 = ToggleButton(text=str(2015),group='year')   
+        self.year3 = ToggleButton(text=str(2016),group='year')   
+        self.year4 = ToggleButton(text=str(2017),group='year')
         self.years.add_widget(self.year1)
         self.years.add_widget(self.year2)   
         self.years.add_widget(self.year3)   
@@ -277,7 +277,7 @@ class Dashboard(GridLayout):
 
         Clock.schedule_interval(self.update_stats,0.1)
 
-    def update_stats(self,instance):
+    def update_stats(self,instance):        
         ahse_cred = all_globals.user.credits['AHSE']
         engr_cred = all_globals.user.credits['ENGR']
         mth_cred = all_globals.user.credits['MTH']
@@ -295,6 +295,15 @@ class Dashboard(GridLayout):
         self.credits.add_widget (Label(text = 'ENGR: ' + str(engr_cred)))
         self.credits.add_widget (Label(text = 'MTH: ' + str(mth_cred)))
         self.credits.add_widget (Label(text = 'SCI: ' + str(sci_cred)))
+
+        if self.year1.state == 'down':
+            all_globals.user.grad_year = int(self.year1.text)
+        if self.year2.state == 'down':
+            all_globals.user.grad_year = int(self.year2.text)
+        if self.year3.state == 'down':
+            all_globals.user.grad_year = int(self.year3.text)
+        if self.year4.state == 'down':
+            all_globals.user.grad_year = int(self.year4.text)
 
         # self.information.clear_widgets()
         # self.information.add_widget (Label(text='Graduate:' + will_grad))
