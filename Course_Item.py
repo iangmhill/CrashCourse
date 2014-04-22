@@ -16,8 +16,8 @@ class Course_Item(BoxLayout):
 		self.title = (Label(text=course.name, size_hint=(1.0,0.85)))
 
 		self.options = BoxLayout(size_hint=(1.0,0.15)) 
-		self.add_button = Button(text='Add to Planner',on_press=self.add_to_planner)
-		self.details_button = Button(text='Details',on_press=self.pop_up)		
+		self.add_button = Button(text='Add to Planner',on_press=self.add_to_planner, size_hint=(.66,1))
+		self.details_button = Button(text='Details',on_press=self.pop_up, size_hint=(.34,1))		
 		self.options.add_widget(self.add_button)
 		self.options.add_widget(self.details_button)
 
