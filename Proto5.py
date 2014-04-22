@@ -24,12 +24,11 @@ class DragTab(BoxLayout):
 		super(DragTab,self).__init__(**kwargs)
 		#Base Layer is a BoxLayout
 		#right-hand column is StackLayout, lefthand is a vertical box layout		
-		self.Scrollhome = GridLayout(cols=1,size_hint=(.3,1),)
-		self.scrollview = ScrollView(size=(400,400))
+		
+		self.scrollview = ScrollView(size=(400,400),size_hint=(0.3,1))
 		self.courses = StackLayout(spacing=5,size_hint_y=None, orientattion='tb-rl')
 		self.courses.bind(minimum_height=self.courses.setter('height'))
 		self.scrollview.add_widget(self.courses)
-		self.Scrollhome.add_widget(self.scrollview)		
 
 		self.lefthand=BoxLayout(orientation='vertical', size_hint=(.7,1))
 		self.Planner=GridLayout(size_hint=(1,.9),rows=2, cols=4, spacing=3)
@@ -62,7 +61,7 @@ class DragTab(BoxLayout):
 
 		#Now stuff it all in
 		self.add_widget(self.lefthand)
-		self.add_widget(self.Scrollhome)
+		self.add_widget(self.scrollview)
 
 		# if len(self.lefthand.children)>=2:
 		Clock.schedule_interval(self.update_stats_widget, .1)
@@ -70,7 +69,7 @@ class DragTab(BoxLayout):
 
 	def add_Icon(self,course):
 
-		Icon=DragableButton(course=course,text=course.name,height=100,size_hint_y=None,
+		Icon=DragableButton(course=course,text=course.keywords[1],height=100,size_hint_y=None,
 							  droppable_zone_objects=[],
 							  bound_zone_objects=[],
 							  kill_zone_objects=[],
@@ -78,7 +77,7 @@ class DragTab(BoxLayout):
 							  remove_on_drag=True)
 		# Icon.text_size=self.size
 		Icon.bound_zone_objects.append(self.Planner)
-		Icon.bound_zone_objects.append(self.Scrollhome)
+		Icon.bound_zone_objects.append(self.scrollview)
 		Icon.bound_zone_objects.append(self.recycle)
 
 		Icon.droppable_zone_objects.append(self.slot1.coursehouse)
