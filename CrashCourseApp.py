@@ -134,7 +134,7 @@ class LogInScreen(BoxLayout,Screen):
 
         else:
             all_globals.user = all_globals.fm.load_user(self.u_entry.text,self.p_entry.text)
-            all_globals.user.credits={'ENGR':100, 'AHSE':1000,'MTH':2,'SCI':2}
+            #all_globals.user.credits={'ENGR':100, 'AHSE':1000,'MTH':2,'SCI':2}
             all_globals.catalog = all_globals.fm.load_courses()
             if all_globals.catalog == None:
                 self.space4.text = 'Login failed. No courses.csv file.'

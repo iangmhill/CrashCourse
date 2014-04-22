@@ -12,7 +12,7 @@ from NoKvId import Semester
 from kivy.clock import Clock
 import all_globals
 
-semesters=['FL 2013','SP 2014','FL 2014','SP 2015','FL 2015','SP 2016','FL 2016','SP 2017']
+semesters=['2013','2014','2014','2015','2015','2016','2016','2017']
 count = 0
 pre_ahse = 0
 pre_engr = 0
@@ -34,21 +34,21 @@ class DragTab(BoxLayout):
 		self.lefthand=BoxLayout(orientation='vertical', size_hint=(.7,1))
 		self.Planner=GridLayout(size_hint=(1,.9),rows=2, cols=4, spacing=3)
 
-		self.slot1=Semester(text=str(semesters[0]))
+		self.slot1=Semester(text="Fall "+ str(all_globals.user.grad_year-4))
 		self.Planner.add_widget(self.slot1)
-		self.slot2=Semester(text=str(semesters[2]))
+		self.slot2=Semester(text="Fall "+ str(all_globals.user.grad_year-3))
 		self.Planner.add_widget(self.slot2)
-		self.slot3=Semester(text=str(semesters[4]))
+		self.slot3=Semester(text="Fall "+ str(all_globals.user.grad_year-2))
 		self.Planner.add_widget(self.slot3)
-		self.slot4=Semester(text=str(semesters[6]))
+		self.slot4=Semester(text="Fall "+ str(all_globals.user.grad_year-1))
 		self.Planner.add_widget(self.slot4)
-		self.slot5=Semester(text=str(semesters[1]))
+		self.slot5=Semester(text="Spring "+ str(all_globals.user.grad_year-3))
 		self.Planner.add_widget(self.slot5)
-		self.slot6=Semester(text=str(semesters[3]))
+		self.slot6=Semester(text="Spring "+ str(all_globals.user.grad_year-2))
 		self.Planner.add_widget(self.slot6)
-		self.slot7=Semester(text=str(semesters[5]))
+		self.slot7=Semester(text="Spring "+ str(all_globals.user.grad_year-1))
 		self.Planner.add_widget(self.slot7)
-		self.slot8=Semester(text=str(semesters[7]))
+		self.slot8=Semester(text="Spring "+ str(all_globals.user.grad_year))
 		self.Planner.add_widget(self.slot8)
 
 		self.lefthand.add_widget(self.Planner)

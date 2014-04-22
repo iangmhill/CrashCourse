@@ -21,7 +21,7 @@ class Semester(StackLayout):
 		self.bind(pos=self.update_rect)
 		self.bind(size=self.update_rect)
 
-		self.Me=Button(text=self.text, size_hint=(1,.1))
+		self.Me=Label(text=self.text, size_hint=(1,.1))
 		self.coursehouse=GridLayout(size_hint=(1,.9), rows=6, cols=1)
 
 		self.add_widget(self.Me)
