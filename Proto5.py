@@ -70,7 +70,7 @@ class DragTab(BoxLayout):
 
 	def add_Icon(self,course):
 
-		Icon=DragableButton(course=course,text=course.name,height=200,size_hint_y=None,
+		Icon=DragableButton(course=course,text=course.name,height=100,size_hint_y=None,
 							  droppable_zone_objects=[],
 							  bound_zone_objects=[],
 							  kill_zone_objects=[],
