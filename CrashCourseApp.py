@@ -304,11 +304,7 @@ class Dashboard(GridLayout):
             all_globals.user.grad_year = int(self.year3.text)
         if self.year4.state == 'down':
             all_globals.user.grad_year = int(self.year4.text)
-
-        # self.information.clear_widgets()
-        # self.information.add_widget (Label(text='Graduate:' + will_grad))
-
-    
+   
 class Catalog(BoxLayout):
     def __init__(self,**kwargs):
         super(Catalog, self).__init__(**kwargs)
