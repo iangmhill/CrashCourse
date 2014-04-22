@@ -65,7 +65,7 @@ class DragTab(BoxLayout):
 		self.add_widget(self.Scrollhome)
 
 		# if len(self.lefthand.children)>=2:
-		Clock.schedule_interval(self.update_stats_widget, .1)
+		Clock.schedule_interval(self.update, .1)
 
 
 	def add_Icon(self,course):
@@ -96,7 +96,7 @@ class DragTab(BoxLayout):
 
 		self.courses.add_widget(Icon)
 
-	def update_stats_widget(self, dt):
+	def update(self, dt):
 	
 		global pre_ahse
 		global pre_engr
@@ -129,17 +129,33 @@ class DragTab(BoxLayout):
 			if child.height>300:
 				Fixed=True
 		if Fixed:
+			# self.stats_widget.remove_widget(self.stats)
+			# self.stats_widget.add_widget(Label(size_hint=(1,1),text='AHSE:  '+str(all_globals.user.credits['AHSE'])+'  '+'ENGR:  '+str(all_globals.user.credits['ENGR'])+'  '+'MTH:  '+str(all_globals.user.credits['MTH'])+'  '+'SCI:  '+str(all_globals.user.credits['SCI'])+'  ',color=(1,1,1,1)))
 			for child in self.lefthand.children[:]:
 				if child.height< 300:
 					for grandchild in child.children[:]:
 						if grandchild.width> 300:
 							child.remove_widget(grandchild)
-
 							stats=Label(size_hint=(1,1),text='AHSE:  '+str(all_globals.user.credits['AHSE'])+'  '+'ENGR:  '+str(all_globals.user.credits['ENGR'])+'  '+'MTH:  '+str(all_globals.user.credits['MTH'])+'  '+'SCI:  '+str(all_globals.user.credits['SCI'])+'  ',color=(1,1,1,1))
-
 							child.add_widget(stats)
 
-
+		self.slot1.Me.clear_widgets()
+		self.slot1.Me.add_widget(Label(text="Fall "+ str(int(all_globals.user.grad_year)-4)))
+		self.slot2.Me.clear_widgets()
+		self.slot2.Me.add_widget(Label(text="Fall "+ str(int(all_globals.user.grad_year)-3)))
+		self.slot3.Me.clear_widgets()
+		self.slot3.Me.add_widget(Label(text="Fall "+ str(int(all_globals.user.grad_year)-2)))
+		self.slot4.Me.clear_widgets()
+		self.slot4.Me.add_widget(Label(text="Fall "+ str(int(all_globals.user.grad_year)-1)))
+		self.slot5.Me.clear_widgets()
+		self.slot5.Me.add_widget(Label(text="Spring "+ str(int(all_globals.user.grad_year)-3)))
+		self.slot6.Me.clear_widgets()
+		self.slot6.Me.add_widget(Label(text="Spring "+ str(int(all_globals.user.grad_year)-2)))
+		self.slot7.Me.clear_widgets()
+		self.slot7.Me.add_widget(Label(text="Spring "+ str(int(all_globals.user.grad_year)-1)))
+		self.slot8.Me.clear_widgets()
+		self.slot8.Me.add_widget(Label(text="Spring "+ str(int(all_globals.user.grad_year))))
+		
 
 class DemoApp2(App):
 	"""docstring for TestApp"""
