@@ -278,8 +278,12 @@ class Dashboard(GridLayout):
         self.stats.add_widget (self.information)        
         
         self.notes = GridLayout(cols=1)
-        self.n_entry = TextInput(text=all_globals.user.notes, multiline=True)
+        self.n_entry = TextInput(text=all_globals.user.notes,multiline=True,size_hint=(1.0,0.9))
+        self.options_bar = BoxLayout(size_hint=(1.0,0.1))
+        self.save_button = Button(text='Save User Information',on_press=self.save_user_info) 
+        self.options_bar.add_widget(self.save_button)       
         self.notes.add_widget(self.n_entry)
+        self.notes.add_widget(self.options_bar)
         
         self.add_widget(self.info)
         self.add_widget(self.reminders)
@@ -315,6 +319,9 @@ class Dashboard(GridLayout):
             all_globals.user.grad_year = int(self.year3.text)
         if self.year4.state == 'down':
             all_globals.user.grad_year = int(self.year4.text)
+
+    def save_user_info(self,instance):
+        all_globals.fm.save_user(all_globals.user)
    
 class Catalog(BoxLayout):
     def __init__(self,**kwargs):
