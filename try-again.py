@@ -36,6 +36,24 @@ user = fm.load_user('ihill','crashcourse')
 favorite_courses = []
 search_temp_list = [] 
 
+
+class TabTextInput(TextInput):
+
+    def __init__(self, *args, **kwargs):
+        self.next = kwargs.pop('next', None)
+        super(TabTextInput, self).__init__(*args, **kwargs)
+
+    def set_next(self, next):
+        self.next = next
+
+    def _keyboard_on_key_down(self, window, keycode, text, modifiers):
+        key, key_str = keycode
+        if key in (9, 13) and self.next is not None:
+            self.next.focus = True
+            self.next.select_all()
+        else:
+            super(TabTextInput, self)._keyboard_on_key_down(window, keycode, text, modifiers)
+
 class StartUpScreen(Screen):
     def __init__(self,**kwargs):        
         super(StartUpScreen, self).__init__(**kwargs)
@@ -57,14 +75,14 @@ class LogInScreen(BoxLayout,Screen):
         self.username = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.username.add_widget(Label())
         self.username.add_widget(Label(text='Username:'))
-        self.u_entry = TextInput(multiline=False)
+        self.u_entry = TextInput(next, multiline=False)
         self.username.add_widget(self.u_entry)
         self.username.add_widget(Label())
         
         self.password = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.password.add_widget(Label())
         self.password.add_widget(Label(text='Password:'))  
-        self.p_entry = TextInput(multiline=False,password=True)
+        self.p_entry = TextInput(next, multiline=False,password=True)
         self.password.add_widget(self.p_entry)
         self.password.add_widget(Label())
 
