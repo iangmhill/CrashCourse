@@ -88,9 +88,12 @@ class DragTab(BoxLayout):
 		Icon.kill_zone_objects.append(self.recycle)
 
 		self.courses.add_widget(Icon)
+		print Icon.droppable_zone_objects
 
 	def update_stats_widget(self, dt):		
-		# DON'T REWRITE OVER THE USER INFORMATION WITH THE STUPID DUMMY DATA!!!!!!
+
+		##DON'T REWRITE OVER THE USER INFORMATION WITH THE DUMMY DATA!!!!!!
+
 		Fixed=False
 		all_globals.user.credits['AHSE'] = 0#course.course.pre_credits['AHSE']												
 		all_globals.user.credits['ENGR'] = 0#course.course.pre_credits['ENGR']													
