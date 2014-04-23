@@ -1,4 +1,3 @@
-
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.togglebutton import ToggleButton
@@ -25,7 +24,7 @@ class Course_Item(BoxLayout):
 
 		self.add_widget(self.title)            
 		self.add_widget(self.options)
-
+		
 
 		#POPUP CONTENT
 		content = GridLayout(cols=1)
@@ -42,7 +41,7 @@ class Course_Item(BoxLayout):
 		if self.course.credits['MTH'] != 0:
 			mth = str(self.course.credits['MTH']) + ' MTH  '
 		if self.course.credits['SCI'] != 0:
-			sci = str(self.course.credits['SCI']) + ' SCI  '
+			sci = str(self.course.credits['SCI']) + ' SCI'
 
 		if self.course.PNR == True:
 			pnorec = 'Yes'
