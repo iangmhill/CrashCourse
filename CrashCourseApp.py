@@ -78,7 +78,7 @@ class LogInScreen(BoxLayout,Screen):
         
         self.offline = GridLayout (cols = 3, size_hint = (1.0,0.05))
         self.offline.add_widget(Label())
-        self.offline_button = ToggleButton(text = 'Offline Mode')
+        self.offline_button = ToggleButton(text = 'Offline Mode [OFF]')
         self.offline.add_widget(self.offline_button)
         self.offline.add_widget(Label())
             
@@ -97,8 +97,15 @@ class LogInScreen(BoxLayout,Screen):
         self.add_widget(self.buttons)
         self.add_widget(self.offline)
         self.add_widget(self.space4)
+
+        Clock.schedule_interval(self.toggle_text,0.1)
         
-        
+    def toggle_text(self,instance):
+        if self.offline_button.state == 'normal':
+            self.offline_button.text = 'Offline Mode [OFF]'
+        else:
+            self.offline_button.text = 'Offline Mode [ON]'
+
     def new_user_function(self,instance):
         self.sm.current = 'newuser'
         
