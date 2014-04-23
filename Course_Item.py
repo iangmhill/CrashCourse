@@ -59,7 +59,7 @@ class Course_Item(BoxLayout):
 
 	def add_to_planner(self,instance):
 		for child in self.parent.parent.parent.parent.parent.parent.children:			
-			child.tab3.content.add_Icon(self.course)				
+			child.tab3.content.add_Icon(self.course)
 				
 	def pop_up(self,instance):	
 		self.popup.open()
