@@ -16,7 +16,7 @@ class Semester(StackLayout):
 		#self.color= color
 		orientation='tb-lr'
 		with self.canvas:
-			Color(0.2,0.65,0.8,1.0)
+			Color(0.2,0.65,0.8,0.9)
 			self.rect=Rectangle(pos=self.pos, size=self.size)
 		self.bind(pos=self.update_rect)
 		self.bind(size=self.update_rect)
