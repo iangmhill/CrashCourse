@@ -19,11 +19,8 @@ class DragTab(BoxLayout):
 		#Base Layer is a BoxLayout
 		#right-hand column is StackLayout, lefthand is a vertical box layout		
 		
-		self.scrollview = ScrollView(size=(400,400),size_hint=(0.3,1))
-		self.courses = StackLayout(spacing=5,size_hint_y=None,orientation='tb-rl')
-		self.courses.bind(minimum_height=self.courses.setter('height'))
-		self.scrollview.add_widget(self.courses)
-
+		self.courses = StackLayout(spacing=5,size_hint_y=None,orientation='tb-rl',size_hint=(0.3,1))		
+		
 		self.lefthand=BoxLayout(orientation='vertical', size_hint=(.7,1))
 		self.Planner=GridLayout(size_hint=(1,.9),rows=2, cols=4, spacing=3)
 
@@ -55,7 +52,7 @@ class DragTab(BoxLayout):
 
 		#Now stuff it all in
 		self.add_widget(self.lefthand)
-		self.add_widget(self.scrollview)
+		self.add_widget(self.courses)
 
 		# if len(self.lefthand.children)>=2:
 		Clock.schedule_interval(self.update_stats_widget, .1)
@@ -71,7 +68,7 @@ class DragTab(BoxLayout):
 							  remove_on_drag=True)
 		# Icon.text_size=self.size
 		Icon.bound_zone_objects.append(self.Planner)
-		Icon.bound_zone_objects.append(self.scrollview)
+		Icon.bound_zone_objects.append(self.courses)
 		Icon.bound_zone_objects.append(self.recycle)
 
 		Icon.droppable_zone_objects.append(self.slot1.coursehouse)
@@ -88,12 +85,9 @@ class DragTab(BoxLayout):
 		Icon.kill_zone_objects.append(self.recycle)
 
 		self.courses.add_widget(Icon)
-		print Icon.droppable_zone_objects
 
 	def update_stats_widget(self, dt):		
-
-		##DON'T REWRITE OVER THE USER INFORMATION WITH THE DUMMY DATA!!!!!!
-
+		# DON'T REWRITE OVER THE USER INFORMATION WITH THE STUPID DUMMY DATA!!!!!!
 		Fixed=False
 		all_globals.user.credits['AHSE'] = 0#course.course.pre_credits['AHSE']												
 		all_globals.user.credits['ENGR'] = 0#course.course.pre_credits['ENGR']													

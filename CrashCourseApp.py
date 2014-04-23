@@ -23,7 +23,7 @@ from kivy.clock import Clock
 from FileManager import FileManager
 from NetworkManager import NetworkManager
 from Course_Item import Course_Item
-from Proto5 import DragTab
+from Proto5_NoScroll import DragTab
 from datastructures import User
 import all_globals
 #from dashNoKv import Dashboard

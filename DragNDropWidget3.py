@@ -8,6 +8,7 @@ from kivy.properties import (
     ListProperty, NumericProperty, BooleanProperty, ObjectProperty)
 from kivy.app import App
 from kivy.clock import Clock
+import all_globals
 
 
 class DragNDropWidget(Widget):
@@ -201,7 +202,7 @@ class DragNDropWidget(Widget):
                 obj.add_widget(self)                    
 
                 try:
-                    if obj==obj.parent.parent.courses:
+                    if obj==obj.parent.courses:
                         self.width=100
                         print "width correct"
                         self.height=100
