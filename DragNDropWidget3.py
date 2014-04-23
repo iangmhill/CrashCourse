@@ -159,16 +159,19 @@ class DragNDropWidget(Widget):
     def on_drag_finish(self):
         #print "drag finish"
         if self._dragged and self._dragable:
+            print "I recognize being dropped"
             self.opacity = 1.0
             dropped_ok = False
             kill_object= False
             for obj in self.droppable_zone_objects:
                 if obj.collide_point(*[self.pos[0]+self.width/2, self.pos[1]+self.height/2]):
                     dropped_ok = True
+                    print "I'm over a drop zone"
             for obj in self.kill_zone_objects:
                 if obj.collide_point(*[self.pos[0]+self.width/2, self.pos[1]+self.height/2]):
                     kill_object = True
                     dropped_ok = False
+                    print "I'm going to be recycled...mommy, what is recycling?"
 
             if dropped_ok:
                 self.drop_func()
@@ -178,11 +181,14 @@ class DragNDropWidget(Widget):
             else:
                 anim = Animation(pos=self._old_drag_pos, duration=0.7, t="in_quad")
                 if kill_object:
+                    print "recycling"
                     anim.bind(on_complete= self.deparent)
                 else:
                     if self.remove_on_drag:
+                        "going home"
                         anim.bind(on_complete = self.reborn)
                     else:
+                        "deparent function activated"
                         anim.bind(on_complete = self.deparent)
                 anim.start(self)
             self._dragged = False
@@ -190,20 +196,20 @@ class DragNDropWidget(Widget):
     def drop_func(self):
         for obj in self.droppable_zone_objects:
             if obj.collide_point(*[self.pos[0]+self.width/2, self.pos[1]+self.height/2]):
-                
+                print "adoption"
                 self.deparent()
                 obj.add_widget(self)                    
 
                 try:
-                    if obj==obj.parent.Scrollhome:
+                    if obj==obj.parent.parent.courses:
                         self.width=100
-                        # print "width correct"
+                        print "width correct"
                         self.height=100
-                        # print "height correct"
+                        print "height correct"
                 except AttributeError:
                     # print obj.height/6, self.height
                     # print "height/6 matching would now occur"
-                           
+                    print "There was an attribute errror"
                     # print obj.width, self.width
                     # print "width matching would now occur"
 

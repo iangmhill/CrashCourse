@@ -88,9 +88,10 @@ class DragTab(BoxLayout):
 		Icon.kill_zone_objects.append(self.recycle)
 
 		self.courses.add_widget(Icon)
+		print Icon.droppable_zone_objects
 
 	def update_stats_widget(self, dt):		
-		##DON'T REWRITE OVER THE USER INFORMATION WITH THE STUDIP DUMMY DATA!!!!!!
+		##DON'T REWRITE OVER THE USER INFORMATION WITH THE DUMMY DATA!!!!!!
 		Fixed=False
 		for child in self.lefthand.children[:]:
 			if child.height> 300:
