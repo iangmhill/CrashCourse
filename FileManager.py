@@ -2,7 +2,7 @@ import os
 import sys
 import cPickle as pickle
 from datastructures import Course, Professor, Time, Semester, User
-import datetime
+from datetime import datetime
 import xlsxwriter
 import re
 
@@ -95,6 +95,7 @@ class FileManager(object):
 
 
     def save_user(self,user):
+        user.last_updated = datetime.now()
         with open('user.usr', 'wb') as userfile:
             pickle.dump(user, userfile, -1)
 
