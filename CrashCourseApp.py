@@ -25,6 +25,7 @@ from NetworkManager import NetworkManager
 from Course_Item import Course_Item
 from Proto5_NoScroll import DragTab
 from datastructures import User
+import kivy
 import all_globals
 #from dashNoKv import Dashboard
 
@@ -33,6 +34,7 @@ import all_globals
 #user.credits = {'
 #fm.save_user(user)
 
+kivy.config.Config.set ( 'input', 'mouse', 'mouse,disable_multitouch' )  #GOODBYE RED DOTS !
 search_temp_list = [] 
 
 class StartUpScreen(Screen):
@@ -324,6 +326,7 @@ class Dashboard(GridLayout):
             all_globals.user.grad_year = int(self.year4.text)
 
     def save_user_info(self,instance):
+        print 'User info saved!'
         all_globals.fm.save_user(all_globals.user)
    
 class Catalog(BoxLayout):
@@ -462,5 +465,5 @@ class CrashCourseApp(App):
         return sm
 
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     CrashCourseApp().run()
