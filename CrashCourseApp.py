@@ -31,7 +31,7 @@ import all_globals
 
 #fm = FileManager()
 #user = fm.load_user('ihill','crashcourse')
-#user.credits = {'
+#user.credits = {'AHSE':2, 'ENGR':2, 'MTH':2, 'SCI':0}
 #fm.save_user(user)
 
 kivy.config.Config.set ( 'input', 'mouse', 'mouse,disable_multitouch' )  #GOODBYE RED DOTS !
