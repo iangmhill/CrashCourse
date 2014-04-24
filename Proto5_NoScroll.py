@@ -93,17 +93,19 @@ class DragTab(BoxLayout):
 		all_globals.user.credits['ENGR'] = 0#course.course.pre_credits['ENGR']													
 		all_globals.user.credits['MTH'] = 0#course.course.pre_credits['MTH']													
 		all_globals.user.credits['SCI'] = 0#course.course.pre_credits['SCI']
+		all_globals.user.courses=[]
 		for child in self.lefthand.children[:]:
 			if child.height> 300:
 				for semester_block in child.children[:]:
 					for semester_element in semester_block.children[:]:
 						if semester_element.height>100:
 							for course in semester_element.children[:]:
+								all_globals.user.courses.append(course.course.code)
 								all_globals.user.credits['AHSE'] += course.course.credits['AHSE']												
 								all_globals.user.credits['ENGR'] += course.course.credits['ENGR']													
 								all_globals.user.credits['MTH'] += course.course.credits['MTH']													
 								all_globals.user.credits['SCI'] += course.course.credits['SCI']
-														
+																			
 		for child in self.lefthand.children[:]:
 			if child.height>300:
 				Fixed=True
@@ -115,7 +117,7 @@ class DragTab(BoxLayout):
 							child.remove_widget(grandchild)
 
 							stats=Label(size_hint=(1,1),text='AHSE:  '+str(all_globals.user.credits['AHSE'])+'  '+'ENGR:  '+str(all_globals.user.credits['ENGR'])+'  '+'MTH:  '+str(all_globals.user.credits['MTH'])+'  '+'SCI:  '+str(all_globals.user.credits['SCI'])+'  ',color=(1,1,1,1))
-
+							print all_globals.user.courses
 							child.add_widget(stats)
 
 

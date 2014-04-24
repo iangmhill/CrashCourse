@@ -29,10 +29,10 @@ import kivy
 import all_globals
 #from dashNoKv import Dashboard
 
-#fm = FileManager()
-#user = fm.load_user('ihill','crashcourse')
-#user.credits = {'
-#fm.save_user(user)
+# fm = FileManager()
+# user = fm.load_user('mkeene','crashcourse')
+# user.credits = {'ENGR': 2, 'AHSE': 2, 'MTH':2, 'SCI':2}
+# fm.save_user(user)
 
 kivy.config.Config.set ( 'input', 'mouse', 'mouse,disable_multitouch' )  #GOODBYE RED DOTS !
 search_temp_list = [] 
