@@ -58,7 +58,7 @@ class Course_Item(BoxLayout):
 
 		info_2 = BoxLayout(size_hint=(1.0,0.2))
 		preq = Label(text='Pre-Reqs:  ' + str(self.course.pre_req))
-		rcre = Label(text='Real Credits:  ' + self.course.real_credits)
+		rcre = Label(text='Feels Like:  ' + self.course.real_credits + ' Credits')
 		code = Label(text='Course Code:  ' + str(self.course.code))
 		info_2.add_widget(preq)	
 		info_2.add_widget(rcre)
