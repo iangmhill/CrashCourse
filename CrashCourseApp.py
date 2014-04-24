@@ -220,7 +220,7 @@ class Dashboard(GridLayout):
         self.cols = 2
         
         self.info = GridLayout(rows=5)
-        self.info.add_widget(Label(text='Your Information',size_hint=(1.0,0.1)))
+        self.info.add_widget(Label(text='Graduation Year & Major',font_size = 16,size_hint=(1.0,0.1)))
        
         self.years = BoxLayout(size_hint=(1.0,0.1))
         self.majors = BoxLayout(orientation='vertical',size_hint=(1.0,0.8))
@@ -256,7 +256,7 @@ class Dashboard(GridLayout):
         self.info.add_widget(self.majors)         
         
         self.reminders = GridLayout (rows=5)
-        self.reminders.add_widget(Label(text='Reminders', size_hint=(1, .3)))
+        self.reminders.add_widget(Label(text='Reminders',font_size = 16,size_hint=(1, .3)))
         self.reminders.add_widget(Label(text='Email Loretta Dinnon about 22 Credits', size_hint_y=None, height = 25))
         self.reminders.add_widget(Label())
         self.reminders.add_widget(Label())        
@@ -274,14 +274,17 @@ class Dashboard(GridLayout):
         
         self.information.add_widget (self.credits)
         
-        self.stats.add_widget (Label (text = 'Statistics', size_hint =(1,.15)))
-        self.stats.add_widget (self.information)        
+        self.stats.add_widget (Label (text = 'Statistics',font_size = 16,size_hint =(1,.15)))
+        self.stats.add_widget (self.information)       
         
         self.notes = GridLayout(cols=1)
-        self.n_entry = TextInput(text=all_globals.user.notes,multiline=True,size_hint=(1.0,0.9))
+        self.n_label = Label(text='Notes',font_size = 16,size_hint = (1.0,0.1))
+        self.scrollview = ScrollView
+        self.n_entry = TextInput(text=all_globals.user.notes,multiline=True,padding=15,size_hint=(1.0,0.8))
         self.options_bar = BoxLayout(size_hint=(1.0,0.1))
         self.save_button = Button(text='Save User Information',on_press=self.save_user_info) 
-        self.options_bar.add_widget(self.save_button)       
+        self.options_bar.add_widget(self.save_button) 
+        self.notes.add_widget(self.n_label)      
         self.notes.add_widget(self.n_entry)
         self.notes.add_widget(self.options_bar)
         
@@ -452,7 +455,7 @@ class TabsScreen(Screen):
 class CrashCourseApp(App):
     def build(self):
         sm = ScreenManager(transition = WipeTransition())
-        sm.add_widget(StartUpScreen(sm,name='startup'))
+        #sm.add_widget(StartUpScreen(sm,name='startup'))
         sm.add_widget(LogInScreen(sm,name='login'))
         sm.add_widget(NewUserScreen(sm,name='newuser'))
         sm.add_widget(TabsScreen(name='tabs'))

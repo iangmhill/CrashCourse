@@ -22,7 +22,7 @@ class DragTab(BoxLayout):
 		self.courses = StackLayout(spacing=5,size_hint_y=None,orientation='tb-rl',size_hint=(0.3,1))		
 		
 		self.lefthand=BoxLayout(orientation='vertical', size_hint=(.7,1))
-		self.Planner=GridLayout(size_hint=(1,.9),rows=2, cols=4, spacing=3)
+		self.Planner=GridLayout(size_hint=(1,.85),rows=2, cols=4, spacing=3)
 
 		self.slot1=Semester(text="Fall "+ str(all_globals.user.grad_year-4))
 		self.Planner.add_widget(self.slot1)
@@ -43,9 +43,9 @@ class DragTab(BoxLayout):
 
 		self.lefthand.add_widget(self.Planner)
 
-		self.stats_widget=BoxLayout(size_hint=(1, .1))
-		self.recycle=Button(size_hint=(.25, 1), text= 'Recycle \n Course')
-		self.stats=Label(size_hint=(.75,1),color=(1,1,1,.3))
+		self.stats_widget=BoxLayout(size_hint=(1, .15))
+		self.recycle=Button(size_hint=(.2, 1),background_normal='recycle.png',background_down='recycle.png')#,text= 'Recycle \n Course')
+		self.stats=Label(size_hint=(.8,1),color=(1,1,1,.3))
 		self.stats_widget.add_widget(self.recycle)
 		self.stats_widget.add_widget(self.stats)
 		self.lefthand.add_widget(self.stats_widget)
