@@ -15,6 +15,7 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.stacklayout import StackLayout
 from kivy.uix.button import Button
 from kivy.uix.togglebutton import ToggleButton
+from kivy.uix.checkbox import CheckBox
 from kivy.uix.scrollview import ScrollView
 from kivy.base import runTouchApp
 from kivy.uix.textinput import TextInput
@@ -29,10 +30,17 @@ import kivy
 import all_globals
 #from dashNoKv import Dashboard
 
+<<<<<<< HEAD
 # fm = FileManager()
 # user = fm.load_user('mkeene','crashcourse')
 # user.credits = {'ENGR': 2, 'AHSE': 2, 'MTH':2, 'SCI':2}
 # fm.save_user(user)
+=======
+#fm = FileManager()
+#user = fm.load_user('ihill','crashcourse')
+#user.credits = {'AHSE':2, 'ENGR':2, 'MTH':2, 'SCI':0}
+#fm.save_user(user)
+>>>>>>> 4de82912b6abbb14a44367e0d03019921baadd46
 
 kivy.config.Config.set ( 'input', 'mouse', 'mouse,disable_multitouch' )  #GOODBYE RED DOTS !
 search_temp_list = [] 
@@ -78,11 +86,14 @@ class LogInScreen(BoxLayout,Screen):
         self.buttons.add_widget(Button(text='Log In',on_press=self.enter_function))
         self.buttons.add_widget(Label())
         
-        self.offline = GridLayout (cols = 3, size_hint = (1.0,0.05))
-        self.offline.add_widget(Label())
-        self.offline_button = ToggleButton(text = 'Offline Mode [OFF]')
-        self.offline.add_widget(self.offline_button)
-        self.offline.add_widget(Label())
+        self.offline = BoxLayout(size_hint = (1.0,0.05))
+        
+        self.offline_label = Label(text='Offline Mode',size_hint=(0.15,1.0))
+        self.offline_check = CheckBox(active=False,size_hint=(0.05,1.0))        
+        self.offline.add_widget(Label(size_hint=(0.4,1.0)))
+        self.offline.add_widget(self.offline_label)
+        self.offline.add_widget(self.offline_check)
+        self.offline.add_widget(Label(size_hint=(0.4,1.0)))
             
         self.logo = Image(source='logo1.png',size_hint=(1.0,0.35))
         self.space1 = Label(size_hint=(1.0,0.175))
@@ -100,19 +111,12 @@ class LogInScreen(BoxLayout,Screen):
         self.add_widget(self.offline)
         self.add_widget(self.space4)
 
-        Clock.schedule_interval(self.toggle_text,0.1)
         
-    def toggle_text(self,instance):
-        if self.offline_button.state == 'normal':
-            self.offline_button.text = 'Offline Mode [OFF]'
-        else:
-            self.offline_button.text = 'Offline Mode [ON]'
-
     def new_user_function(self,instance):
         self.sm.current = 'newuser'
         
     def enter_function(self,instance):    
-        if self.offline_button.state == 'normal':
+        if self.offline_check.active == False:
             self.space4.text = 'Connecting...'
             result = all_globals.nm.update(self.u_entry.text,self.p_entry.text)
             if result == 0:
@@ -142,7 +146,7 @@ class LogInScreen(BoxLayout,Screen):
         else:
             print all_globals.user.name
             new_user = all_globals.fm.load_user(self.u_entry.text,self.p_entry.text)
-            print new_user.name 
+            print new_user.name
 
             all_globals.user = all_globals.fm.load_user(self.u_entry.text,self.p_entry.text)
             print all_globals.user.name
@@ -227,34 +231,79 @@ class Dashboard(GridLayout):
         self.years = BoxLayout(size_hint=(1.0,0.1))
         self.majors = BoxLayout(orientation='vertical',size_hint=(1.0,0.8))
 
-        self.year1 = ToggleButton(text=str(2014),group='year')        
-        self.year2 = ToggleButton(text=str(2015),group='year')   
-        self.year3 = ToggleButton(text=str(2016),group='year')   
-        self.year4 = ToggleButton(text=str(2017),group='year')
-        self.years.add_widget(self.year1)
-        self.years.add_widget(self.year2)   
-        self.years.add_widget(self.year3)   
-        self.years.add_widget(self.year4)
+        year1 = BoxLayout()
+        self.year1_check=CheckBox(active=False,group='year')
+        self.year1_label = Label(text=str(2014))
+        year1.add_widget(self.year1_label)
+        year1.add_widget(self.year1_check)
+        year2 = BoxLayout()
+        self.year2_check=CheckBox(active=False,group='year')
+        self.year2_label = Label(text=str(2015))
+        year2.add_widget(self.year2_label)
+        year2.add_widget(self.year2_check)
+        year3 = BoxLayout()
+        self.year3_check=CheckBox(active=False,group='year')
+        self.year3_label = Label(text=str(2016))
+        year3.add_widget(self.year3_label)
+        year3.add_widget(self.year3_check)
+        year4 = BoxLayout()
+        self.year4_check=CheckBox(active=False,group='year')
+        self.year4_label = Label(text=str(2017))
+        year4.add_widget(self.year4_label)
+        year4.add_widget(self.year4_check)
+
+        self.years.add_widget(year1)
+        self.years.add_widget(year2)   
+        self.years.add_widget(year3)   
+        self.years.add_widget(year4)
         self.info.add_widget(self.years) 
    
-        self.ece = ToggleButton(text='ECE',group='major')
-        self.meche = ToggleButton(text='Mech:E',group='major')
-        self.roboe = ToggleButton(text='Robo:E',group='major')
-        self.bioe = ToggleButton(text='Bio:E',group='major')
-        self.edesign = ToggleButton(text='E:Design',group='major')
-        self.ec = ToggleButton(text='E:C',group='major')
-        self.syse = ToggleButton(text='E:Sys',group='major')
-        self.ematsci = ToggleButton(text='E:MatSci',group='major')
-        self.other = ToggleButton(text='Other',group='major')    
-        self.majors.add_widget(self.ece)
-        self.majors.add_widget(self.meche)
-        self.majors.add_widget(self.roboe)
-        self.majors.add_widget(self.bioe)
-        self.majors.add_widget(self.edesign)
-        self.majors.add_widget(self.ec)
-        self.majors.add_widget(self.syse)
-        self.majors.add_widget(self.ematsci)
-        self.majors.add_widget(self.other)
+        ece = BoxLayout()       
+        self.ece_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
+        ece.add_widget(Label(text='ECE',size_hint=(0.8,1.0)))
+        ece.add_widget(self.ece_check)
+        meche = BoxLayout()       
+        self.meche_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
+        meche.add_widget(Label(text='Mech:E',size_hint=(0.8,1.0)))
+        meche.add_widget(self.meche_check)
+        roboe = BoxLayout()       
+        self.roboe_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
+        roboe.add_widget(Label(text='Robo:E',size_hint=(0.8,1.0)))
+        roboe.add_widget(self.roboe_check)
+        bioe = BoxLayout()       
+        self.bioe_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
+        bioe.add_widget(Label(text='Bio:E',size_hint=(0.8,1.0)))
+        bioe.add_widget(self.bioe_check)
+        designe = BoxLayout()       
+        self.designe_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
+        designe.add_widget(Label(text='Design:E',size_hint=(0.8,1.0)))
+        designe.add_widget(self.designe_check)
+        ec = BoxLayout()       
+        self.ec_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
+        ec.add_widget(Label(text='E:C',size_hint=(0.8,1.0)))
+        ec.add_widget(self.ec_check)
+        syse= BoxLayout()       
+        self.syse_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
+        syse.add_widget(Label(text='E:Sys',size_hint=(0.8,1.0)))
+        syse.add_widget(self.syse_check)
+        ematsci = BoxLayout()       
+        self.ematsci_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
+        ematsci.add_widget(Label(text='E:MatSci',size_hint=(0.8,1.0)))
+        ematsci.add_widget(self.ematsci_check)
+        other = BoxLayout()       
+        self.other_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
+        other.add_widget(Label(text='Other',size_hint=(0.8,1.0)))
+        other.add_widget(self.other_check)
+
+        self.majors.add_widget(ece)
+        self.majors.add_widget(meche)
+        self.majors.add_widget(roboe)
+        self.majors.add_widget(bioe)
+        self.majors.add_widget(designe)
+        self.majors.add_widget(ec)
+        self.majors.add_widget(syse)
+        self.majors.add_widget(ematsci)
+        self.majors.add_widget(other)
         self.info.add_widget(self.majors)         
         
         self.reminders = GridLayout (rows=5)
@@ -310,25 +359,26 @@ class Dashboard(GridLayout):
             will_grad = 'No'
 
         self.information.clear_widgets()
-        self.information.add_widget (Label(text='Graduate: ' + will_grad))
+        self.information.add_widget(Label(text = 'Graduate: ' + will_grad))
         self.credits.clear_widgets()
         self.information.add_widget(self.credits)
-        self.credits.add_widget (Label(text = 'AHSE: ' + str(ahse_cred)))
-        self.credits.add_widget (Label(text = 'ENGR: ' + str(engr_cred)))
-        self.credits.add_widget (Label(text = 'MTH: ' + str(mth_cred)))
-        self.credits.add_widget (Label(text = 'SCI: ' + str(sci_cred)))
+        self.credits.add_widget(Label(text = 'AHSE: ' + str(ahse_cred)))
+        self.credits.add_widget(Label(text = 'ENGR: ' + str(engr_cred)))
+        self.credits.add_widget(Label(text = 'MTH: ' + str(mth_cred)))
+        self.credits.add_widget(Label(text = 'SCI: ' + str(sci_cred)))
 
-        if self.year1.state == 'down':
-            all_globals.user.grad_year = int(self.year1.text)
-        if self.year2.state == 'down':
-            all_globals.user.grad_year = int(self.year2.text)
-        if self.year3.state == 'down':
-            all_globals.user.grad_year = int(self.year3.text)
-        if self.year4.state == 'down':
-            all_globals.user.grad_year = int(self.year4.text)
+        if self.year1_check.active == True:
+            all_globals.user.grad_year = int(self.year1_label.text)
+        if self.year2_check.active == True:
+            all_globals.user.grad_year = int(self.year2_label.text)
+        if self.year3_check.active == True:
+            all_globals.user.grad_year = int(self.year3_label.text)
+        if self.year4_check.active == True:
+            all_globals.user.grad_year = int(self.year4_label.text)
 
     def save_user_info(self,instance):
         print 'User info saved!'
+        all_globals.user.notes=self.n_entry.text
         all_globals.fm.save_user(all_globals.user)
 
     def export_user_info(self,instance):
