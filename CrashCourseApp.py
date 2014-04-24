@@ -431,7 +431,7 @@ class TabsPanel(TabbedPanel):
         self.last_tab = None
 
         self.strip_image = 'strip_logo2.png'
-        self.tab1 = TabbedPanelHeader(text='Dashboard')
+        self.tab1 = TabbedPanelHeader(text='Home')
         self.tab1.content = Dashboard()
         self.tab2 = TabbedPanelHeader(text='Catalog')
         self.tab2.content = Catalog()
