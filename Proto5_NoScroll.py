@@ -87,7 +87,7 @@ class DragTab(BoxLayout):
 		self.courses.add_widget(Icon)
 
 	def update_stats_widget(self, dt):		
-		# DON'T REWRITE OVER THE USER INFORMATION WITH THE STUPID DUMMY DATA!!!!!!
+		# When the user gets pre-credits as an attribute, we can stop writing over 
 		Fixed=False
 		all_globals.user.credits['AHSE'] = 0#course.course.pre_credits['AHSE']												
 		all_globals.user.credits['ENGR'] = 0#course.course.pre_credits['ENGR']													

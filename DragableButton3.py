@@ -8,7 +8,7 @@ from kivy.uix.togglebutton import ToggleButton
 
 class DragableButton(Button, DragNDropWidget):
     '''
-    classdocs
+    Fusing drag and drop capability with useful information from our course objects 
     '''
     def __init__(self, course, **kw):
         '''

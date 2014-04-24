@@ -30,17 +30,10 @@ import kivy
 import all_globals
 #from dashNoKv import Dashboard
 
-<<<<<<< HEAD
 # fm = FileManager()
 # user = fm.load_user('mkeene','crashcourse')
 # user.credits = {'ENGR': 2, 'AHSE': 2, 'MTH':2, 'SCI':2}
 # fm.save_user(user)
-=======
-#fm = FileManager()
-#user = fm.load_user('ihill','crashcourse')
-#user.credits = {'AHSE':2, 'ENGR':2, 'MTH':2, 'SCI':0}
-#fm.save_user(user)
->>>>>>> 4de82912b6abbb14a44367e0d03019921baadd46
 
 kivy.config.Config.set ( 'input', 'mouse', 'mouse,disable_multitouch' )  #GOODBYE RED DOTS !
 search_temp_list = [] 
@@ -359,7 +352,7 @@ class Dashboard(GridLayout):
             will_grad = 'No'
 
         self.information.clear_widgets()
-        self.information.add_widget(Label(text = 'Graduate: ' + will_grad))
+        self.information.add_widget(Label(text = 'Enough credits in schedule to graduate: ' + will_grad))
         self.credits.clear_widgets()
         self.information.add_widget(self.credits)
         self.credits.add_widget(Label(text = 'AHSE: ' + str(ahse_cred)))

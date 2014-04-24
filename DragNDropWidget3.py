@@ -166,7 +166,12 @@ class DragNDropWidget(Widget):
             kill_object= False
             for obj in self.droppable_zone_objects:
                 if obj.collide_point(*[self.pos[0]+self.width/2, self.pos[1]+self.height/2]):
-                    dropped_ok = True
+                    try:
+                        if obj==obj.parent.courses:
+                            dropped_ok=True
+                    except AttributeError:
+                        if len(obj.children)<6:
+                            dropped_ok = True
                     print "I'm over a drop zone"
             for obj in self.kill_zone_objects:
                 if obj.collide_point(*[self.pos[0]+self.width/2, self.pos[1]+self.height/2]):
@@ -210,7 +215,7 @@ class DragNDropWidget(Widget):
                 except AttributeError:
                     # print obj.height/6, self.height
                     # print "height/6 matching would now occur"
-                    print "There was an attribute errror"
+                    print "Added to the semesters"
                     # print obj.width, self.width
                     # print "width matching would now occur"
 
