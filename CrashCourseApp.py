@@ -284,8 +284,10 @@ class Dashboard(GridLayout):
         self.scrollview = ScrollView
         self.n_entry = TextInput(text=all_globals.user.notes,multiline=True,padding=15,size_hint=(1.0,0.8))
         self.options_bar = BoxLayout(size_hint=(1.0,0.1))
-        self.save_button = Button(text='Save User Information',on_press=self.save_user_info) 
-        self.options_bar.add_widget(self.save_button) 
+        self.save_button = Button(text='Save User Information',on_press=self.save_user_info)
+        self.export_button = Button(text='Export to Spreadsheet',on_press=self.export_user_info)
+        self.options_bar.add_widget(self.export_button)
+        self.options_bar.add_widget(self.save_button)  
         self.notes.add_widget(self.n_label)      
         self.notes.add_widget(self.n_entry)
         self.notes.add_widget(self.options_bar)
@@ -328,6 +330,10 @@ class Dashboard(GridLayout):
     def save_user_info(self,instance):
         print 'User info saved!'
         all_globals.fm.save_user(all_globals.user)
+
+    def export_user_info(self,instance):
+        print 'User info exported!'
+        all_globals.fm.export_user(all_globals.user)
    
 class Catalog(BoxLayout):
     def __init__(self,**kwargs):
