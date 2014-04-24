@@ -14,6 +14,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.stacklayout import StackLayout
 from kivy.uix.button import Button
+from kivy.uix.checkbox import CheckBox
 from kivy.uix.togglebutton import ToggleButton
 from kivy.uix.scrollview import ScrollView
 from kivy.base import runTouchApp
@@ -78,11 +79,13 @@ class LogInScreen(BoxLayout,Screen):
         self.buttons.add_widget(Button(text='Log In',on_press=self.enter_function))
         self.buttons.add_widget(Label())
         
-        self.offline = GridLayout (cols = 3, size_hint = (1.0,0.05))
-        self.offline.add_widget(Label())
-        self.offline_button = ToggleButton(text = 'Offline Mode [OFF]')
-        self.offline.add_widget(self.offline_button)
-        self.offline.add_widget(Label())
+        self.offline = BoxLayout(size_hint = (1.0,0.05))
+        self.offline_label = Label(text = 'Offline Mode',size_hint=(0.15,1.0))
+        self.offline_check = CheckBox(active=False,size_hint=(0.05,1.0))
+        self.offline.add_widget(Label(size_hint=(0.4,1.0)))
+        self.offline.add_widget(self.offline_label)
+        self.offline.add_widget(self.offline_check)
+        self.offline.add_widget(Label(size_hint=(0.4,1.0)))
             
         self.logo = Image(source='logo1.png',size_hint=(1.0,0.35))
         self.space1 = Label(size_hint=(1.0,0.175))
@@ -99,20 +102,12 @@ class LogInScreen(BoxLayout,Screen):
         self.add_widget(self.buttons)
         self.add_widget(self.offline)
         self.add_widget(self.space4)
-
-        Clock.schedule_interval(self.toggle_text,0.1)
-        
-    def toggle_text(self,instance):
-        if self.offline_button.state == 'normal':
-            self.offline_button.text = 'Offline Mode [OFF]'
-        else:
-            self.offline_button.text = 'Offline Mode [ON]'
-
+                
     def new_user_function(self,instance):
         self.sm.current = 'newuser'
         
     def enter_function(self,instance):    
-        if self.offline_button.state == 'normal':
+        if self.offline_check.active == False:
             self.space4.text = 'Connecting...'
             result = all_globals.nm.update(self.u_entry.text,self.p_entry.text)
             if result == 0:
@@ -284,8 +279,10 @@ class Dashboard(GridLayout):
         self.scrollview = ScrollView
         self.n_entry = TextInput(text=all_globals.user.notes,multiline=True,padding=15,size_hint=(1.0,0.8))
         self.options_bar = BoxLayout(size_hint=(1.0,0.1))
-        self.save_button = Button(text='Save User Information',on_press=self.save_user_info) 
-        self.options_bar.add_widget(self.save_button) 
+        self.save_button = Button(text='Save User Information',on_press=self.save_user_info)
+        self.export_button = Button(text='Export to Spreadsheet',on_press=self.export_user_info)
+        self.options_bar.add_widget(self.export_button)
+        self.options_bar.add_widget(self.save_button)  
         self.notes.add_widget(self.n_label)      
         self.notes.add_widget(self.n_entry)
         self.notes.add_widget(self.options_bar)
@@ -328,6 +325,10 @@ class Dashboard(GridLayout):
     def save_user_info(self,instance):
         print 'User info saved!'
         all_globals.fm.save_user(all_globals.user)
+
+    def export_user_info(self,instance):
+        print 'User info exported!'
+        all_globals.fm.export_user(all_globals.user)
    
 class Catalog(BoxLayout):
     def __init__(self,**kwargs):
@@ -425,7 +426,7 @@ class TabsPanel(TabbedPanel):
         self.last_tab = None
 
         self.strip_image = 'strip_logo2.png'
-        self.tab1 = TabbedPanelHeader(text='Dashboard')
+        self.tab1 = TabbedPanelHeader(text='Home')
         self.tab1.content = Dashboard()
         self.tab2 = TabbedPanelHeader(text='Catalog')
         self.tab2.content = Catalog()
