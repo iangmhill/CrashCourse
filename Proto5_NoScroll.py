@@ -88,19 +88,41 @@ class DragTab(BoxLayout):
 		all_globals.user.credits['MTH'] = 0#course.course.pre_credits['MTH']													
 		all_globals.user.credits['SCI'] = 0#course.course.pre_credits['SCI']
 		all_globals.user.courses=[]
-		for semester_block in self.Planner.children[:]:
-			for course in semester_block.coursehouse.children[:]:
-				all_globals.user.courses.append(course.course.code)
-				all_globals.user.credits['AHSE'] += course.course.credits['AHSE']												
-				all_globals.user.credits['ENGR'] += course.course.credits['ENGR']													
-				all_globals.user.credits['MTH'] += course.course.credits['MTH']													
-				all_globals.user.credits['SCI'] += course.course.credits['SCI']
+		for semester_obj in self.slots:
+			for icon in semester_obj.coursehouse.children[:]:
+				all_globals.user.courses.append(icon.course.code)
+				all_globals.user.credits['AHSE'] += icon.course.credits['AHSE']												
+				all_globals.user.credits['ENGR'] += icon.course.credits['ENGR']													
+				all_globals.user.credits['MTH'] += icon.course.credits['MTH']													
+				all_globals.user.credits['SCI'] += icon.course.credits['SCI']
 		
 		self.stats_widget.remove_widget(self.stats)
-
 		self.stats=Label(size_hint=(1,1),text='AHSE:  '+str(all_globals.user.credits['AHSE'])+'  '+'ENGR:  '+str(all_globals.user.credits['ENGR'])+'  '+'MTH:  '+str(all_globals.user.credits['MTH'])+'  '+'SCI:  '+str(all_globals.user.credits['SCI'])+'  ',color=(1,1,1,1))
 		print all_globals.user.courses
 		self.stats_widget.add_widget(self.stats)
+
+		for sem in self.slots:
+			sem.Me.clear_widgets()
+
+		adjust=4
+		for sem in self.slots[0:4]:
+			sem.Me.add_widget(Label(text="Fall "+ str(all_globals.user.grad_year-adjust)))
+			adjust-=1
+		adjust=3
+		for sem in self.slots[4:]:
+			sem.Me.add_widget(Label(text="Spring "+ str(all_globals.user.grad_year-adjust)))
+			adjust-=1
+
+		# self.slot1.Me.add_widget(Label(text="Fall "+ str(all_globals.user.grad_year-4))
+		# self.slot2.Me.add_widget(Label(text="Fall "+ str(all_globals.user.grad_year-3))
+		# self.slot3.Me.add_widget(Label(text="Fall "+ str(all_globals.user.grad_year-2))
+		# self.slot4.Me.add_widget(Label(text="Fall "+ str(all_globals.user.grad_year-1))
+		# self.slot5.Me.add_widget(Label(text="Spring "+ str(all_globals.user.grad_year-3))
+		# self.slot6.Me.add_widget(Label(text="Spring "+ str(all_globals.user.grad_year-2))
+		# self.slot7.Me.add_widget(Label(text="Spring "+ str(all_globals.user.grad_year-1))
+		# self.slot8.Me.add_widget(Label(text="Spring "+ str(all_globals.user.grad_year))
+
+		
 
 
 class DemoApp2(App):

@@ -16,6 +16,8 @@ class Semester(StackLayout):
 		self.color= color # list of ints 0-1 in form [r,g,b,a]
 		orientation='tb-lr'
 		with self.canvas:
+			Color(0,0,0,1)
+			self.backing=Rectangle(pos=self.pos, size=self.size)
 			Color(self.color[0],self.color[1],self.color[2],self.color[3])
 			self.rect=Rectangle(pos=self.pos, size=self.size)
 		self.bind(pos=self.update_rect)
@@ -32,13 +34,15 @@ class Semester(StackLayout):
 		#self.bind(coursecount=self.update_count)
 
 	def update_rect(self,*args):
+		self.backing.pos=self.pos
 		self.rect.pos=self.pos
+		self.backing.size=self.size
 		self.rect.size=self.size
+
 		# Line(color=(1,1,1,1),rectangle=(self.pos[0], self.pos[1], self.width, self.height), width=3)
 		# self.rows=3
 		# self.cols=2
 		#self.size_hint=(.25,.5)
-	#def update_count(self, *args):
 		
 
 class TestApp(App):

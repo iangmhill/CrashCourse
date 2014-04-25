@@ -245,10 +245,11 @@ class Dashboard(GridLayout):
         year4.add_widget(self.year4_label)
         year4.add_widget(self.year4_check)
 
-        self.years.add_widget(year1)
-        self.years.add_widget(year2)   
-        self.years.add_widget(year3)   
-        self.years.add_widget(year4)
+        radio_buttons1=[year1,year2,year3,year4]
+        
+        for button in radio_buttons1:
+            self.years.add_widget(button)
+
         self.info.add_widget(self.years) 
    
         ece = BoxLayout()       
@@ -288,15 +289,11 @@ class Dashboard(GridLayout):
         other.add_widget(Label(text='Other',size_hint=(0.8,1.0)))
         other.add_widget(self.other_check)
 
-        self.majors.add_widget(ece)
-        self.majors.add_widget(meche)
-        self.majors.add_widget(roboe)
-        self.majors.add_widget(bioe)
-        self.majors.add_widget(designe)
-        self.majors.add_widget(ec)
-        self.majors.add_widget(syse)
-        self.majors.add_widget(ematsci)
-        self.majors.add_widget(other)
+        options=[ece, meche, roboe, bioe, designe, ec, syse, ematsci, other]
+
+        for choice in options:
+            self.majors.add_widget(choice)
+
         self.info.add_widget(self.majors)         
         
         self.reminders = GridLayout (rows=5)
