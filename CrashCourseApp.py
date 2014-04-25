@@ -352,7 +352,7 @@ class Dashboard(GridLayout):
             will_grad = 'No'
 
         self.information.clear_widgets()
-        self.information.add_widget(Label(text = 'Enough credits in \nschedule to graduate: ' + will_grad))
+        self.information.add_widget(Label(text = 'Enough credits in \nschedule to graduate: \n' + will_grad))
         self.credits.clear_widgets()
         self.information.add_widget(self.credits)
         self.credits.add_widget(Label(text = 'AHSE: ' + str(ahse_cred)))

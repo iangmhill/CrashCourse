@@ -51,7 +51,7 @@ class Course_Item(BoxLayout):
 		info_1 = BoxLayout(size_hint=(1.0,0.2))	
 		prof = Label(text='Professor:  ' + self.course.prof)
 		cred = Label(text='Credits:  '+ahse+engr+mth+sci)
-		pnr = Label(text='Pass/No Record-able:  ' + pnorec)			
+		pnr = Label(text='Pass/No Credit-able:  ' + pnorec)			
 		info_1.add_widget(prof)
 		info_1.add_widget(cred)
 		info_1.add_widget(pnr)	
