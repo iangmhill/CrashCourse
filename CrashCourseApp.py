@@ -92,7 +92,7 @@ class LogInScreen(BoxLayout,Screen):
         self.space1 = Label(size_hint=(1.0,0.175))
         self.space2 = Label(size_hint=(1.0,0.1))
         self.space3 = Label(size_hint=(1.0,0.05))
-        self.space4 = Label(size_hint=(1.0,0.175))
+        self.space4 = Label(size_hint=(1.0,0.125))
 
         self.add_widget(self.space1)                
         self.add_widget(self.logo)
@@ -482,7 +482,7 @@ class TabsPanel(TabbedPanel):
         self.add_widget(self.tab2)
         self.add_widget(self.tab3)     
         
-        Clock.schedule_interval(self.populate,1)
+        Clock.schedule_interval(self.populate,0.5)
 
     def populate(self,instance):
         
@@ -504,7 +504,7 @@ class TabsScreen(Screen):
 class CrashCourseApp(App):
     def build(self):
         sm = ScreenManager(transition = WipeTransition())
-        #sm.add_widget(StartUpScreen(sm,name='startup'))
+        sm.add_widget(StartUpScreen(sm,name='startup'))
         sm.add_widget(LogInScreen(sm,name='login'))
         sm.add_widget(NewUserScreen(sm,name='newuser'))
         sm.add_widget(TabsScreen(name='tabs'))
