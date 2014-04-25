@@ -18,28 +18,37 @@ class DragTab(BoxLayout):
 		super(DragTab,self).__init__(**kwargs)
 		#Base Layer is a BoxLayout
 		#right-hand column is StackLayout, lefthand is a vertical box layout		
-		
+		FreshColor=[0.2,0.65,0.8,0.85]
+		SophColor=[0.2,0.65,0.8,0.75]
+		JuniColor=[0.2,0.65,0.8,0.6]
+		SeniColor=[0.2,0.65,0.8,0.45]
+
 		self.courses = StackLayout(spacing=5,size_hint_y=None,orientation='tb-rl',size_hint=(0.3,1))		
 		
 		self.lefthand=BoxLayout(orientation='vertical', size_hint=(.7,1))
 		self.Planner=GridLayout(size_hint=(1,.85),rows=2, cols=4, spacing=3)
 
-		self.slot1=Semester(text="Fall "+ str(all_globals.user.grad_year-4))
+		self.slot1=Semester(text="Fall "+ str(all_globals.user.grad_year-4), color=FreshColor)
 		self.Planner.add_widget(self.slot1)
-		self.slot2=Semester(text="Fall "+ str(all_globals.user.grad_year-3))
+		self.slot2=Semester(text="Fall "+ str(all_globals.user.grad_year-3), color=SophColor)
 		self.Planner.add_widget(self.slot2)
-		self.slot3=Semester(text="Fall "+ str(all_globals.user.grad_year-2))
+		self.slot3=Semester(text="Fall "+ str(all_globals.user.grad_year-2), color=JuniColor)
 		self.Planner.add_widget(self.slot3)
-		self.slot4=Semester(text="Fall "+ str(all_globals.user.grad_year-1))
+		self.slot4=Semester(text="Fall "+ str(all_globals.user.grad_year-1), color=SeniColor)
 		self.Planner.add_widget(self.slot4)
-		self.slot5=Semester(text="Spring "+ str(all_globals.user.grad_year-3))
+		self.slot5=Semester(text="Spring "+ str(all_globals.user.grad_year-3), color=FreshColor)
 		self.Planner.add_widget(self.slot5)
-		self.slot6=Semester(text="Spring "+ str(all_globals.user.grad_year-2))
+		self.slot6=Semester(text="Spring "+ str(all_globals.user.grad_year-2), color=SophColor)
 		self.Planner.add_widget(self.slot6)
-		self.slot7=Semester(text="Spring "+ str(all_globals.user.grad_year-1))
+		self.slot7=Semester(text="Spring "+ str(all_globals.user.grad_year-1), color=JuniColor)
 		self.Planner.add_widget(self.slot7)
-		self.slot8=Semester(text="Spring "+ str(all_globals.user.grad_year))
+		self.slot8=Semester(text="Spring "+ str(all_globals.user.grad_year), color=SeniColor)
 		self.Planner.add_widget(self.slot8)
+
+		# slots=[self.slot1, self.slot2, self.slot3, self.slot4, self.slot4, self.slot5, self.slot5, self.slot6, self.slot7, self.slot8]
+		
+		# for sem_obj in slots:
+		# 	self.Planner.add_widget(sem_obj)
 
 		self.lefthand.add_widget(self.Planner)
 
@@ -54,7 +63,6 @@ class DragTab(BoxLayout):
 		self.add_widget(self.lefthand)
 		self.add_widget(self.courses)
 
-		# if len(self.lefthand.children)>=2:
 		Clock.schedule_interval(self.update_stats_widget, .1)
 
 
@@ -66,7 +74,7 @@ class DragTab(BoxLayout):
 							  kill_zone_objects=[],
 							  drag_opacity=.5,
 							  remove_on_drag=True)
-		# Icon.text_size=self.size
+		
 		Icon.bound_zone_objects.append(self.Planner)
 		Icon.bound_zone_objects.append(self.courses)
 		Icon.bound_zone_objects.append(self.recycle)
