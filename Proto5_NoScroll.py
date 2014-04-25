@@ -45,10 +45,10 @@ class DragTab(BoxLayout):
 		self.slot8=Semester(text="Spring "+ str(all_globals.user.grad_year), color=SeniColor)
 		self.Planner.add_widget(self.slot8)
 
-		# slots=[self.slot1, self.slot2, self.slot3, self.slot4, self.slot4, self.slot5, self.slot5, self.slot6, self.slot7, self.slot8]
+		self.slots=[self.slot1, self.slot2, self.slot3, self.slot4, self.slot5, self.slot6, self.slot7, self.slot8]
 		
-		# for sem_obj in slots:
-		# 	self.Planner.add_widget(sem_obj)
+		for sem_obj in self.slots:
+			self.Planner.add_widget(sem_obj)
 
 		self.lefthand.add_widget(self.Planner)
 
@@ -79,14 +79,17 @@ class DragTab(BoxLayout):
 		Icon.bound_zone_objects.append(self.courses)
 		Icon.bound_zone_objects.append(self.recycle)
 
-		Icon.droppable_zone_objects.append(self.slot1.coursehouse)
-		Icon.droppable_zone_objects.append(self.slot2.coursehouse)
-		Icon.droppable_zone_objects.append(self.slot3.coursehouse)
-		Icon.droppable_zone_objects.append(self.slot4.coursehouse)
-		Icon.droppable_zone_objects.append(self.slot5.coursehouse)
-		Icon.droppable_zone_objects.append(self.slot6.coursehouse)
-		Icon.droppable_zone_objects.append(self.slot7.coursehouse)
-		Icon.droppable_zone_objects.append(self.slot8.coursehouse)
+		for sem in self.slots:
+			Icon.add_droppable_zone(sem.coursehouse)
+
+		# Icon.droppable_zone_objects.append(self.slot1.coursehouse)
+		# Icon.droppable_zone_objects.append(self.slot2.coursehouse)
+		# Icon.droppable_zone_objects.append(self.slot3.coursehouse)
+		# Icon.droppable_zone_objects.append(self.slot4.coursehouse)
+		# Icon.droppable_zone_objects.append(self.slot5.coursehouse)
+		# Icon.droppable_zone_objects.append(self.slot6.coursehouse)
+		# Icon.droppable_zone_objects.append(self.slot7.coursehouse)
+		# Icon.droppable_zone_objects.append(self.slot8.coursehouse)
 
 		Icon.droppable_zone_objects.append(self.courses)
 
