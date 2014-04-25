@@ -396,7 +396,7 @@ class Catalog(BoxLayout):
         self.filter_bar.add_widget(self.MTH)
         self.filter_bar.add_widget(self.SCI)
 
-        self.scrollview = ScrollView(size_hint=(1.0,0.9),size=(400,400))
+        self.scrollview = ScrollView(size_hint=(1.0,0.9),size=(400,400),scroll_timeout=10)
         self.courses = StackLayout(spacing=5,size_hint_y=None)
         self.courses.bind(minimum_height=self.courses.setter('height'))
 
