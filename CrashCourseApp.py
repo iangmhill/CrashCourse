@@ -2,7 +2,7 @@
 """
 Created on Tue Apr  8 20:41:40 2014
 
-@author: hpelletier
+@author: ihill, mborges, mkeene, hpelletier, sgrimshaw
 """
 import os
 from kivy.app import App
@@ -28,20 +28,17 @@ from Proto5_NoScroll import DragTab
 from datastructures import User
 import kivy
 import all_globals
-#from dashNoKv import Dashboard
 
-# fm = FileManager()
-# user = fm.load_user('mkeene','crashcourse')
-# user.credits = {'ENGR': 2, 'AHSE': 2, 'MTH':2, 'SCI':2}
-# fm.save_user(user)
+# Removes the muti-touch red dots 
+kivy.config.Config.set ('input', 'mouse', 'mouse,disable_multitouch')
 
-kivy.config.Config.set ( 'input', 'mouse', 'mouse,disable_multitouch' )  #GOODBYE RED DOTS !
 search_temp_list = [] 
 
 class StartUpScreen(Screen):
-    def __init__(self,sm,**kwargs):   
-        self.sm = sm
+    """Screen that displays the logo for 3 seconds upon startup"""
+    def __init__(self,sm,**kwargs):       
         super(StartUpScreen, self).__init__(**kwargs)
+        self.sm = sm
         self.orientation = 'vertical'
 
         self.image = Image(source='logo1.png',allow_stretch=False,keep_ratio=True)
@@ -52,13 +49,15 @@ class StartUpScreen(Screen):
     def transition(self,instance):            
         self.sm.current = 'login'
         
+        
 class LogInScreen(BoxLayout,Screen):
+    """Screen for user log-in"""   
     def __init__(self,sm,**kwargs):
         super(LogInScreen, self).__init__(**kwargs)
         self.sm = sm
-
         self.orientation = 'vertical'
 
+        ## Username ##
         self.username = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.username.add_widget(Label())
         self.username.add_widget(Label(text='Username:'))
@@ -66,6 +65,7 @@ class LogInScreen(BoxLayout,Screen):
         self.username.add_widget(self.u_entry)
         self.username.add_widget(Label())
         
+        ## Password ##
         self.password = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.password.add_widget(Label())
         self.password.add_widget(Label(text='Password:'))  
@@ -73,27 +73,30 @@ class LogInScreen(BoxLayout,Screen):
         self.password.add_widget(self.p_entry)
         self.password.add_widget(Label())
 
+        ## New User / Log In Buttons ##
         self.buttons = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.buttons.add_widget(Label())
         self.buttons.add_widget(Button(text='New User?',on_press=self.new_user_function))
         self.buttons.add_widget(Button(text='Log In',on_press=self.enter_function))
         self.buttons.add_widget(Label())
-        
-        self.offline = BoxLayout(size_hint = (1.0,0.05))
-        
+
+        ## Offline ##       
+        self.offline = BoxLayout(size_hint = (1.0,0.05))        
         self.offline_label = Label(text='Offline Mode',size_hint=(0.15,1.0))
         self.offline_check = CheckBox(active=False,size_hint=(0.05,1.0))        
         self.offline.add_widget(Label(size_hint=(0.4,1.0)))
         self.offline.add_widget(self.offline_label)
         self.offline.add_widget(self.offline_check)
         self.offline.add_widget(Label(size_hint=(0.4,1.0)))
-            
+        
+        ## Logo and Empy Space ##
         self.logo = Image(source='logo1.png',size_hint=(1.0,0.35))
         self.space1 = Label(size_hint=(1.0,0.175))
         self.space2 = Label(size_hint=(1.0,0.1))
         self.space3 = Label(size_hint=(1.0,0.05))
         self.space4 = Label(size_hint=(1.0,0.125))
 
+        ## Add Widgets to Tab ##
         self.add_widget(self.space1)                
         self.add_widget(self.logo)
         self.add_widget(self.space2)
@@ -103,12 +106,13 @@ class LogInScreen(BoxLayout,Screen):
         self.add_widget(self.buttons)
         self.add_widget(self.offline)
         self.add_widget(self.space4)
-
         
     def new_user_function(self,instance):
         self.sm.current = 'newuser'
         
-    def enter_function(self,instance):    
+    def enter_function(self,instance):
+        """Determines if the user is able to log in and loads information for online or offline use"""
+        ## Online Log-In: ##   
         if self.offline_check.active == False:
             self.space4.text = 'Connecting...'
             result = all_globals.nm.update(self.u_entry.text,self.p_entry.text)
@@ -136,11 +140,8 @@ class LogInScreen(BoxLayout,Screen):
                 else:
                     self.space4.text = 'Login failed. Incorrect username or password.'
 
-        else:
-            print all_globals.user.name
-            new_user = all_globals.fm.load_user(self.u_entry.text,self.p_entry.text)
-            print new_user.name
-
+        ## Offline Log-In: ##
+        else:            
             all_globals.user = all_globals.fm.load_user(self.u_entry.text,self.p_entry.text)
             print all_globals.user.name
             print all_globals.user.credits['AHSE']
@@ -156,11 +157,13 @@ class LogInScreen(BoxLayout,Screen):
         
         
 class NewUserScreen(BoxLayout,Screen):
+    """Screen for new user creation"""
     def __init__(self,sm,**kwargs):
         super(NewUserScreen, self).__init__(**kwargs)
         self.sm = sm       
         self.orientation = 'vertical'    
 
+        ## Username ##
         self.username = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.username.add_widget(Label())
         self.username.add_widget(Label(text='Please enter a username:'))
@@ -168,6 +171,7 @@ class NewUserScreen(BoxLayout,Screen):
         self.username.add_widget(self.u_entry)
         self.username.add_widget(Label())
         
+        ## Password ##
         self.password = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.password.add_widget(Label())
         self.password.add_widget(Label(text='Please enter a password:'))        
@@ -175,18 +179,21 @@ class NewUserScreen(BoxLayout,Screen):
         self.password.add_widget(self.p_entry)
         self.password.add_widget(Label())
 
+        ## Back / Create Account Buttons ##
         self.buttons = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.buttons.add_widget(Label())
         self.buttons.add_widget(Button(text = 'Back',on_press = self.back_function))
         self.buttons.add_widget(Button(text = 'Create Account',on_press = self.enter_function))
         self.buttons.add_widget(Label())
-            
+        
+        ## Logo, Warning, and Empty Space ##    
         self.logo = Image(source='logo1.png',size_hint=(1.0,0.35))
         self.space1 = Label(size_hint=(1.0,0.175))
         self.space2 = Label(size_hint=(1.0,0.1))
         self.space3 = Label(size_hint=(1.0,0.05))        
         self.warning = Label(text='*WARNING*  Once you choose a username and password, they CAN NOT be changed!',size_hint=(1.0,0.175))
-                        
+        
+        ## Add Widgets to Tab ##
         self.add_widget(self.space1)
         self.add_widget(self.logo)
         self.add_widget(self.space2)
@@ -198,35 +205,33 @@ class NewUserScreen(BoxLayout,Screen):
         
     def back_function(self,instance):
         self.sm.current = 'login'
-
         
     def enter_function(self,instance):
-        #add self.u_entry.text to file
-        #add self.p_entry.text to file
+        #TODO: create new user file with self.u_entry.text and self.p_entry.text      
         self.sm.current = 'tabs'        
       
         
 class Dashboard(GridLayout):
+    """Home tab that displays user statistics"""
     def __init__(self,**kwargs):
         super(Dashboard, self).__init__(**kwargs)
+        self.cols = 2
 
-        ahse_cred = 0
-        engr_cred = 0
-        mth_cred = 0
-        sci_cred = 0
+        ahse_cred = all_globals.user.credits['AHSE']         
+        engr_cred = all_globals.user.credits['ENGR']
+        mth_cred = all_globals.user.credits['MTH']
+        sci_cred = all_globals.user.credits['SCI']
         ahse_req = 0
         engr_req = 0
         mth_req = 0
         sci_req = 0
         will_grad = 'No'
 
-        self.cols = 2
-        
-        self.info = GridLayout(rows=5)
-        self.info.add_widget(Label(text='Graduation Year & Major',font_size = 16,size_hint=(1.0,0.1)))
-       
+        ## GRAD YEAR & MAJOR QUADRANT ##
+        self.info = GridLayout(rows=3)  
+
+        # Grad Year #
         self.years = BoxLayout(size_hint=(1.0,0.1))
-        self.majors = BoxLayout(orientation='vertical',size_hint=(1.0,0.8))
 
         year1 = BoxLayout(size_hint=(0.2,1.0))
         self.year1_check=CheckBox(active=False,group='year',size_hint=(0.1,1.0))
@@ -254,8 +259,10 @@ class Dashboard(GridLayout):
         for button in radio_buttons1:
             self.years.add_widget(button)
         self.years.add_widget(Label(size_hint=(0.1,1.0)))
-        self.info.add_widget(self.years) 
-   
+         
+        # Major #  
+        self.majors = BoxLayout(orientation='vertical',size_hint=(1.0,0.8))
+
         ece = BoxLayout()       
         self.ece_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
         self.ece_label = Label(text='ECE',size_hint=(0.8,1.0))
@@ -305,43 +312,47 @@ class Dashboard(GridLayout):
         options=[ece, meche, roboe, bioe, designe, ec, syse, matscie, other]
         for choice in options:
             self.majors.add_widget(choice)
+
+        # Add Grad Year and Major to Quadrant #
+        self.info.add_widget(Label(text='Graduation Year & Major',font_size = 16,size_hint=(1.0,0.1)))
+        self.info.add_widget(self.years)
         self.info.add_widget(self.majors)         
         
-        self.reminders = GridLayout (rows=5)
+        ## REMINDERS QUADRANT ##
+        self.reminders = GridLayout(rows=5)
         self.reminders.add_widget(Label(text='Reminders',font_size = 16,size_hint=(1, .3)))
         self.reminders.add_widget(Label(text='Email Loretta Dinnon about 22 Credits', size_hint_y=None, height = 25))
         self.reminders.add_widget(Label())
-        self.reminders.add_widget(Label())        
-        
-        self.stats = BoxLayout (orientation='vertical')
-        self.information = GridLayout (cols = 2, size_hint = (1,.85))
+        self.reminders.add_widget(Label())
+
+        ## STATS QUADRANT ##
+        self.stats = BoxLayout(orientation='vertical')
+        self.information = GridLayout(cols = 2, size_hint = (1,.85))
         self.grad = Label(text='Enough credits in \nschedule to graduate: \n' + will_grad)
         self.information.add_widget(self.grad)
-
-        self.credits=GridLayout (cols=2, row=2)
-        self.credits.add_widget (Label(text = 'AHSE: '+str(ahse_cred)+' / '+str(ahse_req)))
-        self.credits.add_widget (Label(text = 'ENGR: '+str(engr_cred)+' / '+str(engr_req)))
-        self.credits.add_widget (Label(text = 'MTH: '+str(mth_cred)+' / '+str(mth_req)))
-        self.credits.add_widget (Label(text = 'SCI: '+str(sci_cred)+' / '+str(sci_req)))
+        self.credits = GridLayout(cols=2, row=2)
+        self.credits.add_widget(Label(text = 'AHSE: '+str(ahse_cred)+' / '+str(ahse_req)))
+        self.credits.add_widget(Label(text = 'ENGR: '+str(engr_cred)+' / '+str(engr_req)))
+        self.credits.add_widget(Label(text = 'MTH: '+str(mth_cred)+' / '+str(mth_req)))
+        self.credits.add_widget(Label(text = 'SCI: '+str(sci_cred)+' / '+str(sci_req)))        
+        self.information.add_widget (self.credits)        
+        self.stats.add_widget(Label(text = 'Statistics',font_size = 16,size_hint =(1,.15)))
+        self.stats.add_widget(self.information)       
         
-        self.information.add_widget (self.credits)
-        
-        self.stats.add_widget (Label (text = 'Statistics',font_size = 16,size_hint =(1,.15)))
-        self.stats.add_widget (self.information)       
-        
+        ## NOTES QUADRANT ##
         self.notes = GridLayout(cols=1)
-        self.n_label = Label(text='Notes',font_size = 16,size_hint = (1.0,0.1))
-        self.scrollview = ScrollView
+        self.n_label = Label(text='Notes',font_size = 16,size_hint = (1.0,0.1))        
         self.n_entry = TextInput(text=all_globals.user.notes,multiline=True,padding=15,size_hint=(1.0,0.8))
-        self.options_bar = BoxLayout(size_hint=(1.0,0.1))
-        self.save_button = Button(text='Save User Information',on_press=self.save_user_info)
+        self.options_bar = BoxLayout(size_hint=(1.0,0.1))        
         self.export_button = Button(text='Export to Spreadsheet',on_press=self.export_user_info)
+        self.save_button = Button(text='Save User Information',on_press=self.save_user_info)
         self.options_bar.add_widget(self.export_button)
         self.options_bar.add_widget(self.save_button)  
         self.notes.add_widget(self.n_label)      
         self.notes.add_widget(self.n_entry)
-        self.notes.add_widget(self.options_bar)
-        
+        self.notes.add_widget(self.options_bar)        
+
+        ## Add Quadrants to Home Tab ##
         self.add_widget(self.info)
         self.add_widget(self.reminders)
         self.add_widget(self.stats)
@@ -349,7 +360,9 @@ class Dashboard(GridLayout):
 
         Clock.schedule_interval(self.update_stats,0.1)
 
-    def update_stats(self,instance):        
+    def update_stats(self,instance):
+        """Updates the information displayed on the Home tab and saves info to the user file"""      
+
         ahse_cred = all_globals.user.credits['AHSE']         
         engr_cred = all_globals.user.credits['ENGR']
         mth_cred = all_globals.user.credits['MTH']
@@ -358,57 +371,70 @@ class Dashboard(GridLayout):
         engr_req = 0
         mth_req = 0
         sci_req = 0
+
+        ## Determine if user has enough credits to graduate ##
         if all_globals.user.credits['AHSE']+all_globals.user.credits['ENGR']+all_globals.user.credits['MTH']+all_globals.user.credits['SCI'] > 128:
             will_grad = 'Yes'
         else:
             will_grad = 'No'       
 
+        ## Determine required credits to be displayed based on chosen major and add major to user file ##
         if self.ece_check.active == True:
             ahse_req = 28
             engr_req = 28
             mth_req = 28
             sci_req = 28
+            all_globals.user.major = self.ece_label.text
         if self.meche_check.active == True:
             ahse_req = 28
             engr_req = 28
             mth_req = 28
             sci_req = 28
+            all_globals.user.major = self.meche_label.text
         if self.roboe_check.active == True:
             ahse_req = 28
             engr_req = 28
             mth_req = 28
             sci_req = 28
+            all_globals.user.major = self.roboe_label.text
         if self.bioe_check.active == True:
             ahse_req = 28
             engr_req = 28
             mth_req = 28
             sci_req = 28
+            all_globals.user.major = self.bioe_label.text
         if self.designe_check.active == True:
             ahse_req = 28
             engr_req = 28
             mth_req = 28
             sci_req = 28
+            all_globals.user.major = self.designe_label.text
         if self.ec_check.active == True:
             ahse_req = 28
             engr_req = 28
             mth_req = 28
             sci_req = 28
+            all_globals.user.major = self.ec_label.text
         if self.syse_check.active == True:
             ahse_req = 28
             engr_req = 28
             mth_req = 28
             sci_req = 28
+            all_globals.user.major = self.syse_label.text
         if self.matscie_check.active == True:
             ahse_req = 28
             engr_req = 28
             mth_req = 28
             sci_req = 28
+            all_globals.user.major = self.matscie_label.text
         if self.other_check.active == True:
             ahse_req = 28
             engr_req = 28
             mth_req = 28
             sci_req = 28
+            all_globals.user.major = self.other_label.text
 
+        ## Update the displayed credits ##
         self.grad.clear_widgets()
         self.grad = Label(text='Enough credits in \nschedule to graduate: \n' + will_grad)
         self.credits.clear_widgets()
@@ -416,7 +442,8 @@ class Dashboard(GridLayout):
         self.credits.add_widget (Label(text = 'ENGR: '+str(engr_cred)+' / '+str(engr_req)))
         self.credits.add_widget (Label(text = 'MTH: '+str(mth_cred)+' / '+str(mth_req)))
         self.credits.add_widget (Label(text = 'SCI: '+str(sci_cred)+' / '+str(sci_req)))
-
+       
+        ## Add grad year to user file ##
         if self.year1_check.active == True:
             all_globals.user.grad_year = int(self.year1_label.text)
         if self.year2_check.active == True:
@@ -426,27 +453,31 @@ class Dashboard(GridLayout):
         if self.year4_check.active == True:
             all_globals.user.grad_year = int(self.year4_label.text)
 
+        ## Add notes to user file ##
         all_globals.user.notes=self.n_entry.text       
 
     def save_user_info(self,instance):
-        print 'User info saved!'       
+        print 'User info saved!'
         all_globals.fm.save_user(all_globals.user)
 
     def export_user_info(self,instance):
         print 'User info exported!'
         all_globals.fm.export_user(all_globals.user)
    
+
 class Catalog(BoxLayout):
+    """Tab that displays available courses and allows user to search for, see details about, and add courses to planner tab"""
     def __init__(self,**kwargs):
         super(Catalog, self).__init__(**kwargs)
-
         self.orientation = 'vertical'
 
+        ## Search Bar ##
         self.search_bar = BoxLayout(size_hint=(1.0,0.05))        
         self.search_bar.add_widget(Label(text='Search',size_hint=(0.25,1.0)))
         self.search_text = (TextInput(multiline=False))
         self.search_bar.add_widget(self.search_text)
 
+        ## Filter Buttons ##
         self.filter_bar = BoxLayout(size_hint=(1.0,0.05))        
         self.AHSE = ToggleButton(text='AHSE',size_hint=(0.25,1.0))
         self.ENGR = ToggleButton(text='ENGR',size_hint=(0.25,1.0))
@@ -457,12 +488,13 @@ class Catalog(BoxLayout):
         self.filter_bar.add_widget(self.MTH)
         self.filter_bar.add_widget(self.SCI)
 
-        self.scrollview = ScrollView(size_hint=(1.0,0.9),size=(400,400),scroll_timeout=10)
+        ## Scrollview of Courses ##
+        self.scrollview = ScrollView(size_hint=(1.0,0.9),size=(400,400),scroll_timeout=5)
         self.courses = StackLayout(spacing=5,size_hint_y=None)
         self.courses.bind(minimum_height=self.courses.setter('height'))
-
         self.scrollview.add_widget(self.courses)
-                        
+        
+        ## Add Widgets to Tab ##
         self.add_widget(self.search_bar)
         self.add_widget(self.filter_bar)
         self.add_widget(self.scrollview)
@@ -470,6 +502,7 @@ class Catalog(BoxLayout):
         Clock.schedule_interval(self.search_function,0.1)    
 
     def search_function(self,instance):
+        """Allows user to search for courses by name, keyword, professor, or course code and filter courses by type"""
         query = self.search_text.text.lower()        
         searched_items = []
         filtered_items = []
@@ -479,7 +512,7 @@ class Catalog(BoxLayout):
             for course_item in self.courses.children:
                 search_temp_list.append(course_item)       
         
-        #if the query is not empty, does term search
+        #if the query is not empty, does term search first
         if query != "":                      
             for course_item in search_temp_list:                            
                 if query == course_item.course.name.lower() or query == course_item.course.code or query == course_item.course.prof.lower():
@@ -522,16 +555,20 @@ class Catalog(BoxLayout):
 
 
 class Planner(DragTab):
+    """Tab that allows user to arrange courses in semesters and plan their four years at Olin"""
     def __init__(self,**kwargs):
         super(Planner, self).__init__(**kwargs)
 
         
 class TabsPanel(TabbedPanel):
+    """Panel that holds the tab widgets"""
     def __init__(self,**kwargs):
         super(TabsPanel, self).__init__(**kwargs)
         self.last_tab = None
 
-        self.strip_image = 'strip_logo2.png'
+        self.strip_image = 'strip_logo2.png'  #Logo in the top right of the tabs
+
+        ## Define the Tabs ##
         self.tab1 = TabbedPanelHeader(text='Home')
         self.tab1.content = Dashboard()
         self.tab2 = TabbedPanelHeader(text='Catalog')
@@ -539,36 +576,44 @@ class TabsPanel(TabbedPanel):
         self.tab3 = TabbedPanelHeader(text='Planner')
         self.tab3.content = Planner()
 
+        ## Add the Tabs to the Panel ##
         self.add_widget(self.tab1)
         self.add_widget(self.tab2)
-        self.add_widget(self.tab3)     
+        self.add_widget(self.tab3)
         
-        Clock.schedule_interval(self.populate,0.5)
+        Clock.schedule_interval(self.populate,0.1)
 
     def populate(self,instance):
-        
+        """Fills the Catalog Tab with Courses"""
         if self.current_tab != self.last_tab and self.current_tab == self.tab2:
             self.tab2.content.courses.clear_widgets()
             print("changed to tab 2")
             for course_object in all_globals.catalog:
                 course_item = Course_Item(course=course_object,size_hint=(0.245,None),height=200)
                 self.tab2.content.courses.add_widget(course_item)
-
         self.last_tab = self.current_tab
     
+
 class TabsScreen(Screen):
+    """Screen that holds the Tabs Panel"""
     def __init__(self,**kwargs):
         super(TabsScreen, self).__init__(**kwargs)  
         self.add_widget(TabsPanel(do_default_tab=False))
         
     
 class CrashCourseApp(App):
+    """The entire CrashCourse app"""
     def build(self):
+        """Builds the app when the app is run"""
+        ## Define the screen manager (base of the app) ##
         sm = ScreenManager(transition = WipeTransition())
-        #sm.add_widget(StartUpScreen(sm,name='startup'))
+
+        ## Add screens to the screen manager ##
+        sm.add_widget(StartUpScreen(sm,name='startup'))
         sm.add_widget(LogInScreen(sm,name='login'))
         sm.add_widget(NewUserScreen(sm,name='newuser'))
         sm.add_widget(TabsScreen(name='tabs'))
+
         return sm
 
 
