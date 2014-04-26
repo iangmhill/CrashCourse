@@ -25,14 +25,15 @@ from FileManager import FileManager
 from NetworkManager import NetworkManager
 from Course_Item import Course_Item
 from Proto5_NoScroll import DragTab
-from datastructures import User
+from datastructures import Userl
 import kivy
 import all_globals
 
-# Removes the muti-touch red dots 
+# Removes the multi-touch red dots 
 kivy.config.Config.set ('input', 'mouse', 'mouse,disable_multitouch')
 
 search_temp_list = [] 
+
 
 class StartUpScreen(Screen):
     """Screen that displays the logo for 3 seconds upon startup"""
@@ -48,7 +49,7 @@ class StartUpScreen(Screen):
                              
     def transition(self,instance):            
         self.sm.current = 'login'
-        
+
         
 class LogInScreen(BoxLayout,Screen):
     """Screen for user log-in"""   
@@ -143,9 +144,8 @@ class LogInScreen(BoxLayout,Screen):
         ## Offline Log-In: ##
         else:            
             all_globals.user = all_globals.fm.load_user(self.u_entry.text,self.p_entry.text)
-            print all_globals.user.name
-            print all_globals.user.credits['AHSE']
-            #all_globals.user.credits={'ENGR':100,'AHSE':1000,'MTH':2,'SCI':2}
+            #print all_globals.user.name
+            #print all_globals.user.credits['AHSE']            
             all_globals.catalog = all_globals.fm.load_courses()
             if all_globals.catalog == None:
                 self.space4.text = 'Login failed. No courses.csv file.'
@@ -457,11 +457,11 @@ class Dashboard(GridLayout):
         all_globals.user.notes=self.n_entry.text       
 
     def save_user_info(self,instance):
-        print 'User info saved!'
+        #print 'User info saved!'
         all_globals.fm.save_user(all_globals.user)
 
     def export_user_info(self,instance):
-        print 'User info exported!'
+        #print 'User info exported!'
         all_globals.fm.export_user(all_globals.user)
    
 
@@ -586,8 +586,7 @@ class TabsPanel(TabbedPanel):
     def populate(self,instance):
         """Fills the Catalog Tab with Courses"""
         if self.current_tab != self.last_tab and self.current_tab == self.tab2:
-            self.tab2.content.courses.clear_widgets()
-            print("changed to tab 2")
+            self.tab2.content.courses.clear_widgets()            
             for course_object in all_globals.catalog:
                 course_item = Course_Item(course=course_object,size_hint=(0.245,None),height=200)
                 self.tab2.content.courses.add_widget(course_item)
