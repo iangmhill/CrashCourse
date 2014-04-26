@@ -25,7 +25,7 @@ from FileManager import FileManager
 from NetworkManager import NetworkManager
 from Course_Item import Course_Item
 from Proto5_NoScroll import DragTab
-from datastructures import Userl
+from datastructures import User
 import kivy
 import all_globals
 
@@ -581,7 +581,7 @@ class TabsPanel(TabbedPanel):
         self.add_widget(self.tab2)
         self.add_widget(self.tab3)
         
-        Clock.schedule_interval(self.populate,0.1)
+        Clock.schedule_interval(self.populate,0.5)
 
     def populate(self,instance):
         """Fills the Catalog Tab with Courses"""
