@@ -214,6 +214,10 @@ class Dashboard(GridLayout):
         engr_cred = 0
         mth_cred = 0
         sci_cred = 0
+        ahse_req = 0
+        engr_req = 0
+        mth_req = 0
+        sci_req = 0
         will_grad = 'No'
 
         self.cols = 2
@@ -224,76 +228,83 @@ class Dashboard(GridLayout):
         self.years = BoxLayout(size_hint=(1.0,0.1))
         self.majors = BoxLayout(orientation='vertical',size_hint=(1.0,0.8))
 
-        year1 = BoxLayout()
-        self.year1_check=CheckBox(active=False,group='year')
-        self.year1_label = Label(text=str(2014))
+        year1 = BoxLayout(size_hint=(0.2,1.0))
+        self.year1_check=CheckBox(active=False,group='year',size_hint=(0.1,1.0))
+        self.year1_label = Label(text=str(2014),size_hint=(0.9,1.0))
         year1.add_widget(self.year1_label)
         year1.add_widget(self.year1_check)
-        year2 = BoxLayout()
-        self.year2_check=CheckBox(active=False,group='year')
-        self.year2_label = Label(text=str(2015))
+        year2 = BoxLayout(size_hint=(0.2,1.0))
+        self.year2_check=CheckBox(active=False,group='year',size_hint=(0.1,1.0))
+        self.year2_label = Label(text=str(2015),size_hint=(0.9,1.0))
         year2.add_widget(self.year2_label)
         year2.add_widget(self.year2_check)
-        year3 = BoxLayout()
-        self.year3_check=CheckBox(active=False,group='year')
-        self.year3_label = Label(text=str(2016))
+        year3 = BoxLayout(size_hint=(0.2,1.0))
+        self.year3_check=CheckBox(active=False,group='year',size_hint=(0.1,1.0))
+        self.year3_label = Label(text=str(2016),size_hint=(0.9,1.0))
         year3.add_widget(self.year3_label)
         year3.add_widget(self.year3_check)
-        year4 = BoxLayout()
-        self.year4_check=CheckBox(active=False,group='year')
-        self.year4_label = Label(text=str(2017))
+        year4 = BoxLayout(size_hint=(0.2,1.0))
+        self.year4_check=CheckBox(active=False,group='year',size_hint=(0.1,1.0))
+        self.year4_label = Label(text=str(2017),size_hint=(0.9,1.0))
         year4.add_widget(self.year4_label)
         year4.add_widget(self.year4_check)
 
-        radio_buttons1=[year1,year2,year3,year4]
-        
+        self.years.add_widget(Label(size_hint=(0.1,1.0)))
+        radio_buttons1=[year1,year2,year3,year4]        
         for button in radio_buttons1:
             self.years.add_widget(button)
-
+        self.years.add_widget(Label(size_hint=(0.1,1.0)))
         self.info.add_widget(self.years) 
    
         ece = BoxLayout()       
         self.ece_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
-        ece.add_widget(Label(text='ECE',size_hint=(0.8,1.0)))
+        self.ece_label = Label(text='ECE',size_hint=(0.8,1.0))
+        ece.add_widget(self.ece_label)
         ece.add_widget(self.ece_check)
         meche = BoxLayout()       
         self.meche_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
-        meche.add_widget(Label(text='Mech:E',size_hint=(0.8,1.0)))
+        self.meche_label = Label(text='MechE',size_hint=(0.8,1.0))
+        meche.add_widget(self.meche_label)
         meche.add_widget(self.meche_check)
         roboe = BoxLayout()       
         self.roboe_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
-        roboe.add_widget(Label(text='Robo:E',size_hint=(0.8,1.0)))
+        self.roboe_label = Label(text='E:Robo',size_hint=(0.8,1.0))
+        roboe.add_widget(self.roboe_label)
         roboe.add_widget(self.roboe_check)
         bioe = BoxLayout()       
         self.bioe_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
-        bioe.add_widget(Label(text='Bio:E',size_hint=(0.8,1.0)))
+        self.bioe_label = Label(text='E:Bio',size_hint=(0.8,1.0))
+        bioe.add_widget(self.bioe_label)
         bioe.add_widget(self.bioe_check)
         designe = BoxLayout()       
         self.designe_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
-        designe.add_widget(Label(text='Design:E',size_hint=(0.8,1.0)))
+        self.designe_label = Label(text='E:Design',size_hint=(0.8,1.0))
+        designe.add_widget(self.designe_label)
         designe.add_widget(self.designe_check)
         ec = BoxLayout()       
         self.ec_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
-        ec.add_widget(Label(text='E:C',size_hint=(0.8,1.0)))
+        self.ec_label = Label(text='E:C',size_hint=(0.8,1.0))
+        ec.add_widget(self.ec_label)
         ec.add_widget(self.ec_check)
         syse= BoxLayout()       
         self.syse_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
-        syse.add_widget(Label(text='E:Sys',size_hint=(0.8,1.0)))
+        self.syse_label = Label(text='E:Sys',size_hint=(0.8,1.0))
+        syse.add_widget(self.syse_label)
         syse.add_widget(self.syse_check)
-        ematsci = BoxLayout()       
-        self.ematsci_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
-        ematsci.add_widget(Label(text='E:MatSci',size_hint=(0.8,1.0)))
-        ematsci.add_widget(self.ematsci_check)
-        other = BoxLayout()       
+        matscie = BoxLayout()       
+        self.matscie_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
+        self.matscie_label = Label(text='E:MatSci',size_hint=(0.8,1.0))
+        matscie.add_widget(self.matscie_label)
+        matscie.add_widget(self.matscie_check)
+        other = BoxLayout()
         self.other_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
-        other.add_widget(Label(text='Other',size_hint=(0.8,1.0)))
+        self.other_label = Label(text='Other',size_hint=(0.8,1.0))
+        other.add_widget(self.other_label)
         other.add_widget(self.other_check)
 
-        options=[ece, meche, roboe, bioe, designe, ec, syse, ematsci, other]
-
+        options=[ece, meche, roboe, bioe, designe, ec, syse, matscie, other]
         for choice in options:
             self.majors.add_widget(choice)
-
         self.info.add_widget(self.majors)         
         
         self.reminders = GridLayout (rows=5)
@@ -304,14 +315,14 @@ class Dashboard(GridLayout):
         
         self.stats = BoxLayout (orientation='vertical')
         self.information = GridLayout (cols = 2, size_hint = (1,.85))
-
-        self.information.add_widget (Label(text='Graduate:' + will_grad))
+        self.grad = Label(text='Enough credits in \nschedule to graduate: \n' + will_grad)
+        self.information.add_widget(self.grad)
 
         self.credits=GridLayout (cols=2, row=2)
-        self.credits.add_widget (Label(text = 'AHSE: ' + str(ahse_cred)))
-        self.credits.add_widget (Label(text = 'ENGR: ' + str(engr_cred)))
-        self.credits.add_widget (Label(text = 'MTH: ' + str(mth_cred)))
-        self.credits.add_widget (Label(text = 'SCI: ' + str(sci_cred)))
+        self.credits.add_widget (Label(text = 'AHSE: '+str(ahse_cred)+' / '+str(ahse_req)))
+        self.credits.add_widget (Label(text = 'ENGR: '+str(engr_cred)+' / '+str(engr_req)))
+        self.credits.add_widget (Label(text = 'MTH: '+str(mth_cred)+' / '+str(mth_req)))
+        self.credits.add_widget (Label(text = 'SCI: '+str(sci_cred)+' / '+str(sci_req)))
         
         self.information.add_widget (self.credits)
         
@@ -343,19 +354,68 @@ class Dashboard(GridLayout):
         engr_cred = all_globals.user.credits['ENGR']
         mth_cred = all_globals.user.credits['MTH']
         sci_cred = all_globals.user.credits['SCI']
+        ahse_req = 0
+        engr_req = 0
+        mth_req = 0
+        sci_req = 0
         if all_globals.user.credits['AHSE']+all_globals.user.credits['ENGR']+all_globals.user.credits['MTH']+all_globals.user.credits['SCI'] > 128:
             will_grad = 'Yes'
         else:
-            will_grad = 'No'
+            will_grad = 'No'       
 
-        self.information.clear_widgets()
-        self.information.add_widget(Label(text = 'Enough credits in \nschedule to graduate: \n' + will_grad))
+        if self.ece_check.active == True:
+            ahse_req = 28
+            engr_req = 28
+            mth_req = 28
+            sci_req = 28
+        if self.meche_check.active == True:
+            ahse_req = 28
+            engr_req = 28
+            mth_req = 28
+            sci_req = 28
+        if self.roboe_check.active == True:
+            ahse_req = 28
+            engr_req = 28
+            mth_req = 28
+            sci_req = 28
+        if self.bioe_check.active == True:
+            ahse_req = 28
+            engr_req = 28
+            mth_req = 28
+            sci_req = 28
+        if self.designe_check.active == True:
+            ahse_req = 28
+            engr_req = 28
+            mth_req = 28
+            sci_req = 28
+        if self.ec_check.active == True:
+            ahse_req = 28
+            engr_req = 28
+            mth_req = 28
+            sci_req = 28
+        if self.syse_check.active == True:
+            ahse_req = 28
+            engr_req = 28
+            mth_req = 28
+            sci_req = 28
+        if self.matscie_check.active == True:
+            ahse_req = 28
+            engr_req = 28
+            mth_req = 28
+            sci_req = 28
+        if self.other_check.active == True:
+            ahse_req = 28
+            engr_req = 28
+            mth_req = 28
+            sci_req = 28
+
+        self.grad.clear_widgets()
+        self.grad = Label(text='Enough credits in \nschedule to graduate: \n' + will_grad)
         self.credits.clear_widgets()
-        self.information.add_widget(self.credits)
-        self.credits.add_widget(Label(text = 'AHSE: ' + str(ahse_cred)))
-        self.credits.add_widget(Label(text = 'ENGR: ' + str(engr_cred)))
-        self.credits.add_widget(Label(text = 'MTH: ' + str(mth_cred)))
-        self.credits.add_widget(Label(text = 'SCI: ' + str(sci_cred)))
+        self.credits.add_widget (Label(text = 'AHSE: '+str(ahse_cred)+' / '+str(ahse_req)))
+        self.credits.add_widget (Label(text = 'ENGR: '+str(engr_cred)+' / '+str(engr_req)))
+        self.credits.add_widget (Label(text = 'MTH: '+str(mth_cred)+' / '+str(mth_req)))
+        self.credits.add_widget (Label(text = 'SCI: '+str(sci_cred)+' / '+str(sci_req)))
 
         if self.year1_check.active == True:
             all_globals.user.grad_year = int(self.year1_label.text)
@@ -366,9 +426,10 @@ class Dashboard(GridLayout):
         if self.year4_check.active == True:
             all_globals.user.grad_year = int(self.year4_label.text)
 
+        all_globals.user.notes=self.n_entry.text       
+
     def save_user_info(self,instance):
-        print 'User info saved!'
-        all_globals.user.notes=self.n_entry.text
+        print 'User info saved!'       
         all_globals.fm.save_user(all_globals.user)
 
     def export_user_info(self,instance):
@@ -504,7 +565,7 @@ class TabsScreen(Screen):
 class CrashCourseApp(App):
     def build(self):
         sm = ScreenManager(transition = WipeTransition())
-        sm.add_widget(StartUpScreen(sm,name='startup'))
+        #sm.add_widget(StartUpScreen(sm,name='startup'))
         sm.add_widget(LogInScreen(sm,name='login'))
         sm.add_widget(NewUserScreen(sm,name='newuser'))
         sm.add_widget(TabsScreen(name='tabs'))

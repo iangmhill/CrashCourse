@@ -23,7 +23,9 @@ class DragTab(BoxLayout):
 		JuniColor=[0.2,0.65,0.8,0.6]
 		SeniColor=[0.2,0.65,0.8,0.45]
 
-		self.courses = StackLayout(spacing=5,size_hint_y=None,orientation='tb-rl',size_hint=(0.3,1))		
+		self.scrollview = ScrollView(size=(400,400),size_hint=(0.3,1.0))
+		self.courses = StackLayout(spacing=5,size_hint_y=None,orientation='tb-rl')	
+		self.scrollview.add_widget(self.courses)	
 		
 		self.lefthand=BoxLayout(orientation='vertical', size_hint=(.7,1))
 		self.Planner=GridLayout(size_hint=(1,.85),rows=2, cols=4, spacing=3)
@@ -53,7 +55,7 @@ class DragTab(BoxLayout):
 
 		#Now stuff it all in
 		self.add_widget(self.lefthand)
-		self.add_widget(self.courses)
+		self.add_widget(self.scrollview)
 
 		Clock.schedule_interval(self.update_stats_widget, .1)
 

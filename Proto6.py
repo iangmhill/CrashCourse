@@ -23,7 +23,10 @@ class DragTab(BoxLayout):
 		JuniColor=[0.2,0.65,0.8,0.6]
 		SeniColor=[0.2,0.65,0.8,0.45]
 
-		self.courses = StackLayout(spacing=5,size_hint_y=None,orientation='tb-rl',size_hint=(0.3,1))		
+		self.scrollview = ScrollView(size=(400,400),size_hint=(0.3,1.0),scroll_timeout=10)
+		self.courses = StackLayout(spacing=5,size_hint_y=None,orientation='rl-tb')	
+		self.courses.bind(minimum_height=self.courses.setter('height'))
+		self.scrollview.add_widget(self.courses)	
 		
 		self.lefthand=BoxLayout(orientation='vertical', size_hint=(.7,1))
 		self.Planner=GridLayout(size_hint=(1,.85),rows=2, cols=4, spacing=3)
@@ -53,7 +56,7 @@ class DragTab(BoxLayout):
 
 		#Now stuff it all in
 		self.add_widget(self.lefthand)
-		self.add_widget(self.courses)
+		self.add_widget(self.scrollview)
 
 		Clock.schedule_interval(self.update_stats_widget, .1)
 
@@ -68,12 +71,14 @@ class DragTab(BoxLayout):
 							  remove_on_drag=True)
 		
 		Icon.bound_zone_objects.append(self.Planner)
+		Icon.bound_zone_objects.append(self.scrollview)
 		Icon.bound_zone_objects.append(self.courses)
 		Icon.bound_zone_objects.append(self.recycle)
 
 		for sem in self.slots:
 			Icon.add_droppable_zone(sem.coursehouse)
-
+		
+		Icon.droppable_zone_objects.append(self.scrollview)
 		Icon.droppable_zone_objects.append(self.courses)
 
 		Icon.kill_zone_objects.append(self.recycle)
