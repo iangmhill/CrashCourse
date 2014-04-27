@@ -179,6 +179,14 @@ class NewUserScreen(BoxLayout,Screen):
         self.password.add_widget(self.p_entry)
         self.password.add_widget(Label())
 
+        ## Full Name ##
+        self.fullname = GridLayout(cols=4,size_hint=(1.0,0.05))
+        self.fullname.add_widget(Label())
+        self.fullname.add_widget(Label(text='Please enter your full name:'))        
+        self.fullname_entry = TextInput(multiline=False)
+        self.fullname.add_widget(self.fullname_entry)
+        self.fullname.add_widget(Label())
+
         ## Back / Create Account Buttons ##
         self.buttons = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.buttons.add_widget(Label())
@@ -191,7 +199,7 @@ class NewUserScreen(BoxLayout,Screen):
         self.space1 = Label(size_hint=(1.0,0.175))
         self.space2 = Label(size_hint=(1.0,0.1))
         self.space3 = Label(size_hint=(1.0,0.05))        
-        self.warning = Label(text='*WARNING*  Once you choose a username and password, they CAN NOT be changed!',size_hint=(1.0,0.225))
+        self.warning = Label(text='*WARNING*  Once you choose a username and password, they CAN NOT be changed!',size_hint=(1.0,0.175))
         
         ## Add Widgets to Tab ##
         self.add_widget(self.space1)
@@ -199,6 +207,7 @@ class NewUserScreen(BoxLayout,Screen):
         self.add_widget(self.space2)
         self.add_widget(self.username)       
         self.add_widget(self.password)
+        self.add_widget(self.fullname)
         self.add_widget(self.space3)
         self.add_widget(self.buttons)
         self.add_widget(self.warning)
@@ -207,7 +216,7 @@ class NewUserScreen(BoxLayout,Screen):
         self.sm.current = 'login'
         
     def enter_function(self,instance):
-        #TODO: create new user file with self.u_entry.text and self.p_entry.text      
+        #TODO: create new user file with self.u_entry.text and self.p_entry.text and self.fullname_entry.text  
         self.sm.current = 'tabs'        
       
         
@@ -581,17 +590,22 @@ class TabsPanel(TabbedPanel):
         self.add_widget(self.tab2)
         self.add_widget(self.tab3)
         
-        Clock.schedule_interval(self.populate,0.5)
+        Clock.schedule_interval(self.load,0.5)
 
-    def populate(self,instance):
-        """Fills the Catalog Tab with Courses"""
+    def load(self,instance):
+        """Fills the App with Information from the user file and loads the courses"""
+        ## Loads the Courses into Catalog Tab ##
         if self.current_tab != self.last_tab and self.current_tab == self.tab2:
             self.tab2.content.courses.clear_widgets()            
             for course_object in all_globals.catalog:
                 course_item = Course_Item(course=course_object,size_hint=(0.245,None),height=200)
-                self.tab2.content.courses.add_widget(course_item)
+                self.tab2.content.courses.add_widget(course_item) 
+
+        ## Loads User Information into the Home Tab ##
+        if self.current_tab != self.last_tab and self.current_tab == self.tab1:            
+            self.tab1.content.n_entry.text = all_globals.user.notes
+            
         self.last_tab = self.current_tab
-    
 
 class TabsScreen(Screen):
     """Screen that holds the Tabs Panel"""
