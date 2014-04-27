@@ -119,9 +119,9 @@ class FileManager(object):
 
 
 
-filemanager = FileManager()
-user = filemanager.load_user('ihill','crashcourse')
-filemanager.export_user(user)
+#filemanager = FileManager()
+#user = filemanager.load_user('ihill','crashcourse')
+#filemanager.export_user(user)
 # last_updated,distribution = filemanager.load_stats()
 # print(last_updated)
 # for k in distribution:
