@@ -3,7 +3,7 @@ class User(object):
     """User objects will store information about each 
     individual user and save information from each session"""
 
-    def __init__(self, username,password,name,grad_year,major,starting_credits,courses,notes):
+    def __init__(self, username,password,name,grad_year=2017,major=None,starting_credits=None,courses=None,notes=None):
         self.username = username            #as string e.g. "ihill"
         self.password = password            #as string e.g. "crashcourse1"
         self.last_updated = datetime.now()  #as datetime object

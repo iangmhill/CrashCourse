@@ -217,9 +217,25 @@ class NewUserScreen(BoxLayout,Screen):
         self.sm.current = 'login'
         
     def enter_function(self,instance):
-        #TODO: create new user file with self.u_entry.text and self.p_entry.text and self.fullname_entry.text  
-        self.sm.current = 'tabs'        
-      
+        #TODO: create new user file with self.u_entry.text and self.p_entry.text and self.fullname_entry.text
+        all_globals.user = User(self.u_entry.text,self.p_entry.text,self.fullname_entry.text)
+        try:
+            all_globals.fm.save_user(all_globals.user)
+            all_globals.nm.create_user(all_globals.user.username)
+            self.sm.current = 'tabs'    
+        except:
+            self.warning.text = "User creation failed. Check your internet connection."
+        else:
+            self.warning.text = "User creation successful. Downloading the lastest course information."
+            result = all_globals.nm.update(self.u_entry.text,self.p_entry.text)
+            if result == True:
+                all_globals.user = all_globals.fm.load_user(self.u_entry.text,self.p_entry.text)                
+                if all_globals.user != None:
+                    all_globals.catalog = all_globals.fm.load_courses()
+                    self.warning.text = 'Download successful!'
+                    self.sm.current = 'tabs'
+                else:
+                    self.warning.text = 'Download failed. Check your internet connection.'     
         
 class Dashboard(GridLayout):
     """Home tab that displays user statistics"""
