@@ -22,20 +22,21 @@ class DragTab(BoxLayout):
 		SophColor=[0.2,0.65,0.8,0.75]
 		JuniColor=[0.2,0.65,0.8,0.6]
 		SeniColor=[0.2,0.65,0.8,0.45]
+		self.done_before=0
 
 		self.courses = StackLayout(spacing=5,size_hint_y=None,orientation='tb-rl',size_hint=(0.3,1))		
 		
 		self.lefthand=BoxLayout(orientation='vertical', size_hint=(.7,1))
 		self.Planner=GridLayout(size_hint=(1,.85),rows=2, cols=4, spacing=3)
 
-		self.slot1=Semester(text="Fall "+ str(all_globals.user.grad_year-4), color=FreshColor)
-		self.slot2=Semester(text="Fall "+ str(all_globals.user.grad_year-3), color=SophColor)
-		self.slot3=Semester(text="Fall "+ str(all_globals.user.grad_year-2), color=JuniColor)
-		self.slot4=Semester(text="Fall "+ str(all_globals.user.grad_year-1), color=SeniColor)
-		self.slot5=Semester(text="Spring "+ str(all_globals.user.grad_year-3), color=FreshColor)
-		self.slot6=Semester(text="Spring "+ str(all_globals.user.grad_year-2), color=SophColor)
-		self.slot7=Semester(text="Spring "+ str(all_globals.user.grad_year-1), color=JuniColor)
-		self.slot8=Semester(text="Spring "+ str(all_globals.user.grad_year), color=SeniColor)
+		self.slot1=Semester(text="Fall "+ str(all_globals.user.grad_year-4), color=FreshColor, pos_id=1)
+		self.slot2=Semester(text="Fall "+ str(all_globals.user.grad_year-3), color=SophColor, pos_id=2)
+		self.slot3=Semester(text="Fall "+ str(all_globals.user.grad_year-2), color=JuniColor, pos_id=3)
+		self.slot4=Semester(text="Fall "+ str(all_globals.user.grad_year-1), color=SeniColor, pos_id=4)
+		self.slot5=Semester(text="Spring "+ str(all_globals.user.grad_year-3), color=FreshColor, pos_id=5)
+		self.slot6=Semester(text="Spring "+ str(all_globals.user.grad_year-2), color=SophColor, pos_id=6)
+		self.slot7=Semester(text="Spring "+ str(all_globals.user.grad_year-1), color=JuniColor, pos_id=7)
+		self.slot8=Semester(text="Spring "+ str(all_globals.user.grad_year), color=SeniColor, pos_id=8)
 
 		self.slots=[self.slot1, self.slot2, self.slot3, self.slot4, self.slot5, self.slot6, self.slot7, self.slot8]
 		
@@ -45,7 +46,7 @@ class DragTab(BoxLayout):
 		self.lefthand.add_widget(self.Planner)
 
 		self.stats_widget=BoxLayout(size_hint=(1, .15))
-		self.recycle=Button(size_hint=(.2, 1),background_normal='recycle.png',background_down='recycle.png')#,text= 'Recycle \n Course')
+		self.recycle=Button(size_hint=(.2, 1),background_normal='recycle.png',background_down='recycle.png')
 		self.stats=Label(size_hint=(1,1),color=(1,1,1,.3))
 		self.stats_widget.add_widget(self.recycle)
 		self.stats_widget.add_widget(self.stats)
@@ -55,10 +56,23 @@ class DragTab(BoxLayout):
 		self.add_widget(self.lefthand)
 		self.add_widget(self.courses)
 
+		#Updating things
 		Clock.schedule_interval(self.update_stats_widget, .1)
 
+	def Load_Users_Plan(self):
+		#Pre-populating the Planner with appropriate things
+		if self.done_before==0:
+			for planned in all_globals.user.courses:
+				course_code=planned[0]
+				where=planned[1]
+				for course_obj in catalog:
+					if course_obj.code==course_code:
+						break
+				course=course_obj
+				self.add_Icon(course, where)
+				self.done_before=1
 
-	def add_Icon(self,course):
+	def add_Icon(self,course, pos_id=0):
 
 		Icon=DragableButton(course=course,text=course.keywords[0],height=100,size_hint_y=None,
 							  droppable_zone_objects=[],
@@ -78,7 +92,10 @@ class DragTab(BoxLayout):
 
 		Icon.kill_zone_objects.append(self.recycle)
 
-		self.courses.add_widget(Icon)
+		if pos_id==0: 
+			self.courses.add_widget(Icon) #Default Behavior, Catalog tab doesn't have to pass in anything else :)
+		else:
+			self.slots[pos_id-1].add_widget(Icon) #when loading user's info, courses they're taking should have code we can use to find the course object and pos_id
 
 	def update_stats_widget(self, dt):		
 		# When the user gets pre-credits as an attribute, we can stop writing over 
@@ -90,7 +107,7 @@ class DragTab(BoxLayout):
 		all_globals.user.courses=[]
 		for semester_obj in self.slots:
 			for icon in semester_obj.coursehouse.children[:]:
-				all_globals.user.courses.append(icon.course.code)
+				all_globals.user.courses.append((icon.course.code, icon.parent.parent.pos_id))
 				all_globals.user.credits['AHSE'] += icon.course.credits['AHSE']												
 				all_globals.user.credits['ENGR'] += icon.course.credits['ENGR']													
 				all_globals.user.credits['MTH'] += icon.course.credits['MTH']													
@@ -112,7 +129,7 @@ class DragTab(BoxLayout):
 		for sem in self.slots[4:]:
 			sem.Me.add_widget(Label(text="Spring "+ str(all_globals.user.grad_year-adjust)))
 			adjust-=1
-		
+		print set(all_globals.user.courses)
 
 
 class DemoApp2(App):

@@ -664,7 +664,9 @@ class TabsPanel(TabbedPanel):
                 self.tab1.content.matscie_check.active = True
             if str(all_globals.user.major) == 'Other':
                 self.tab1.content.other_check.active = True
-            
+        ##Loads User info on Planner Tab
+        self.tab3.content.Load_Users_Plan()
+
         self.last_tab = self.current_tab
 
 class TabsScreen(Screen):
