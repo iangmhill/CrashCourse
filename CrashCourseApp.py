@@ -226,10 +226,10 @@ class Dashboard(GridLayout):
         super(Dashboard, self).__init__(**kwargs)
         self.cols = 2
 
-        ahse_cred = all_globals.user.credits['AHSE']         
-        engr_cred = all_globals.user.credits['ENGR']
-        mth_cred = all_globals.user.credits['MTH']
-        sci_cred = all_globals.user.credits['SCI']
+        self.ahse_cred = all_globals.user.credits['AHSE']         
+        self.engr_cred = all_globals.user.credits['ENGR']
+        self.mth_cred = all_globals.user.credits['MTH']
+        self.sci_cred = all_globals.user.credits['SCI']
         ahse_req = 0
         engr_req = 0
         mth_req = 0
@@ -340,10 +340,10 @@ class Dashboard(GridLayout):
         self.grad = Label(text='Enough credits in \nschedule to graduate: \n' + will_grad)
         self.information.add_widget(self.grad)
         self.credits = GridLayout(cols=2, row=2)
-        self.credits.add_widget(Label(text = 'AHSE: '+str(ahse_cred)+' / '+str(ahse_req)))
-        self.credits.add_widget(Label(text = 'ENGR: '+str(engr_cred)+' / '+str(engr_req)))
-        self.credits.add_widget(Label(text = 'MTH: '+str(mth_cred)+' / '+str(mth_req)))
-        self.credits.add_widget(Label(text = 'SCI: '+str(sci_cred)+' / '+str(sci_req)))        
+        self.credits.add_widget(Label(text = 'AHSE: '+str(self.ahse_cred)+' / '+str(ahse_req)))
+        self.credits.add_widget(Label(text = 'ENGR: '+str(self.engr_cred)+' / '+str(engr_req)))
+        self.credits.add_widget(Label(text = 'MTH: '+str(self.mth_cred)+' / '+str(mth_req)))
+        self.credits.add_widget(Label(text = 'SCI: '+str(self.sci_cred)+' / '+str(sci_req)))        
         self.information.add_widget (self.credits)        
         self.stats.add_widget(Label(text = 'Statistics',font_size = 16,size_hint =(1,.15)))
         self.stats.add_widget(self.information)       
@@ -604,6 +604,38 @@ class TabsPanel(TabbedPanel):
         ## Loads User Information into the Home Tab ##
         if self.current_tab != self.last_tab and self.current_tab == self.tab1:            
             self.tab1.content.n_entry.text = all_globals.user.notes
+            self.tab1.content.ahse_cred = all_globals.user.credits['AHSE']
+            self.tab1.content.engr_cred = all_globals.user.credits['ENGR']
+            self.tab1.content.mth_cred = all_globals.user.credits['MTH']
+            self.tab1.content.sci_cred = all_globals.user.credits['SCI']
+           
+            if str(all_globals.user.grad_year) == '2014':
+                self.tab1.content.year1_check.active = True
+            if str(all_globals.user.grad_year) == '2015':
+                self.tab1.content.year2_check.active = True
+            if str(all_globals.user.grad_year) == '2016':
+                self.tab1.content.year3_check.active = True
+            if str(all_globals.user.grad_year) == '2017':
+                self.tab1.content.year4_check.active = True
+
+            if str(all_globals.user.major) == 'ECE':
+                self.tab1.content.ece_check.active = True
+            if str(all_globals.user.major) == 'Meche':
+                self.tab1.content.meche_check.active = True
+            if str(all_globals.user.major) == 'E:Robo':
+                self.tab1.content.roboe_check.active = True
+            if str(all_globals.user.major) == 'E:Design':
+                self.tab1.content.designe_check.active = True
+            if str(all_globals.user.major) == 'E:C':
+                self.tab1.content.ec_check.active = True
+            if str(all_globals.user.major) == 'E:Sys':
+                self.tab1.content.syse_check.active = True
+            if str(all_globals.user.major) == 'E:Bio':
+                self.tab1.content.bioe_check.active = True
+            if str(all_globals.user.major) == 'E:Matsci':
+                self.tab1.content.matscie_check.active = True
+            if str(all_globals.user.major) == 'Other':
+                self.tab1.content.other_check.active = True
             
         self.last_tab = self.current_tab
 
