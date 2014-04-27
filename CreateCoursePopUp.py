@@ -31,44 +31,43 @@ class Build_Course(BoxLayout):
     def __init__(self,**kwargs):
         super(Build_Course,self).__init__(**kwargs)
         
-        content2 = TextInput(text='FISH')
+        #content2 = TextInput(text='FISH')
         content3 = GridLayout(cols=1)
         
         self.ahse = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.ahse.add_widget(Label())
         self.ahse.add_widget(Label(text='AHSE:'))
-        self.u_entry = TextInput(multiline=False)
-        self.ahse.add_widget(self.u_entry)
+        self.ahse_entry = TextInput(multiline=False)
+        self.ahse.add_widget(self.ahse_entry)
         self.ahse.add_widget(Label())
         
         self.engr = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.engr.add_widget(Label())
         self.engr.add_widget(Label(text='ENGR:'))
-        self.u_entry = TextInput(multiline=False)
-        self.engr.add_widget(self.u_entry)
+        self.engr_entry = TextInput(multiline=False)
+        self.engr.add_widget(self.engr_entry)
         self.engr.add_widget(Label())
         
         self.mth = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.mth.add_widget(Label())
         self.mth.add_widget(Label(text='MTH:'))
-        self.u_entry = TextInput(multiline=False)
-        self.mth.add_widget(self.u_entry)
+        self.mth_entry = TextInput(multiline=False)
+        self.mth.add_widget(self.mth_entry)
         self.mth.add_widget(Label())
         
         self.sci = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.sci.add_widget(Label())
         self.sci.add_widget(Label(text='SCI:'))
-        self.u_entry = TextInput(multiline=False)
-        self.sci.add_widget(self.u_entry)
+        self.sci_entry = TextInput(multiline=False)
+        self.sci.add_widget(self.sci_entry)
         self.sci.add_widget(Label())
         
         self.ncourse = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.ncourse.add_widget(Label())
         self.ncourse.add_widget(Label(text='Name of Course:'))
-        self.u_entry = TextInput(multiline=False)
-        self.ncourse.add_widget(self.u_entry)
-        self.ncourse.add_widget(Label())
-        
+        self.ncourse_entry = TextInput(multiline=False)
+        self.ncourse.add_widget(self.ncourse_entry)
+        self.ncourse.add_widget(Label())        
         
         
         
@@ -92,18 +91,12 @@ class Build_Course(BoxLayout):
         content3.add_widget(self.sci)
         content3.add_widget(self.space3)
         content3.add_widget(self.offline)
-        content3.add_widget(self.space4)
-       
+        content3.add_widget(self.space4)       
     
         
-        self.popup = Popup(title = 'Make your own Course', content = content3,size_hint = (None,None),size = (750,500))
-        self.details_button = Button(text='Details',on_press=self.open_pop_up, size_hint=(.34,1))        
-        self.add_widget(self.details_button)
-        
-        
-		
-    
-    
+        self.popup = Popup(title = 'Make Your Own Course', content = content3,size_hint = (None,None),size = (750,500))
+        #self.details_button = Button(text='Details',on_press=self.open_pop_up, size_hint=(.34,1))  
+        #self.add_widget(self.details_button)   
     
     
     def open_pop_up(self,instance):
@@ -111,11 +104,11 @@ class Build_Course(BoxLayout):
     def close_pop_up(self,instance):
         self.popup.dismiss()
 
-class DemoApp3(App):
-	"""docstring for TestApp"""
-	def build(self):
+# class DemoApp3(App):
+# 	"""docstring for TestApp"""
+# 	def build(self):
 
-		return Build_Course()
+# 		return Build_Course()
 
-if __name__=='__main__':	
-	DemoApp3().run()
+# if __name__=='__main__':	
+# 	DemoApp3().run()

@@ -26,6 +26,7 @@ from NetworkManager import NetworkManager
 from Course_Item import Course_Item
 from Proto5_NoScroll import DragTab
 from datastructures import User
+from CreateCoursePopUp import Build_Course
 import kivy
 import all_globals
 
@@ -481,10 +482,12 @@ class Catalog(BoxLayout):
         self.orientation = 'vertical'
 
         ## Search Bar ##
-        self.search_bar = BoxLayout(size_hint=(1.0,0.05))        
-        self.search_bar.add_widget(Label(text='Search',size_hint=(0.25,1.0)))
-        self.search_text = (TextInput(multiline=False))
+        self.search_bar = BoxLayout(size_hint=(1.0,0.05))
+        self.search_text = TextInput(multiline=False,size_hint =(0.8,1.0))
+        self.create_course = Button(text='Create Your Own Course',size_hint=(0.2,1.0))
+        self.search_bar.add_widget(Label(text='Search',size_hint=(0.2,1.0)))
         self.search_bar.add_widget(self.search_text)
+        self.search_bar.add_widget(self.create_course)
 
         ## Filter Buttons ##
         self.filter_bar = BoxLayout(size_hint=(1.0,0.05))        
@@ -603,7 +606,7 @@ class TabsPanel(TabbedPanel):
 
         ## Loads User Information into the Home Tab ##
         if self.current_tab != self.last_tab and self.current_tab == self.tab1: 
-            
+
             # Loads Notes #           
             self.tab1.content.n_entry.text = all_globals.user.notes
 
