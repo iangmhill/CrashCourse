@@ -30,6 +30,9 @@ from CreateCoursePopUp import Build_Course
 import kivy
 import all_globals
 
+# new_user = User('hpelletier','crashcourse','Haley Pelletier',2017,'E:C',{'AHSE':0,'ENGR':0,'MTH':0,'SCI':0},None,None)
+# all_globals.fm.save_user(new_user)
+
 # Removes the multi-touch red dots 
 kivy.config.Config.set ('input', 'mouse', 'mouse,disable_multitouch')
 
