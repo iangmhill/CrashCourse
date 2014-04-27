@@ -91,11 +91,11 @@ class LogInScreen(BoxLayout,Screen):
         self.offline.add_widget(Label(size_hint=(0.4,1.0)))
         
         ## Logo and Empy Space ##
-        self.logo = Image(source='logo1.png',size_hint=(1.0,0.35))
+        self.logo = Image(source='logo1.png',size_hint=(1.0,0.3))
         self.space1 = Label(size_hint=(1.0,0.175))
         self.space2 = Label(size_hint=(1.0,0.1))
         self.space3 = Label(size_hint=(1.0,0.05))
-        self.space4 = Label(size_hint=(1.0,0.125))
+        self.space4 = Label(size_hint=(1.0,0.175))
 
         ## Add Widgets to Tab ##
         self.add_widget(self.space1)                
@@ -187,11 +187,11 @@ class NewUserScreen(BoxLayout,Screen):
         self.buttons.add_widget(Label())
         
         ## Logo, Warning, and Empty Space ##    
-        self.logo = Image(source='logo1.png',size_hint=(1.0,0.35))
+        self.logo = Image(source='logo1.png',size_hint=(1.0,0.3))
         self.space1 = Label(size_hint=(1.0,0.175))
         self.space2 = Label(size_hint=(1.0,0.1))
         self.space3 = Label(size_hint=(1.0,0.05))        
-        self.warning = Label(text='*WARNING*  Once you choose a username and password, they CAN NOT be changed!',size_hint=(1.0,0.175))
+        self.warning = Label(text='*WARNING*  Once you choose a username and password, they CAN NOT be changed!',size_hint=(1.0,0.225))
         
         ## Add Widgets to Tab ##
         self.add_widget(self.space1)

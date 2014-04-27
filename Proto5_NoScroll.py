@@ -98,7 +98,7 @@ class DragTab(BoxLayout):
 		
 		self.stats_widget.remove_widget(self.stats)
 		self.stats=Label(size_hint=(1,1),text='AHSE:  '+str(all_globals.user.credits['AHSE'])+'  '+'ENGR:  '+str(all_globals.user.credits['ENGR'])+'  '+'MTH:  '+str(all_globals.user.credits['MTH'])+'  '+'SCI:  '+str(all_globals.user.credits['SCI'])+'  ',color=(1,1,1,1))
-		print all_globals.user.courses
+		#print all_globals.user.courses
 		self.stats_widget.add_widget(self.stats)
 
 		for sem in self.slots:
