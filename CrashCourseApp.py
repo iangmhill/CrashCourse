@@ -623,18 +623,18 @@ class TabsPanel(TabbedPanel):
                 course_item = Course_Item(course=course_object,size_hint=(0.245,None),height=200)
                 self.tab2.content.courses.add_widget(course_item) 
 
-        ## Loads User Information into the Home Tab ##
+        # Loads User Information into the Home Tab ##
         if self.current_tab != self.last_tab and self.current_tab == self.tab1: 
 
             # Loads Notes #           
             self.tab1.content.n_entry.text = all_globals.user.notes
-
+ 
             # Loads Credits #
             self.tab1.content.ahse_cred = all_globals.user.credits['AHSE']
             self.tab1.content.engr_cred = all_globals.user.credits['ENGR']
             self.tab1.content.mth_cred = all_globals.user.credits['MTH']
             self.tab1.content.sci_cred = all_globals.user.credits['SCI']
-           
+            
             # Loads Grad Year #
             if str(all_globals.user.grad_year) == '2014':
                 self.tab1.content.year1_check.active = True
@@ -644,7 +644,7 @@ class TabsPanel(TabbedPanel):
                 self.tab1.content.year3_check.active = True
             if str(all_globals.user.grad_year) == '2017':
                 self.tab1.content.year4_check.active = True
-
+ 
             # Loads Major #
             if str(all_globals.user.major) == 'ECE':
                 self.tab1.content.ece_check.active = True
