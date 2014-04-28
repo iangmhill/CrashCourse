@@ -65,7 +65,7 @@ class DragTab(BoxLayout):
 			for planned in all_globals.user.courses:
 				course_code=planned[0]
 				where=planned[1]
-				for course_obj in catalog:
+				for course_obj in all_globals.catalog:
 					if course_obj.code==course_code:
 						break
 				course=course_obj
@@ -93,9 +93,36 @@ class DragTab(BoxLayout):
 		Icon.kill_zone_objects.append(self.recycle)
 
 		if pos_id==0: 
-			self.courses.add_widget(Icon) #Default Behavior, Catalog tab doesn't have to pass in anything else :)
+			target=self.courses #Default Behavior, Catalog tab doesn't have to pass in anything else :)
 		else:
-			self.slots[pos_id-1].add_widget(Icon) #when loading user's info, courses they're taking should have code we can use to find the course object and pos_id
+			target=self.slots[pos_id-1].coursehouse #when loading user's info, courses they're taking should have code we can use to find the course object and pos_id
+			Icon.width=135
+			Icon.height=35
+			print self.Planner.width
+			print self.slot1.coursehouse.width, self.slot1.coursehouse.height
+
+		target.add_widget(Icon)
+		# try:
+		# 	if target==target.parent.courses:
+		# 		self.width=100
+		# 		print "width correct"
+		# 		self.height=100
+		# 		print "height correct"
+		# except AttributeError:
+		# 	# print obj.height/6, self.height
+		# 	# print "height/6 matching would now occur"
+		# 	print "Added to the semesters"
+		# 	# print obj.width, self.width
+		# 	# print "width matching would now occur"
+
+		# 	Icon.height= target.height/6
+		# 	Icon.width = target.width
+
+		# x = target.center[0] - Icon.width/2
+		# y = target.center[1] - Icon.height/2
+		# Icon.pos=(x,y)
+
+		
 
 	def update_stats_widget(self, dt):		
 		# When the user gets pre-credits as an attribute, we can stop writing over 
