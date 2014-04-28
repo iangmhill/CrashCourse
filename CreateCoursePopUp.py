@@ -105,10 +105,28 @@ class Build_Course(Popup):
         #self.add_widget(self.details_button)   
     
     def create_course(self,instance):
-        new_course = Course(None,self.ncourse_entry.text,[self.ncourse_entry.text],None,{'AHSE':int(self.ahse_entry.text),'ENGR':int(self.engr_entry.text),'MTH':int(self.mth_entry.text),'SCI':int(self.sci_entry.text)},None,None,None,None,None,None)           
-        self.sm.tabs.tabspanel.tab3.content.add_Icon(new_course)
+
+        try:            
+            ahse = int(self.ahse_entry.text)
+            engr = int(self.engr_entry.text)
+            mth = int(self.mth_entry.text)
+            sci = int(self.sci_entry.text)
+
+            self.space4.text = 'Added to Planner!'
+            new_course = Course(None,self.ncourse_entry.text,[self.ncourse_entry.text],None,{'AHSE':ahse,'ENGR':engr,'MTH':mth,'SCI':sci},None,None,None,None,None,None)           
+            self.sm.tabs.tabspanel.tab3.content.add_Icon(new_course)
+            
+        except:            
+            self.space4.text = 'Please enter integer values for course credits (zero if not applicable).'
+
 
     def open_pop_up(self,instance):
+        self.ahse_entry.text=''
+        self.engr_entry.text=''
+        self.mth_entry.text=''
+        self.sci_entry.text=''
+        self.ncourse_entry.text=''
+        self.space4.text=''
         self.open()
 
     def close_pop_up(self,instance):
