@@ -30,6 +30,7 @@ from CreateCoursePopUp import Build_Course
 import kivy
 import all_globals
 
+
 # new_user = User('hpelletier','crashcourse','Haley Pelletier',2017,'E:C',{'AHSE':0,'ENGR':0,'MTH':0,'SCI':0},[],'')
 # all_globals.fm.save_user(new_user)
 
@@ -665,7 +666,10 @@ class TabsPanel(TabbedPanel):
                 self.tab1.content.matscie_check.active = True
             if str(all_globals.user.major) == 'Other':
                 self.tab1.content.other_check.active = True
-            
+                
+        ##Loads User info on Planner Tab
+        self.tab3.content.Load_Users_Plan()
+
         self.last_tab = self.current_tab
 
 class TabsScreen(Screen):

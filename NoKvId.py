@@ -10,9 +10,10 @@ from kivy.uix.button import Button
 
 #Found a way to make the drag and drop work without having to use those weak-refs in kv called 'id'
 class Semester(StackLayout):
-	def __init__(self, text, color=[0.2,0.65,0.8,0.9], **kwargs):
+	def __init__(self, text, color=[0.2,0.65,0.8,0.9], pos_id=0, **kwargs):
 		super(Semester,self).__init__(**kwargs)
 		self.text=text
+		self.pos_id=pos_id
 		self.color= color # list of ints 0-1 in form [r,g,b,a]
 		orientation='tb-lr'
 		with self.canvas:
