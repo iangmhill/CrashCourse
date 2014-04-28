@@ -27,12 +27,15 @@ from datastructures import Course
 import all_globals
 
 
-class Build_Course(BoxLayout):
-    def __init__(self,**kwargs):
+class Build_Course(Popup):
+    def __init__(self,sm,**kwargs):
         super(Build_Course,self).__init__(**kwargs)
-        
-        #content2 = TextInput(text='FISH')
-        content3 = GridLayout(cols=1)
+        self.sm = sm        
+
+        self.title = 'Make Your Own Course'
+        self.size = (750,500)
+        self.size_hint = (None,None)    
+        self.content = GridLayout(cols=1)
         
         self.ahse = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.ahse.add_widget(Label())
@@ -67,54 +70,46 @@ class Build_Course(BoxLayout):
         self.ncourse.add_widget(Label(text='Name of Course:'))
         self.ncourse_entry = TextInput(multiline=False)
         self.ncourse.add_widget(self.ncourse_entry)
-        self.ncourse.add_widget(Label())        
+        self.ncourse.add_widget(Label())   
         
-        
-        
-        self.offline = GridLayout (cols = 3, size_hint = (1.0,0.05))
-        self.offline.add_widget(Label())
-        self.offline_button = Button(text = 'Create Course',on_press=self.create_course)
-        self.offline.add_widget(self.offline_button)
-        self.offline.add_widget(Label())
+        self.create = GridLayout (cols = 3, size_hint = (1.0,0.05))
+        self.create.add_widget(Label())
+        self.create_button = Button(text = 'Add to Planner',on_press=self.create_course)
+        self.create.add_widget(self.create_button)
+        self.create.add_widget(Label())
+
+        self.close = BoxLayout(size_hint=(1.0,0.05))
+        empty_space = Label(size_hint=(0.9,1.0))
+        self.close_button = Button(text='Close',size_hint=(0.1,1.0),on_press=self.close_pop_up)
+        self.close.add_widget(empty_space)
+        self.close.add_widget(self.close_button)
             
         self.space1 = Label(size_hint=(1.0,0.175))
         self.space2 = Label(size_hint=(1.0,0.1))
         self.space3 = Label(size_hint=(1.0,0.05))
-        self.space4 = Label(size_hint=(1.0,0.175))
+        self.space4 = Label(size_hint=(1.0,0.125))       
 
-        content3.add_widget(self.space1) 
-        content3.add_widget(self.ncourse)               
-        content3.add_widget(self.space2)
-        content3.add_widget(self.ahse)
-        content3.add_widget(self.engr)
-        content3.add_widget(self.mth)
-        content3.add_widget(self.sci)
-        content3.add_widget(self.space3)
-        content3.add_widget(self.offline)
-        content3.add_widget(self.space4)       
-    
+        self.content.add_widget(self.space1) 
+        self.content.add_widget(self.ncourse)               
+        self.content.add_widget(self.space2)
+        self.content.add_widget(self.ahse)
+        self.content.add_widget(self.engr)
+        self.content.add_widget(self.mth)
+        self.content.add_widget(self.sci)
+        self.content.add_widget(self.space3)
+        self.content.add_widget(self.create)
+        self.content.add_widget(self.space4)
+        self.content.add_widget(self.close)
         
-        self.popup = Popup(title = 'Make Your Own Course', content = content3,size_hint = (None,None),size = (750,500))
         #self.details_button = Button(text='Details',on_press=self.open_pop_up, size_hint=(.34,1))  
         #self.add_widget(self.details_button)   
     
     def create_course(self,instance):
-        new_course = Course(None,self.ncourse_entry.text,[self.ncourse_entry.text],None,{'AHSE':int(self.ahse_entry.text),'ENGR':int(self.engr_entry.text),'MTH':int(self.mth_entry.text),'SCI':int(self.sci_entry.text)},None,None,None,None,None,None)
-        #WHY DOESNT THIS WORK ???
-        for child in self.parent.parent.parent.parent.parent.parent.children:        
-            child.tab3.content.add_Icon(new_course)
+        new_course = Course(None,self.ncourse_entry.text,[self.ncourse_entry.text],None,{'AHSE':int(self.ahse_entry.text),'ENGR':int(self.engr_entry.text),'MTH':int(self.mth_entry.text),'SCI':int(self.sci_entry.text)},None,None,None,None,None,None)           
+        self.sm.tabs.tabspanel.tab3.content.add_Icon(new_course)
 
     def open_pop_up(self,instance):
-        self.popup.open()
+        self.open()
 
     def close_pop_up(self,instance):
-        self.popup.dismiss()
-
-# class DemoApp3(App):
-# 	"""docstring for TestApp"""
-# 	def build(self):
-
-# 		return Build_Course()
-
-# if __name__=='__main__':	
-# 	DemoApp3().run()
+        self.dismiss()

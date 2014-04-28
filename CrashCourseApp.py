@@ -32,6 +32,7 @@ import all_globals
 
 
 # new_user = User('hpelletier','crashcourse','Haley Pelletier',2017,'E:C',{'AHSE':0,'ENGR':0,'MTH':0,'SCI':0},[],'')
+
 # all_globals.fm.save_user(new_user)
 
 # Removes the multi-touch red dots 
@@ -497,14 +498,15 @@ class Dashboard(GridLayout):
 
 class Catalog(BoxLayout):
     """Tab that displays available courses and allows user to search for, see details about, and add courses to planner tab"""
-    def __init__(self,**kwargs):
-        super(Catalog, self).__init__(**kwargs)
+    def __init__(self,sm,**kwargs):
+        super(Catalog,self).__init__(**kwargs)
         self.orientation = 'vertical'
+        self.sm = sm
 
         ## Search Bar ##
         self.search_bar = BoxLayout(size_hint=(1.0,0.05))
         self.search_text = TextInput(multiline=False,size_hint =(0.6,1.0))
-        self.create_course_popup = Build_Course()
+        self.create_course_popup = Build_Course(self.sm)
         self.create_course_button = Button(text='Create a Course',size_hint=(0.2,1.0),on_press=self.create_course_popup.open_pop_up)        
         self.search_bar.add_widget(Label(text='Search',size_hint=(0.2,1.0)))
         self.search_bar.add_widget(self.search_text)
@@ -595,8 +597,9 @@ class Planner(DragTab):
         
 class TabsPanel(TabbedPanel):
     """Panel that holds the tab widgets"""
-    def __init__(self,**kwargs):
+    def __init__(self,sm,**kwargs):
         super(TabsPanel, self).__init__(**kwargs)
+        self.sm = sm
         self.last_tab = None
 
         self.strip_image = 'strip_logo2.png'  #Logo in the top right of the tabs
@@ -605,7 +608,7 @@ class TabsPanel(TabbedPanel):
         self.tab1 = TabbedPanelHeader(text='Home')
         self.tab1.content = Dashboard()
         self.tab2 = TabbedPanelHeader(text='Catalog')
-        self.tab2.content = Catalog()
+        self.tab2.content = Catalog(self.sm)
         self.tab3 = TabbedPanelHeader(text='Planner')
         self.tab3.content = Planner()
 
@@ -674,9 +677,11 @@ class TabsPanel(TabbedPanel):
 
 class TabsScreen(Screen):
     """Screen that holds the Tabs Panel"""
-    def __init__(self,**kwargs):
-        super(TabsScreen, self).__init__(**kwargs)  
-        self.add_widget(TabsPanel(do_default_tab=False))
+    def __init__(self,sm,**kwargs):
+        super(TabsScreen, self).__init__(**kwargs)
+        self.sm = sm
+        self.tabspanel = TabsPanel(sm,do_default_tab=False)
+        self.add_widget(self.tabspanel)
         
     
 class CrashCourseApp(App):
@@ -687,10 +692,14 @@ class CrashCourseApp(App):
         sm = ScreenManager(transition = WipeTransition())
 
         ## Add screens to the screen manager ##
-        sm.add_widget(StartUpScreen(sm,name='startup'))
-        sm.add_widget(LogInScreen(sm,name='login'))
-        sm.add_widget(NewUserScreen(sm,name='newuser'))
-        sm.add_widget(TabsScreen(name='tabs'))
+        sm.startup=StartUpScreen(sm,name='startup')
+        sm.add_widget(sm.startup)
+        sm.login=LogInScreen(sm,name='login')
+        sm.add_widget(sm.login)
+        sm.newuser=NewUserScreen(sm,name='newuser')
+        sm.add_widget(sm.newuser)
+        sm.tabs=TabsScreen(sm,name='tabs')
+        sm.add_widget(sm.tabs)
 
         return sm
 
