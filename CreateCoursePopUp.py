@@ -4,8 +4,6 @@ Created on Thu Apr 24 14:17:07 2014
 
 @author: mafaldaborges
 """
-
-
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.stacklayout import StackLayout
@@ -25,6 +23,8 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
 from kivy.uix.textinput import TextInput
+from datastructures import Course
+import all_globals
 
 
 class Build_Course(BoxLayout):
@@ -73,7 +73,7 @@ class Build_Course(BoxLayout):
         
         self.offline = GridLayout (cols = 3, size_hint = (1.0,0.05))
         self.offline.add_widget(Label())
-        self.offline_button = Button(text = 'Create Course')
+        self.offline_button = Button(text = 'Create Course',on_press=self.create_course)
         self.offline.add_widget(self.offline_button)
         self.offline.add_widget(Label())
             
@@ -98,9 +98,15 @@ class Build_Course(BoxLayout):
         #self.details_button = Button(text='Details',on_press=self.open_pop_up, size_hint=(.34,1))  
         #self.add_widget(self.details_button)   
     
-    
+    def create_course(self,instance):
+        new_course = Course(None,self.ncourse_entry.text,[self.ncourse_entry.text],None,{'AHSE':int(self.ahse_entry.text),'ENGR':int(self.engr_entry.text),'MTH':int(self.mth_entry.text),'SCI':int(self.sci_entry.text)},None,None,None,None,None,None)
+        #WHY DOESNT THIS WORK ???
+        for child in self.parent.parent.parent.parent.parent.parent.children:        
+            child.tab3.content.add_Icon(new_course)
+
     def open_pop_up(self,instance):
         self.popup.open()
+
     def close_pop_up(self,instance):
         self.popup.dismiss()
 

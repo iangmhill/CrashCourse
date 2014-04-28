@@ -30,7 +30,7 @@ from CreateCoursePopUp import Build_Course
 import kivy
 import all_globals
 
-# new_user = User('hpelletier','crashcourse','Haley Pelletier',2017,'E:C',{'AHSE':0,'ENGR':0,'MTH':0,'SCI':0},None,None)
+# new_user = User('hpelletier','crashcourse','Haley Pelletier',2017,'E:C',{'AHSE':0,'ENGR':0,'MTH':0,'SCI':0},[],'')
 # all_globals.fm.save_user(new_user)
 
 # Removes the multi-touch red dots 
@@ -502,11 +502,12 @@ class Catalog(BoxLayout):
 
         ## Search Bar ##
         self.search_bar = BoxLayout(size_hint=(1.0,0.05))
-        self.search_text = TextInput(multiline=False,size_hint =(0.8,1.0))
-        self.create_course = Button(text='Create Your Own Course',size_hint=(0.2,1.0))
+        self.search_text = TextInput(multiline=False,size_hint =(0.6,1.0))
+        self.create_course_popup = Build_Course()
+        self.create_course_button = Button(text='Create a Course',size_hint=(0.2,1.0),on_press=self.create_course_popup.open_pop_up)        
         self.search_bar.add_widget(Label(text='Search',size_hint=(0.2,1.0)))
         self.search_bar.add_widget(self.search_text)
-        self.search_bar.add_widget(self.create_course)
+        self.search_bar.add_widget(self.create_course_button)
 
         ## Filter Buttons ##
         self.filter_bar = BoxLayout(size_hint=(1.0,0.05))        
