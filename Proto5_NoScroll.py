@@ -98,32 +98,9 @@ class DragTab(BoxLayout):
 			target=self.slots[pos_id-1].coursehouse #when loading user's info, courses they're taking should have code we can use to find the course object and pos_id
 			Icon.width=135
 			Icon.height=35
-			print self.Planner.width
-			print self.slot1.coursehouse.width, self.slot1.coursehouse.height
 
 		target.add_widget(Icon)
-		# try:
-		# 	if target==target.parent.courses:
-		# 		self.width=100
-		# 		print "width correct"
-		# 		self.height=100
-		# 		print "height correct"
-		# except AttributeError:
-		# 	# print obj.height/6, self.height
-		# 	# print "height/6 matching would now occur"
-		# 	print "Added to the semesters"
-		# 	# print obj.width, self.width
-		# 	# print "width matching would now occur"
-
-		# 	Icon.height= target.height/6
-		# 	Icon.width = target.width
-
-		# x = target.center[0] - Icon.width/2
-		# y = target.center[1] - Icon.height/2
-		# Icon.pos=(x,y)
-
 		
-
 	def update_stats_widget(self, dt):		
 		# When the user gets pre-credits as an attribute, we can stop writing over 
 		# Fixed=False
@@ -156,7 +133,6 @@ class DragTab(BoxLayout):
 		for sem in self.slots[4:]:
 			sem.Me.add_widget(Label(text="Spring "+ str(all_globals.user.grad_year-adjust)))
 			adjust-=1
-		print set(all_globals.user.courses)
 
 
 class DemoApp2(App):

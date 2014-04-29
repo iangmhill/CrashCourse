@@ -502,8 +502,8 @@ class Catalog(BoxLayout):
 
         ## Search Bar ##
         self.search_bar = BoxLayout(size_hint=(1.0,0.05))
-        self.search_text = TextInput(multiline=False,size_hint =(0.8,1.0))
-        self.create_course = Button(text='Create Your Own Course',size_hint=(0.2,1.0))
+        self.search_text = TextInput(multiline=False,size_hint =(0.7,1.0))
+        self.create_course = Button(text='Create Your Own Course',size_hint=(0.3,1.0))
         self.search_bar.add_widget(Label(text='Search',size_hint=(0.2,1.0)))
         self.search_bar.add_widget(self.search_text)
         self.search_bar.add_widget(self.create_course)
@@ -664,7 +664,7 @@ class TabsPanel(TabbedPanel):
                 self.tab1.content.matscie_check.active = True
             if str(all_globals.user.major) == 'Other':
                 self.tab1.content.other_check.active = True
-                
+
         ##Loads User info on Planner Tab
         self.tab3.content.Load_Users_Plan()
 
