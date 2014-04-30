@@ -5,9 +5,9 @@ Created on Tue Apr  8 20:41:40 2014
 @author: ihill, mborges, mkeene, hpelletier, sgrimshaw
 """
 import os
+import kivy
 from kivy.app import App
-from kivy.uix.tabbedpanel import TabbedPanel
-from kivy.uix.tabbedpanel import TabbedPanelHeader, StripLayout
+from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelHeader, StripLayout
 from kivy.uix.label import Label
 from kivy.uix.image import Image
 from kivy.uix.boxlayout import BoxLayout
@@ -27,7 +27,6 @@ from Course_Item import Course_Item
 from Proto5_NoScroll import DragTab
 from datastructures import User
 from CreateCoursePopUp import Build_Course
-import kivy
 import all_globals
 
 
@@ -35,7 +34,7 @@ import all_globals
 
 # all_globals.fm.save_user(new_user)
 
-# Removes the multi-touch red dots 
+## Removes the multi-touch red dots ##
 kivy.config.Config.set ('input', 'mouse', 'mouse,disable_multitouch')
 
 search_temp_list = [] 
@@ -242,11 +241,12 @@ class NewUserScreen(BoxLayout,Screen):
                 else:
                     self.warning.text = 'Download failed. Check your internet connection.'     
         
-class Dashboard(GridLayout):
+class Dashboard(BoxLayout):
     """Home tab that displays user statistics"""
     def __init__(self,**kwargs):
         super(Dashboard, self).__init__(**kwargs)
-        self.cols = 2
+        
+        self.orientation = 'vertical'
 
         self.ahse_cred = all_globals.user.credits['AHSE']         
         self.engr_cred = all_globals.user.credits['ENGR']
@@ -259,7 +259,14 @@ class Dashboard(GridLayout):
         will_grad = 'No'
 
         ## GRAD YEAR & MAJOR QUADRANT ##
-        self.info = GridLayout(rows=3)  
+        self.info = GridLayout(rows=4,size_hint=(1.0,0.5))
+
+        # Export and Save Buttons #
+        self.options_bar = BoxLayout(size_hint=(1.0,0.1))        
+        self.export_button = Button(text='Export to Spreadsheet',on_press=self.export_user_info)
+        self.save_button = Button(text='Save User Information',on_press=self.save_user_info)
+        self.options_bar.add_widget(self.export_button)
+        self.options_bar.add_widget(self.save_button)  
 
         # Grad Year #
         self.years = BoxLayout(size_hint=(1.0,0.1))
@@ -292,9 +299,10 @@ class Dashboard(GridLayout):
         self.years.add_widget(Label(size_hint=(0.1,1.0)))
          
         # Major #  
-        self.majors = BoxLayout(orientation='vertical',size_hint=(1.0,0.8))
+        self.majors = GridLayout(cols=2,size_hint=(1.0,0.8))
 
-        ece = BoxLayout()       
+        self.column1 = GridLayout(rows=5)
+        ece = BoxLayout()
         self.ece_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
         self.ece_label = Label(text='ECE',size_hint=(0.8,1.0))
         ece.add_widget(self.ece_label)
@@ -314,6 +322,8 @@ class Dashboard(GridLayout):
         self.bioe_label = Label(text='E:Bio',size_hint=(0.8,1.0))
         bioe.add_widget(self.bioe_label)
         bioe.add_widget(self.bioe_check)
+
+        self.column2 = GridLayout(rows=5)
         designe = BoxLayout()       
         self.designe_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
         self.designe_label = Label(text='E:Design',size_hint=(0.8,1.0))
@@ -334,58 +344,53 @@ class Dashboard(GridLayout):
         self.matscie_label = Label(text='E:MatSci',size_hint=(0.8,1.0))
         matscie.add_widget(self.matscie_label)
         matscie.add_widget(self.matscie_check)
+
         other = BoxLayout()
         self.other_check = CheckBox(active=False,group='majors',size_hint=(0.2,1.0))
         self.other_label = Label(text='Other',size_hint=(0.8,1.0))
         other.add_widget(self.other_label)
         other.add_widget(self.other_check)
 
-        options=[ece, meche, roboe, bioe, designe, ec, syse, matscie, other]
+        options=[ece, meche, roboe, bioe] 
         for choice in options:
-            self.majors.add_widget(choice)
+            self.column1.add_widget(choice)
+        self.majors.add_widget(self.column1)
+
+        options=[designe, ec, syse, matscie, other]
+        for choice in options:
+            self.column2.add_widget(choice)
+        self.majors.add_widget(self.column2)
+
 
         # Add Grad Year and Major to Quadrant #
+        self.info.add_widget(self.options_bar)
         self.info.add_widget(Label(text='Graduation Year & Major',font_size = 16,size_hint=(1.0,0.1)))
         self.info.add_widget(self.years)
-        self.info.add_widget(self.majors)         
+        self.info.add_widget(self.majors)              
         
-        ## REMINDERS QUADRANT ##
-        self.reminders = GridLayout(rows=5)
-        self.reminders.add_widget(Label(text='Reminders',font_size = 16,size_hint=(1, .3)))
-        self.reminders.add_widget(Label(text='Email Loretta Dinnon about 22 Credits', size_hint_y=None, height = 25))
-        self.reminders.add_widget(Label())
-        self.reminders.add_widget(Label())
-
         ## STATS QUADRANT ##
-        self.stats = BoxLayout(orientation='vertical')
+        self.stats = BoxLayout(orientation='vertical',size_hint=(1.0,0.3))
         self.information = GridLayout(cols = 2, size_hint = (1,.85))
-        self.grad = Label(text='Enough credits in \nschedule to graduate: \n' + will_grad)
-        self.information.add_widget(self.grad)
+        self.grad = Label(text='Enough credits in \nschedule to graduate: \n' + will_grad)        
         self.credits = GridLayout(cols=2, row=2)
         self.credits.add_widget(Label(text = 'AHSE: '+str(self.ahse_cred)+' / '+str(ahse_req)))
         self.credits.add_widget(Label(text = 'ENGR: '+str(self.engr_cred)+' / '+str(engr_req)))
         self.credits.add_widget(Label(text = 'MTH: '+str(self.mth_cred)+' / '+str(mth_req)))
         self.credits.add_widget(Label(text = 'SCI: '+str(self.sci_cred)+' / '+str(sci_req)))        
-        self.information.add_widget (self.credits)        
+        self.information.add_widget(self.credits)
+        self.information.add_widget(self.grad)      
         self.stats.add_widget(Label(text = 'Statistics',font_size = 16,size_hint =(1,.15)))
         self.stats.add_widget(self.information)       
         
         ## NOTES QUADRANT ##
-        self.notes = GridLayout(cols=1)
+        self.notes = GridLayout(cols=1,size_hint =(1.0,0.2))
         self.n_label = Label(text='Notes',font_size = 16,size_hint = (1.0,0.1))        
-        self.n_entry = TextInput(text=all_globals.user.notes,multiline=True,padding=15,size_hint=(1.0,0.8))
-        self.options_bar = BoxLayout(size_hint=(1.0,0.1))        
-        self.export_button = Button(text='Export to Spreadsheet',on_press=self.export_user_info)
-        self.save_button = Button(text='Save User Information',on_press=self.save_user_info)
-        self.options_bar.add_widget(self.export_button)
-        self.options_bar.add_widget(self.save_button)  
+        self.n_entry = TextInput(text=all_globals.user.notes,multiline=True,padding=15,size_hint=(1.0,0.8))        
         self.notes.add_widget(self.n_label)      
-        self.notes.add_widget(self.n_entry)
-        self.notes.add_widget(self.options_bar)        
+        self.notes.add_widget(self.n_entry)       
 
         ## Add Quadrants to Home Tab ##
         self.add_widget(self.info)
-        self.add_widget(self.reminders)
         self.add_widget(self.stats)
         self.add_widget(self.notes)
 
@@ -401,13 +406,7 @@ class Dashboard(GridLayout):
         ahse_req = 0
         engr_req = 0
         mth_req = 0
-        sci_req = 0
-
-        ## Determine if user has enough credits to graduate ##
-        if all_globals.user.credits['AHSE']+all_globals.user.credits['ENGR']+all_globals.user.credits['MTH']+all_globals.user.credits['SCI'] > 128:
-            will_grad = 'Yes'
-        else:
-            will_grad = 'No'       
+        sci_req = 0             
 
         ## Determine required credits to be displayed based on chosen major and add major to user file ##
         if self.ece_check.active == True:
@@ -465,6 +464,12 @@ class Dashboard(GridLayout):
             sci_req = 28
             all_globals.user.major = self.other_label.text
 
+        ## Determine if user has enough credits to graduate ##
+        if ahse_cred >= ahse_req and engr_cred >= engr_req and mth_cred >= mth_req and sci_cred >= sci_req:
+            will_grad = 'Yes'
+        else:
+            will_grad = 'No' 
+
         ## Update the displayed credits ##
         self.grad.clear_widgets()
         self.grad = Label(text='Enough credits in \nschedule to graduate: \n' + will_grad)
@@ -505,14 +510,9 @@ class Catalog(BoxLayout):
 
         ## Search Bar ##
         self.search_bar = BoxLayout(size_hint=(1.0,0.05))
-<<<<<<< HEAD
-        self.search_text = TextInput(multiline=False,size_hint =(0.7,1.0))
-        self.create_course = Button(text='Create Your Own Course',size_hint=(0.3,1.0))
-=======
         self.search_text = TextInput(multiline=False,size_hint =(0.6,1.0))
         self.create_course_popup = Build_Course(self.sm)
         self.create_course_button = Button(text='Create a Course',size_hint=(0.2,1.0),on_press=self.create_course_popup.open_pop_up)        
->>>>>>> c75b3429f080062080ac88e36098c3ef4f402735
         self.search_bar.add_widget(Label(text='Search',size_hint=(0.2,1.0)))
         self.search_bar.add_widget(self.search_text)
         self.search_bar.add_widget(self.create_course_button)
