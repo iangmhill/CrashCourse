@@ -119,7 +119,8 @@ class FileManager(object):
 
 
 
-#filemanager = FileManager()
+filemanager = FileManager()
+catalog = filemanager.load_courses()
 #user = filemanager.load_user('ihill','crashcourse')
 #filemanager.export_user(user)
 # last_updated,distribution = filemanager.load_stats()
