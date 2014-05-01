@@ -62,6 +62,8 @@ class DragTab(BoxLayout):
 	def Load_Users_Plan(self):
 		#Pre-populating the Planner with appropriate things
 		if self.done_before==0:
+			if all_globals.user.courses==None:
+				all_globals.user.courses=[]
 			for planned in all_globals.user.courses:
 				course_code=planned[0]
 				where=planned[1]
