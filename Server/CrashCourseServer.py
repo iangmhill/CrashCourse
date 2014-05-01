@@ -37,7 +37,7 @@ class Controller(object):
         self.t1 = threading.Thread(target=self.ServerThread)
         self.t2 = threading.Thread(target=self.CommandThread)
         self.ip = self.get_ipaddress()
-        self.port = 5303
+        self.port = 5304
         self.log = ""
         try:
             sys.path.insert(0,"//stuweb/WEB/Students/2017/ihill")
