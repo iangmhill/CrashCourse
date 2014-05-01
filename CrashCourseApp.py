@@ -222,7 +222,7 @@ class NewUserScreen(BoxLayout,Screen):
         
     def enter_function(self,instance):
         #TODO: create new user file with self.u_entry.text and self.p_entry.text and self.fullname_entry.text
-        all_globals.user = User(self.u_entry.text,self.p_entry.text,self.fullname_entry.text)
+        all_globals.user = User(self.u_entry.text,self.p_entry.text,self.fullname_entry.text,2017,'ECE',{'AHSE':0,'ENGR':0,'MTH':0,'SCI':0},None,'')
         try:
             all_globals.fm.save_user(all_globals.user)
             all_globals.nm.create_user(all_globals.user.username)
