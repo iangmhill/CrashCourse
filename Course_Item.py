@@ -16,7 +16,7 @@ class Course_Item(BoxLayout):
 		self.orientation='vertical'
 
 		# Title #
-		self.title = (Label(text=course.name, size_hint=(1.0,0.85)))
+		self.title = (Label(text=course.keywords[0], size_hint=(1.0,0.85)))
 
 		# Buttons #
 		self.options = BoxLayout(size_hint=(1.0,0.15)) 
