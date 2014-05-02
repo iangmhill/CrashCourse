@@ -27,6 +27,7 @@ from Course_Item import Course_Item
 from Proto5_NoScroll import DragTab
 from datastructures import User
 from CreateCoursePopUp import Build_Course
+from TabTextInput import TabTextInput
 import all_globals
 
 
@@ -66,17 +67,21 @@ class LogInScreen(BoxLayout,Screen):
         self.username = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.username.add_widget(Label())
         self.username.add_widget(Label(text='Username:'))
-        self.u_entry = TextInput(multiline=False)
+        self.u_entry = TabTextInput(multiline=False)
         self.username.add_widget(self.u_entry)
-        self.username.add_widget(Label())
+        self.username.add_widget(Label())       
         
         ## Password ##
         self.password = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.password.add_widget(Label())
         self.password.add_widget(Label(text='Password:'))  
-        self.p_entry = TextInput(multiline=False,password=True)
+        self.p_entry = TabTextInput(multiline=False,password=True)
         self.password.add_widget(self.p_entry)
         self.password.add_widget(Label())
+
+        ## Allow for Tabbing ##
+        self.u_entry.set_next(self.p_entry)
+        self.p_entry.set_next(self.u_entry)
 
         ## New User / Log In Buttons ##
         self.buttons = GridLayout(cols=4,size_hint=(1.0,0.05))
@@ -171,7 +176,7 @@ class NewUserScreen(BoxLayout,Screen):
         self.username = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.username.add_widget(Label())
         self.username.add_widget(Label(text='Please enter a username:'))
-        self.u_entry = TextInput(multiline=False)
+        self.u_entry = TabTextInput(multiline=False)
         self.username.add_widget(self.u_entry)
         self.username.add_widget(Label())
         
@@ -179,7 +184,7 @@ class NewUserScreen(BoxLayout,Screen):
         self.password = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.password.add_widget(Label())
         self.password.add_widget(Label(text='Please enter a password:'))        
-        self.p_entry = TextInput(multiline=False,password=True)
+        self.p_entry = TabTextInput(multiline=False,password=True)
         self.password.add_widget(self.p_entry)
         self.password.add_widget(Label())
 
@@ -187,9 +192,14 @@ class NewUserScreen(BoxLayout,Screen):
         self.fullname = GridLayout(cols=4,size_hint=(1.0,0.05))
         self.fullname.add_widget(Label())
         self.fullname.add_widget(Label(text='Please enter your full name:'))        
-        self.fullname_entry = TextInput(multiline=False)
+        self.fullname_entry = TabTextInput(multiline=False)
         self.fullname.add_widget(self.fullname_entry)
         self.fullname.add_widget(Label())
+
+        ## Allow for Tabbing ##
+        self.u_entry.set_next(self.p_entry)
+        self.p_entry.set_next(self.fullname_entry)
+        self.fullname_entry.set_next(self.u_entry)
 
         ## Back / Create Account Buttons ##
         self.buttons = GridLayout(cols=4,size_hint=(1.0,0.05))
