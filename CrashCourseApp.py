@@ -496,14 +496,15 @@ class Dashboard(BoxLayout):
         else:
             will_grad = 'No' 
 
-        ## Update the displayed credits ##
+        ## Update the displayed credits & name ##
         self.grad.clear_widgets()
-        self.grad = Label(text='Enough credits in \nschedule to graduate: \n' + will_grad)
+        self.grad = Label(text='Enough credits to graduate?:  ' + will_grad)
         self.credits.clear_widgets()
         self.credits.add_widget (Label(text = 'AHSE: '+str(ahse_cred)+' / '+str(ahse_req)))
         self.credits.add_widget (Label(text = 'ENGR: '+str(engr_cred)+' / '+str(engr_req)))
         self.credits.add_widget (Label(text = 'MTH: '+str(mth_cred)+' / '+str(mth_req)))
         self.credits.add_widget (Label(text = 'SCI: '+str(sci_cred)+' / '+str(sci_req)))
+        self.display_name.text = all_globals.user.name
        
         ## Add grad year to user file ##
         if self.year1_check.active == True:
@@ -723,12 +724,12 @@ class CrashCourseApp(App):
         sm = ScreenManager(transition = WipeTransition())
 
         ## Add screens to the screen manager ##
-        # sm.startup=StartUpScreen(sm,name='startup')
-        # sm.add_widget(sm.startup)
-        # sm.login=LogInScreen(sm,name='login')
-        # sm.add_widget(sm.login)
-        # sm.newuser=NewUserScreen(sm,name='newuser')
-        # sm.add_widget(sm.newuser)
+        sm.startup=StartUpScreen(sm,name='startup')
+        sm.add_widget(sm.startup)
+        sm.login=LogInScreen(sm,name='login')
+        sm.add_widget(sm.login)
+        sm.newuser=NewUserScreen(sm,name='newuser')
+        sm.add_widget(sm.newuser)
         sm.tabs=TabsScreen(sm,name='tabs')
         sm.add_widget(sm.tabs)
 
