@@ -248,7 +248,7 @@ class NewUserScreen(BoxLayout,Screen):
                     self.warning.text = 'Download successful!'
                     self.sm.current = 'tabs'
                 else:
-                    self.warning.text = 'Download failed. Check your internet connection.'     
+                    self.warning.text = 'Download failed. Check your internet connection.'
         
 class Dashboard(BoxLayout):
     """Home tab that displays user statistics"""

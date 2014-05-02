@@ -30,7 +30,7 @@ class Course_Item(BoxLayout):
 		self.add_widget(self.options)
 
 
-		## POPUP CONTENT ##
+		## DETAILS POPUP CONTENT ##
 		content = GridLayout(cols=1)
 
 		if self.course.PNR == True:
@@ -57,7 +57,7 @@ class Course_Item(BoxLayout):
 
 		# Line one of information #
 		info_1 = BoxLayout(size_hint=(1.0,0.2))	
-		prof = Label(text='Professor:  ' + self.course.prof)
+		prof = Label(text='Professor(s):  ' + self.course.prof)
 		cred = Label(text='Credits:  '+ahse+engr+mth+sci)
 		pnr = Label(text='Pass/No Credit-able:  ' + pnorec)			
 		info_1.add_widget(prof)
@@ -89,14 +89,34 @@ class Course_Item(BoxLayout):
 		# Add PopUp to Course Item #
 		self.popup = Popup(title=self.course.name,content=content,size_hint=(None,None),size=(750,500))
 
+		## WARNING POPUP CONTENT ##
+		content2 = GridLayout(cols=1)
+		content2.add_widget(Label(text='Your planner has too many courses, you eager beaver! \n Move some into your semesters before adding more.',size_hint=(1.0,0.9)))
+		close2 = BoxLayout(size_hint=(1.0,0.1))
+		empty_space2 = Label(size_hint = (0.9,1.0))	
+		close_button2 = Button(text='Close',size_hint=(0.1,1.0),on_press=self.close_warning_pop_up)
+		close2.add_widget(empty_space2)
+		close2.add_widget(close_button2)
+		content2.add_widget(close2)
+		self.warning_popup = Popup(title='Oops!',content=content2,size_hint=(None,None),size=(500,250))
+
 
 	def add_to_planner(self,instance):
 		"""Adds an equivalent course item to the Planner tab"""
-		for child in self.parent.parent.parent.parent.parent.parent.children:			
-			child.tab3.content.add_Icon(self.course)
+		for child in self.parent.parent.parent.parent.parent.parent.children:
+			if len(child.tab3.content.courses.children) <= 9:
+				child.tab3.content.add_Icon(self.course)
+			else:
+				self.open_warning_pop_up()
 				
 	def open_pop_up(self,instance):	
 		self.popup.open()
 
 	def close_pop_up(self,instance):
 		self.popup.dismiss()
+
+	def open_warning_pop_up(self):
+		self.warning_popup.open()
+
+	def close_warning_pop_up(self,instance):
+		self.warning_popup.dismiss()

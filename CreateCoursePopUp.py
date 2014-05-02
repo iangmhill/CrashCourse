@@ -124,7 +124,10 @@ class Build_Course(Popup):
 
             self.space4.text = 'Added to Planner!'
             new_course = Course(None,self.ncourse_entry.text,[self.ncourse_entry.text],None,{'AHSE':ahse,'ENGR':engr,'MTH':mth,'SCI':sci},None,None,None,None,None,None)           
-            self.sm.tabs.tabspanel.tab3.content.add_Icon(new_course)
+            if len(self.sm.tabs.tabspanel.tab3.content.courses.children) <= 9:
+                self.sm.tabs.tabspanel.tab3.content.add_Icon(new_course)
+            else:
+                self.space4.text = 'Your planner has too many courses, you eager beaver! \n Move some into your semesters before adding more.'
             
         except:            
             self.space4.text = 'Please enter integer values for course credits (zero if not applicable).'
