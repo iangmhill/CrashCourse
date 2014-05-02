@@ -254,8 +254,6 @@ class Dashboard(BoxLayout):
     """Home tab that displays user statistics"""
     def __init__(self,**kwargs):
         super(Dashboard, self).__init__(**kwargs)
-        
-        self.orientation = 'vertical'
 
         self.ahse_cred = all_globals.user.credits['AHSE']         
         self.engr_cred = all_globals.user.credits['ENGR']
@@ -267,18 +265,14 @@ class Dashboard(BoxLayout):
         sci_req = 0
         will_grad = 'No'
 
-        ## GRAD YEAR & MAJOR QUADRANT ##
-        self.info = GridLayout(rows=4,size_hint=(1.0,0.5))
+        ## USER INFORMATION HALF ##
+        self.info = GridLayout(rows=5,size_hint=(0.475,1.0))
 
-        # Export and Save Buttons #
-        self.options_bar = BoxLayout(size_hint=(1.0,0.1))        
-        self.export_button = Button(text='Export to Spreadsheet',on_press=self.export_user_info)
-        self.save_button = Button(text='Save User Information',on_press=self.save_user_info)
-        self.options_bar.add_widget(self.export_button)
-        self.options_bar.add_widget(self.save_button)  
+        # User's Name #
+        self.display_name = Label(text=all_globals.user.name,size_hint=(1.0,0.05))
 
         # Grad Year #
-        self.years = BoxLayout(size_hint=(1.0,0.1))
+        self.years = BoxLayout(size_hint=(1.0,0.15))
 
         year1 = BoxLayout(size_hint=(0.2,1.0))
         self.year1_check=CheckBox(active=False,group='year',size_hint=(0.1,1.0))
@@ -308,7 +302,7 @@ class Dashboard(BoxLayout):
         self.years.add_widget(Label(size_hint=(0.1,1.0)))
          
         # Major #  
-        self.majors = GridLayout(cols=2,size_hint=(1.0,0.8))
+        self.majors = GridLayout(cols=1,size_hint=(1.0,0.7))
 
         self.column1 = GridLayout(rows=5)
         ece = BoxLayout()
@@ -370,38 +364,61 @@ class Dashboard(BoxLayout):
             self.column2.add_widget(choice)
         self.majors.add_widget(self.column2)
 
-
-        # Add Grad Year and Major to Quadrant #
-        self.info.add_widget(self.options_bar)
-        self.info.add_widget(Label(text='Graduation Year & Major',font_size = 16,size_hint=(1.0,0.1)))
+        # Add Widgets to User Information Half #       
+        self.info.add_widget(Label(text='Graduation Year & Major',font_size = 17,size_hint=(1.0,0.1)))
+        self.info.add_widget(self.display_name)
         self.info.add_widget(self.years)
-        self.info.add_widget(self.majors)              
+        self.info.add_widget(self.majors)
         
-        ## STATS QUADRANT ##
-        self.stats = BoxLayout(orientation='vertical',size_hint=(1.0,0.3))
-        self.information = GridLayout(cols = 2, size_hint = (1,.85))
-        self.grad = Label(text='Enough credits in \nschedule to graduate: \n' + will_grad)        
-        self.credits = GridLayout(cols=2, row=2)
-        self.credits.add_widget(Label(text = 'AHSE: '+str(self.ahse_cred)+' / '+str(ahse_req)))
-        self.credits.add_widget(Label(text = 'ENGR: '+str(self.engr_cred)+' / '+str(engr_req)))
-        self.credits.add_widget(Label(text = 'MTH: '+str(self.mth_cred)+' / '+str(mth_req)))
-        self.credits.add_widget(Label(text = 'SCI: '+str(self.sci_cred)+' / '+str(sci_req)))        
+
+        ## BUFFER ##
+        self.buffer = Label(size_hint=(0.05,1.0))         
+        
+
+        ## STATS AND NOTES HALF ##
+        self.stats_and_notes = BoxLayout(orientation='vertical',size_hint=(0.475,1.0))
+
+        # STATS QUADRANT # 
+        self.stats = BoxLayout(orientation='vertical',size_hint=(1.0,0.5))
+        # Stats #
+        self.information = GridLayout(rows = 3, size_hint = (1,.75))
+        self.grad = Label(text='Enough credits to graduate?:  ' + will_grad,size_hint=(1.0,0.15))        
+        self.credits = GridLayout(cols=2,rows=2,size_hint=(1.0,0.7))        
+        self.credits.add_widget(Label(text = 'AHSE: '+str(self.ahse_cred)+' / '+str(ahse_req)))        
+        self.credits.add_widget(Label(text = 'ENGR: '+str(self.engr_cred)+' / '+str(engr_req)))        
+        self.credits.add_widget(Label(text = 'MTH: '+str(self.mth_cred)+' / '+str(mth_req)))   
+        self.credits.add_widget(Label(text = 'SCI: '+str(self.sci_cred)+' / '+str(sci_req)))
+        buffer2 = Label(size_hint=(1.0,0.15))   
         self.information.add_widget(self.credits)
         self.information.add_widget(self.grad)      
-        self.stats.add_widget(Label(text = 'Statistics',font_size = 16,size_hint =(1,.15)))
-        self.stats.add_widget(self.information)       
+        self.information.add_widget(buffer2)
+        # Export and Save Buttons #
+        self.options_bar = BoxLayout(size_hint=(1.0,0.1))        
+        self.export_button = Button(text='Export to Spreadsheet',on_press=self.export_user_info)
+        self.save_button = Button(text='Save User Information',on_press=self.save_user_info)
+        self.options_bar.add_widget(self.export_button)
+        self.options_bar.add_widget(self.save_button)
+        # Add Widgets to Quadrant #
+        self.stats.add_widget(self.options_bar)
+        self.stats.add_widget(Label(text = 'Stats',font_size = 17,size_hint =(1,.15)))
+        self.stats.add_widget(self.information)
         
-        ## NOTES QUADRANT ##
-        self.notes = GridLayout(cols=1,size_hint =(1.0,0.2))
-        self.n_label = Label(text='Notes',font_size = 16,size_hint = (1.0,0.1))        
-        self.n_entry = TextInput(text=all_globals.user.notes,multiline=True,padding=15,size_hint=(1.0,0.8))        
+        # NOTES QUADRANT #        
+        self.notes = GridLayout(cols=1,size_hint =(1.0,0.5))
+        self.n_label = Label(text='Notes',font_size = 17,size_hint = (1.0,0.15))        
+        self.n_entry = TextInput(text=all_globals.user.notes,multiline=True,padding=15,size_hint=(1.0,0.85))              
         self.notes.add_widget(self.n_label)      
-        self.notes.add_widget(self.n_entry)       
+        self.notes.add_widget(self.n_entry)
 
-        ## Add Quadrants to Home Tab ##
+        # Add Stats and Notes to Half #
+        self.stats_and_notes.add_widget(self.stats)
+        self.stats_and_notes.add_widget(self.notes)
+
+
+        ## Add Halves to Home Tab ##
         self.add_widget(self.info)
-        self.add_widget(self.stats)
-        self.add_widget(self.notes)
+        self.add_widget(self.buffer)
+        self.add_widget(self.stats_and_notes)       
 
         Clock.schedule_interval(self.update_stats,0.1)
 
@@ -706,12 +723,12 @@ class CrashCourseApp(App):
         sm = ScreenManager(transition = WipeTransition())
 
         ## Add screens to the screen manager ##
-        sm.startup=StartUpScreen(sm,name='startup')
-        sm.add_widget(sm.startup)
-        sm.login=LogInScreen(sm,name='login')
-        sm.add_widget(sm.login)
-        sm.newuser=NewUserScreen(sm,name='newuser')
-        sm.add_widget(sm.newuser)
+        # sm.startup=StartUpScreen(sm,name='startup')
+        # sm.add_widget(sm.startup)
+        # sm.login=LogInScreen(sm,name='login')
+        # sm.add_widget(sm.login)
+        # sm.newuser=NewUserScreen(sm,name='newuser')
+        # sm.add_widget(sm.newuser)
         sm.tabs=TabsScreen(sm,name='tabs')
         sm.add_widget(sm.tabs)
 
