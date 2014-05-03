@@ -6,6 +6,7 @@ Created on Tue Apr  8 20:41:40 2014
 """
 import os
 import kivy
+from kivy.graphics import *
 from kivy.app import App
 from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelHeader, StripLayout
 from kivy.uix.label import Label
@@ -255,10 +256,10 @@ class Dashboard(BoxLayout):
     def __init__(self,**kwargs):
         super(Dashboard, self).__init__(**kwargs)
 
-        self.ahse_cred = all_globals.user.credits['AHSE']         
-        self.engr_cred = all_globals.user.credits['ENGR']
-        self.mth_cred = all_globals.user.credits['MTH']
-        self.sci_cred = all_globals.user.credits['SCI']
+        self.ahse_cred = 0      
+        self.engr_cred = 0
+        self.mth_cred = 0
+        self.sci_cred = 0
         ahse_req = 0
         engr_req = 0
         mth_req = 0
@@ -266,10 +267,10 @@ class Dashboard(BoxLayout):
         will_grad = 'No'
 
         ## USER INFORMATION HALF ##
-        self.info = GridLayout(rows=5,size_hint=(0.475,1.0))
+        self.info = GridLayout(rows=5,size_hint=(0.5,1.0))
 
         # User's Name #
-        self.display_name = Label(text=all_globals.user.name,size_hint=(1.0,0.05))
+        self.display_name = Label(size_hint=(1.0,0.05))
 
         # Grad Year #
         self.years = BoxLayout(size_hint=(1.0,0.1))
@@ -302,9 +303,7 @@ class Dashboard(BoxLayout):
         self.years.add_widget(Label(size_hint=(0.1,1.0)))
          
         # Major #  
-        self.majors = GridLayout(cols=1,size_hint=(1.0,0.7))
-
-        
+        self.majors = GridLayout(cols=1,size_hint=(1.0,0.7))        
         ece = BoxLayout()
         self.ece_check = CheckBox(active=False,group='majors')
         self.ece_label = Label(text='ECE')
@@ -371,51 +370,51 @@ class Dashboard(BoxLayout):
 
         options=[ece, meche, roboe, bioe, designe, ec, syse, matscie, other] 
         for choice in options:
-            self.majors.add_widget(choice)       
+            self.majors.add_widget(choice)
+
+        # Export and Save Buttons #
+        self.options_bar = BoxLayout(size_hint=(1.0,0.05))        
+        self.export_button = Button(text='Export to Spreadsheet',on_press=self.export_user_info)
+        self.save_button = Button(text='Save User Information',on_press=self.save_user_info)
+        self.options_bar.add_widget(self.export_button)
+        self.options_bar.add_widget(self.save_button)       
 
         # Add Widgets to User Information Half #       
-        self.info.add_widget(Label(text='Your Information',font_size = 17,size_hint=(1.0,0.15)))
+        self.info.add_widget(Label(text='Your Information',font_size = 17,size_hint=(1.0,0.1)))
         self.info.add_widget(self.display_name)
         self.info.add_widget(self.years)
         self.info.add_widget(self.majors)
-        
-
-        ## BUFFER ##
-        self.buffer = Label(size_hint=(0.05,1.0))         
-        
+        self.info.add_widget(self.options_bar)
+                
 
         ## STATS AND NOTES HALF ##
-        self.stats_and_notes = BoxLayout(orientation='vertical',size_hint=(0.475,1.0))
+        self.stats_and_notes = BoxLayout(orientation='vertical',size_hint=(0.5,1.0))
 
         # STATS QUADRANT # 
         self.stats = BoxLayout(orientation='vertical',size_hint=(1.0,0.5))
         # Stats #
-        self.information = GridLayout(rows = 3, size_hint = (1,.75))
-        self.grad = Label(text='Enough credits to graduate?:  ' + will_grad,size_hint=(1.0,0.15))        
-        self.credits = GridLayout(cols=2,rows=2,size_hint=(1.0,0.7))        
+        self.information = GridLayout(rows = 3, size_hint = (1.0,0.8))
+        self.grad = Label(text='Enough credits to graduate?:  ' + will_grad,size_hint=(1.0,0.4))        
+        self.credits = GridLayout(cols=4,rows=2,size_hint=(1.0,0.6))
+        self.credits.add_widget (Label())       
         self.credits.add_widget(Label(text = 'AHSE: '+str(self.ahse_cred)+' / '+str(ahse_req)))        
-        self.credits.add_widget(Label(text = 'ENGR: '+str(self.engr_cred)+' / '+str(engr_req)))        
+        self.credits.add_widget(Label(text = 'ENGR: '+str(self.engr_cred)+' / '+str(engr_req)))
+        self.credits.add_widget (Label())
+        self.credits.add_widget (Label())       
         self.credits.add_widget(Label(text = 'MTH: '+str(self.mth_cred)+' / '+str(mth_req)))   
         self.credits.add_widget(Label(text = 'SCI: '+str(self.sci_cred)+' / '+str(sci_req)))
-        buffer2 = Label(size_hint=(1.0,0.15))   
+        self.credits.add_widget (Label())  
         self.information.add_widget(self.credits)
-        self.information.add_widget(self.grad)      
-        self.information.add_widget(buffer2)
-        # Export and Save Buttons #
-        self.options_bar = BoxLayout(size_hint=(1.0,0.1))        
-        self.export_button = Button(text='Export to Spreadsheet',on_press=self.export_user_info)
-        self.save_button = Button(text='Save User Information',on_press=self.save_user_info)
-        self.options_bar.add_widget(self.export_button)
-        self.options_bar.add_widget(self.save_button)
+        self.information.add_widget(self.grad)
+
         # Add Widgets to Quadrant #
-        self.stats.add_widget(self.options_bar)
-        self.stats.add_widget(Label(text = 'Credits',font_size = 17,size_hint =(1,.15)))
+        self.stats.add_widget(Label(text = 'Credits',font_size = 17,size_hint =(1.0,0.2)))
         self.stats.add_widget(self.information)
         
         # NOTES QUADRANT #        
         self.notes = GridLayout(cols=1,size_hint =(1.0,0.5))
         self.n_label = Label(text='Notes',font_size = 17,size_hint = (1.0,0.15))        
-        self.n_entry = TextInput(text=all_globals.user.notes,multiline=True,padding=15,size_hint=(1.0,0.85))              
+        self.n_entry = TextInput(multiline=True,padding=15,size_hint=(1.0,0.85))              
         self.notes.add_widget(self.n_label)      
         self.notes.add_widget(self.n_entry)
 
@@ -425,8 +424,7 @@ class Dashboard(BoxLayout):
 
 
         ## Add Halves to Home Tab ##
-        self.add_widget(self.info)
-        self.add_widget(self.buffer)
+        self.add_widget(self.info)       
         self.add_widget(self.stats_and_notes)       
 
         Clock.schedule_interval(self.update_stats,0.1)
@@ -509,20 +507,24 @@ class Dashboard(BoxLayout):
         self.grad.clear_widgets()
         self.grad = Label(text='Enough credits to graduate?:  ' + will_grad)
         self.credits.clear_widgets()
+        self.credits.add_widget (Label())
         self.credits.add_widget (Label(text = 'AHSE: '+str(ahse_cred)+' / '+str(ahse_req)))
         self.credits.add_widget (Label(text = 'ENGR: '+str(engr_cred)+' / '+str(engr_req)))
+        self.credits.add_widget (Label())
+        self.credits.add_widget (Label())
         self.credits.add_widget (Label(text = 'MTH: '+str(mth_cred)+' / '+str(mth_req)))
         self.credits.add_widget (Label(text = 'SCI: '+str(sci_cred)+' / '+str(sci_req)))
+        self.credits.add_widget (Label())       
         self.display_name.text = all_globals.user.name
        
         ## Add grad year to user file ##
         if self.year1_check.active == True:
             all_globals.user.grad_year = int(self.year1_label.text)
-        if self.year2_check.active == True:
+        elif self.year2_check.active == True:
             all_globals.user.grad_year = int(self.year2_label.text)
-        if self.year3_check.active == True:
+        elif self.year3_check.active == True:
             all_globals.user.grad_year = int(self.year3_label.text)
-        if self.year4_check.active == True:
+        elif self.year4_check.active == True:
             all_globals.user.grad_year = int(self.year4_label.text)
 
         ## Add notes to user file ##
@@ -694,7 +696,7 @@ class TabsPanel(TabbedPanel):
             # Loads Major #
             if str(all_globals.user.major) == 'ECE':
                 self.tab1.content.ece_check.active = True
-            if str(all_globals.user.major) == 'Meche':
+            if str(all_globals.user.major) == 'MechE':
                 self.tab1.content.meche_check.active = True
             if str(all_globals.user.major) == 'E:Robo':
                 self.tab1.content.roboe_check.active = True
