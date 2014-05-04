@@ -153,15 +153,16 @@ class LogInScreen(BoxLayout,Screen):
 
         ## Offline Log-In: ##
         else:            
-            all_globals.user = all_globals.fm.load_user(self.u_entry.text,self.p_entry.text)
+            student = all_globals.fm.load_user(self.u_entry.text,self.p_entry.text)
             #print all_globals.user.name
             #print all_globals.user.credits['AHSE']            
             all_globals.catalog = all_globals.fm.load_courses()
             if all_globals.catalog == None:
                 self.space4.text = 'Login failed. No courses.csv file.'
-            elif all_globals.user == None:
+            elif student == None:
                 self.space4.text = 'Login failed. Incorrect username or password for local user.'
             else:
+            	all_globals.user = student
                 self.space4.text = 'Starting in Offline Mode.'
                 self.sm.current = 'tabs'
         
