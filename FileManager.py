@@ -19,6 +19,7 @@ class FileManager(object):
         is a list of all course objects. This catalog is returned.
         """
         if not os.path.isfile('courses.csv'):
+            print("Housten we")
             return None
         catalog = []
         with open('courses.csv', 'r') as courses:
@@ -35,7 +36,7 @@ class FileManager(object):
                     seme = eval(c[6])  #semester held as list of lists i.e. [[year,semester], ...] e.g. [[2014,'f'], ... ]
                     time = eval(c[7])  #time of day held as list of lists i.e. [[day,hour,minutes,duration], ...] e.g. [['m',13,30,100],['r',13,30,100]]
                     desc = c[8]        #description as string
-                    prer = eval(c[9])  #Prerequisites as list of integer course codes e.g. [1100,1200, ...]
+                    prer = c[9]  #Prerequisites as list of integer course codes e.g. [1100,1200, ...]
                     pnre = eval(c[10])  #Pass/norecordable as boolean
                 except:
                     print("Load error on the following line:")
