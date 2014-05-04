@@ -32,7 +32,7 @@ from TabTextInput import TabTextInput
 import all_globals
 
 
-#new_user = User('hpelletier','crashcourse','Haley Pelletier',2017,'E:C',{'AHSE':0,'ENGR':0,'MTH':0,'SCI':0},[],'')
+#new_user = User('hpelletier','crashcourse','Haley Pelletier',2017,'MechE',{'AHSE':0,'ENGR':0,'MTH':0,'SCI':0},[],'')
 #all_globals.fm.save_user(new_user)
 
 ## Removes the multi-touch red dots ##
@@ -162,7 +162,7 @@ class LogInScreen(BoxLayout,Screen):
             elif student == None:
                 self.space4.text = 'Login failed. Incorrect username or password for local user.'
             else:
-            	all_globals.user = student
+            	all_globals.user = student                
                 self.space4.text = 'Starting in Offline Mode.'
                 self.sm.current = 'tabs'
         
@@ -254,17 +254,14 @@ class NewUserScreen(BoxLayout,Screen):
         
 class Dashboard(BoxLayout):
     """Home tab that displays user statistics"""
-    def __init__(self,**kwargs):
+    def __init__(self,sm,**kwargs):
         super(Dashboard, self).__init__(**kwargs)
+        self.sm = sm
 
         self.ahse_cred = 0      
         self.engr_cred = 0
         self.mth_cred = 0
-        self.sci_cred = 0
-        ahse_req = 0
-        engr_req = 0
-        mth_req = 0
-        sci_req = 0
+        self.sci_cred = 0        
         will_grad = 'No'
 
         ## USER INFORMATION HALF ##
@@ -398,12 +395,12 @@ class Dashboard(BoxLayout):
         self.grad = Label(text='Enough credits to graduate?:  ' + will_grad,size_hint=(1.0,0.4))        
         self.credits = GridLayout(cols=4,rows=2,size_hint=(1.0,0.6))
         self.credits.add_widget (Label())       
-        self.credits.add_widget(Label(text = 'AHSE: '+str(self.ahse_cred)+' / '+str(ahse_req)))        
-        self.credits.add_widget(Label(text = 'ENGR: '+str(self.engr_cred)+' / '+str(engr_req)))
+        self.credits.add_widget(Label(text = 'AHSE: '+str(self.ahse_cred)))
+        self.credits.add_widget(Label(text = 'ENGR: '+str(self.engr_cred)))
         self.credits.add_widget (Label())
         self.credits.add_widget (Label())       
-        self.credits.add_widget(Label(text = 'MTH: '+str(self.mth_cred)+' / '+str(mth_req)))   
-        self.credits.add_widget(Label(text = 'SCI: '+str(self.sci_cred)+' / '+str(sci_req)))
+        self.credits.add_widget(Label(text = 'MTH: '+str(self.mth_cred)))
+        self.credits.add_widget(Label(text = 'SCI: '+str(self.sci_cred)))
         self.credits.add_widget (Label())  
         self.information.add_widget(self.credits)
         self.information.add_widget(self.grad)
@@ -432,104 +429,68 @@ class Dashboard(BoxLayout):
 
     def update_stats(self,instance):
         """Updates the information displayed on the Home tab and saves info to the user file"""      
+        if self.sm.tabs.tabspanel.current_tab == self.sm.tabs.tabspanel.tab1:            
+            ahse_cred = all_globals.user.credits['AHSE']         
+            engr_cred = all_globals.user.credits['ENGR']
+            mth_cred = all_globals.user.credits['MTH']
+            sci_cred = all_globals.user.credits['SCI']
+            ahse_req = 28
+            engr_req = 28
+            mth_req = 28
+            sci_req = 28      
 
-        ahse_cred = all_globals.user.credits['AHSE']         
-        engr_cred = all_globals.user.credits['ENGR']
-        mth_cred = all_globals.user.credits['MTH']
-        sci_cred = all_globals.user.credits['SCI']
-        ahse_req = 0
-        engr_req = 0
-        mth_req = 0
-        sci_req = 0             
+            ## Add major to user file ##
+            if self.ece_check.active == True:           
+                all_globals.user.major = self.ece_label.text
+            if self.meche_check.active == True:
+                all_globals.user.major = self.meche_label.text
+            if self.roboe_check.active == True:           
+                all_globals.user.major = self.roboe_label.text
+            if self.bioe_check.active == True:            
+                all_globals.user.major = self.bioe_label.text
+            if self.designe_check.active == True:         
+                all_globals.user.major = self.designe_label.text
+            if self.ec_check.active == True:           
+                all_globals.user.major = self.ec_label.text
+            if self.syse_check.active == True:            
+                all_globals.user.major = self.syse_label.text            
+            if self.matscie_check.active == True:            
+                all_globals.user.major = self.matscie_label.text
+            if self.other_check.active == True:            
+                all_globals.user.major = self.other_label.text
 
-        ## Determine required credits to be displayed based on chosen major and add major to user file ##
-        if self.ece_check.active == True:
-            ahse_req = 28
-            engr_req = 28
-            mth_req = 28
-            sci_req = 28
-            all_globals.user.major = self.ece_label.text
-        if self.meche_check.active == True:
-            ahse_req = 28
-            engr_req = 28
-            mth_req = 28
-            sci_req = 28
-            all_globals.user.major = self.meche_label.text
-        if self.roboe_check.active == True:
-            ahse_req = 28
-            engr_req = 28
-            mth_req = 28
-            sci_req = 28
-            all_globals.user.major = self.roboe_label.text
-        if self.bioe_check.active == True:
-            ahse_req = 28
-            engr_req = 28
-            mth_req = 28
-            sci_req = 28
-            all_globals.user.major = self.bioe_label.text
-        if self.designe_check.active == True:
-            ahse_req = 28
-            engr_req = 28
-            mth_req = 28
-            sci_req = 28
-            all_globals.user.major = self.designe_label.text
-        if self.ec_check.active == True:
-            ahse_req = 28
-            engr_req = 28
-            mth_req = 28
-            sci_req = 28
-            all_globals.user.major = self.ec_label.text
-        if self.syse_check.active == True:
-            ahse_req = 28
-            engr_req = 28
-            mth_req = 28
-            sci_req = 28
-            all_globals.user.major = self.syse_label.text
-        if self.matscie_check.active == True:
-            ahse_req = 28
-            engr_req = 28
-            mth_req = 28
-            sci_req = 28
-            all_globals.user.major = self.matscie_label.text
-        if self.other_check.active == True:
-            ahse_req = 28
-            engr_req = 28
-            mth_req = 28
-            sci_req = 28
-            all_globals.user.major = self.other_label.text
+            ## Determine if user has enough credits to graduate ##
+            if ahse_cred+engr_cred+mth_cred+sci_cred >= 128:
+                will_grad = 'Yes'
+            else:
+                will_grad = 'No' 
 
-        ## Determine if user has enough credits to graduate ##
-        if ahse_cred >= ahse_req and engr_cred >= engr_req and mth_cred >= mth_req and sci_cred >= sci_req:
-            will_grad = 'Yes'
-        else:
-            will_grad = 'No' 
+            ## Update the displayed credits & name ##
+            self.grad.clear_widgets()
+            self.grad = Label(text='Enough credits to graduate?:  ' + will_grad)
+            self.credits.clear_widgets()
+            self.credits.add_widget (Label())
+            self.credits.add_widget (Label(text = 'AHSE: '+str(ahse_cred)+' / '+str(ahse_req)))
+            self.credits.add_widget (Label(text = 'ENGR: '+str(engr_cred)+' / '+str(engr_req)))
+            self.credits.add_widget (Label())
+            self.credits.add_widget (Label())
+            self.credits.add_widget (Label(text = 'MTH: '+str(mth_cred)+' / '+str(mth_req)))
+            self.credits.add_widget (Label(text = 'SCI: '+str(sci_cred)+' / '+str(sci_req)))
+            self.credits.add_widget (Label())       
+            self.display_name.text = all_globals.user.name
+           
+            ## Add grad year to user file ##
+            if self.year1_check.active == True:
+                all_globals.user.grad_year = int(self.year1_label.text)
+            elif self.year2_check.active == True:
+                all_globals.user.grad_year = int(self.year2_label.text)
+            elif self.year3_check.active == True:
+                all_globals.user.grad_year = int(self.year3_label.text)
+            elif self.year4_check.active == True:
+                all_globals.user.grad_year = int(self.year4_label.text)
 
-        ## Update the displayed credits & name ##
-        self.grad.clear_widgets()
-        self.grad = Label(text='Enough credits to graduate?:  ' + will_grad)
-        self.credits.clear_widgets()
-        self.credits.add_widget (Label())
-        self.credits.add_widget (Label(text = 'AHSE: '+str(ahse_cred)+' / '+str(ahse_req)))
-        self.credits.add_widget (Label(text = 'ENGR: '+str(engr_cred)+' / '+str(engr_req)))
-        self.credits.add_widget (Label())
-        self.credits.add_widget (Label())
-        self.credits.add_widget (Label(text = 'MTH: '+str(mth_cred)+' / '+str(mth_req)))
-        self.credits.add_widget (Label(text = 'SCI: '+str(sci_cred)+' / '+str(sci_req)))
-        self.credits.add_widget (Label())       
-        self.display_name.text = all_globals.user.name
-       
-        ## Add grad year to user file ##
-        if self.year1_check.active == True:
-            all_globals.user.grad_year = int(self.year1_label.text)
-        elif self.year2_check.active == True:
-            all_globals.user.grad_year = int(self.year2_label.text)
-        elif self.year3_check.active == True:
-            all_globals.user.grad_year = int(self.year3_label.text)
-        elif self.year4_check.active == True:
-            all_globals.user.grad_year = int(self.year4_label.text)
-
-        ## Add notes to user file ##
-        all_globals.user.notes=self.n_entry.text       
+            ## Add notes to user file ##
+            all_globals.user.notes=self.n_entry.text       
 
     def save_user_info(self,instance):
         #print 'User info saved!'
@@ -650,7 +611,7 @@ class TabsPanel(TabbedPanel):
 
         ## Define the Tabs ##
         self.tab1 = TabbedPanelHeader(text='Home')
-        self.tab1.content = Dashboard()
+        self.tab1.content = Dashboard(self.sm)
         self.tab2 = TabbedPanelHeader(text='Catalog')
         self.tab2.content = Catalog(self.sm)
         self.tab3 = TabbedPanelHeader(text='Planner')
@@ -673,7 +634,7 @@ class TabsPanel(TabbedPanel):
                 self.tab2.content.courses.add_widget(course_item) 
 
         # Loads User Information into the Home Tab ##
-        if self.current_tab != self.last_tab and self.current_tab == self.tab1: 
+        if self.current_tab == self.tab1:
 
             # Loads Notes #           
             self.tab1.content.n_entry.text = all_globals.user.notes
